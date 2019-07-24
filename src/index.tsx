@@ -2,10 +2,11 @@ import * as React from "react";
 import { render } from "react-dom";
 import { BrowserRouter as Router, Route } from "react-router-dom";
 import { Transposit } from "transposit";
-
 import "./styles.css";
 
-const transposit = new Transposit("https://addcred-mo4no.demo-transposit.com");
+const transposit = new Transposit(
+  "https://check-my-cal-ja22m.staging-transposit.com"
+);
 
 function SignIn() {
   return (
@@ -36,7 +37,7 @@ function SignInHandleRedirect() {
 }
 
 function Index() {
-  const [result, setResult] = React.useState(null);
+  const [result, setResult] = React.useState<string | null>(null);
   React.useEffect(() => {
     transposit
       .runOperation("hello_world")
