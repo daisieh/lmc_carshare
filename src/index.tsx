@@ -23,9 +23,12 @@ function SignIn() {
 function SignInHandleRedirect() {
   React.useEffect(() => {
     try {
-      transposit.handleLogin(() => {
-        // Specify where to redirect after sign-in completes
-        window.location.href = "/";
+      transposit.handleLogin(({ needsKeys }) => {
+        if (needsKeys) {
+          window.location.href = transposit.settingsUri(window.location.origin);
+        } else {
+          window.location.href = "/";
+        }
       });
     } catch (err) {
       console.log(err);
@@ -40,7 +43,7 @@ function Index() {
   const [result, setResult] = React.useState<string | null>(null);
   React.useEffect(() => {
     transposit
-      .runOperation("hello_world")
+      .runOperation("load_todays_events")
       .then(response => {
         if (response.status !== "SUCCESS") {
           throw response;
