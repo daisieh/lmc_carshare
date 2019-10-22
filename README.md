@@ -1,6 +1,6 @@
 # check_my_cal
 
-check_my_cal is a "non-hosted app" for testing the [Transposit JavaScript SDK](https://github.com/transposit/transposit-js-sdk).
+check_my_cal is a simple example of what you can build with the [Transposit JavaScript SDK](https://github.com/transposit/transposit-js-sdk).
 
 ## Build
 

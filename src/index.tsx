@@ -8,18 +8,24 @@ const transposit = new Transposit(
   "https://check-my-cal-ja22m.staging-transposit.com"
 );
 
+/**
+ * Hook to check that user is signed-in. Return true if they are.
+ */
 function useSignedIn(): boolean {
-  const [isLoggedIn, setIsLoggedIn] = React.useState<boolean>(false);
+  const [isSignedIn, setIsSignedIn] = React.useState<boolean>(false);
   React.useEffect(() => {
     if (!transposit.isSignedIn()) {
       window.location.href = "/signin";
       return;
     }
-    setIsLoggedIn(true);
+    setIsSignedIn(true);
   }, []);
-  return isLoggedIn;
+  return isSignedIn;
 }
 
+/**
+ * Hook to load the signed-in user.
+ */
 function useUser(isSignedIn: boolean): User | null {
   const [user, setUser] = React.useState<User | null>(null);
   React.useEffect(() => {
@@ -34,21 +40,37 @@ function useUser(isSignedIn: boolean): User | null {
   return user;
 }
 
+/**
+ * Sign-in page
+ */
 function SignIn() {
   return (
-    <button
-      onClick={async e => {
-        e.preventDefault();
-        await transposit.signIn(
-          `${window.location.origin}/signin/handle-redirect`
-        );
-      }}
-    >
-      Sign In
-    </button>
+    <>
+      <header className="hero">
+        <div className="container center">
+          <h1 className="hero-text">Check my cal</h1>
+        </div>
+      </header>
+      <main className="container center sign-in">
+        <button
+          className="sign-in-button"
+          onClick={async e => {
+            e.preventDefault();
+            await transposit.signIn(
+              `${window.location.origin}/signin/handle-redirect`
+            );
+          }}
+        >
+          Sign In
+        </button>
+      </main>
+    </>
   );
 }
 
+/**
+ * Handle sign-in page
+ */
 function SignInHandleRedirect() {
   React.useEffect(() => {
     transposit.handleSignIn().then(
@@ -67,10 +89,16 @@ function SignInHandleRedirect() {
   return null;
 }
 
+/**
+ * Sign-in protected index page
+ */
 function Index() {
+  // Check if signed-in
   const isSignedIn = useSignedIn();
   const user = useUser(isSignedIn);
-  const [opResult, setOpResult] = React.useState<string | null>(null);
+
+  // Load calendar events
+  const [calendarEvents, setEvents] = React.useState<any[] | null>(null);
   React.useEffect(() => {
     if (!isSignedIn) {
       return;
@@ -78,32 +106,67 @@ function Index() {
     transposit
       .run("load_todays_events")
       .then(({ results }) => {
-        setOpResult(JSON.stringify(results));
+        setEvents(results);
       })
       .catch(response => {
         console.log(response);
       });
   }, [isSignedIn]);
 
+  // If not signed-in, wait for pending redirect to /signin
   if (!isSignedIn || !user) {
     return null;
   }
 
+  // If signed-in, display the app
   return (
-    <div className="App">
-      <h1>Hello {JSON.stringify(user)}</h1>
-      {opResult && <h2>{opResult}</h2>}
-      <div>
-        <a href={transposit.settingsUri()}>settings</a>
-      </div>
-      <div>
-        <button
-          onClick={() => transposit.signOut(`${window.location.origin}/signin`)}
-        >
-          logout
-        </button>
-      </div>
-    </div>
+    <>
+      <nav className="nav">
+        <div className="nav-float-right">
+          <a className="nav-item" href={transposit.settingsUri()}>
+            Settings
+          </a>
+          <a
+            className="nav-item"
+            href="#"
+            onClick={event => {
+              event.preventDefault();
+              transposit.signOut(`${window.location.origin}/signin`);
+            }}
+          >
+            Sign out
+          </a>
+        </div>
+      </nav>
+      <header className="hero">
+        <div className="container center">
+          <h1 className="hero-text">Check my cal</h1>
+        </div>
+      </header>
+      <main className="container main">
+        <h2 className="greeting">Hello, {user.name}</h2>
+        {calendarEvents ? (
+          <div className="calendar">
+            <h3 className="today">🗓️ Today</h3>
+            {calendarEvents.length === 0 ? (
+              <p>
+                <em>No events today</em>
+              </p>
+            ) : (
+              <ul>
+                {calendarEvents.map((event, idx) => (
+                  <li key={idx}>{event.summary}</li>
+                ))}
+              </ul>
+            )}
+          </div>
+        ) : (
+          <div className="lds-circle">
+            <div></div>
+          </div>
+        )}
+      </main>
+    </>
   );
 }
 
