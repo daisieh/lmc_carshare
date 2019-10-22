@@ -113,7 +113,7 @@ function Index() {
       });
   }, [isSignedIn]);
 
-  // If not signed-in, wait for pending redirect to /signin
+  // If not signed-in, wait while rendering nothing
   if (!isSignedIn || !user) {
     return null;
   }
@@ -123,6 +123,12 @@ function Index() {
     <>
       <nav className="nav">
         <div className="nav-float-right">
+          <a
+            className="nav-item"
+            href={"https://github.com/transposit/check_my_cal"}
+          >
+            View code
+          </a>
           <a className="nav-item" href={transposit.settingsUri()}>
             Settings
           </a>
