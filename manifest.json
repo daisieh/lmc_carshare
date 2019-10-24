@@ -1,0 +1,43 @@
+{
+  "v2": {
+    "transposit": {
+      "dependencies": [{
+        "name": "transposit/google_calendar:v1.*.*",
+        "alias": "google_calendar"
+      }],
+      "operations": [{
+        "id": "time",
+        "function": {
+          "js": "time.js",
+          "lang": "js"
+        }
+      }, {
+        "id": "load_todays_events",
+        "tql": {
+          "tql": "SELECT summary FROM google_calendar.get_calendar_events\n  WHERE calendarId=\"primary\"\n  AND singleEvents=true\n  AND timeMin=(SELECT startToday FROM this.time)\n  AND timeMax=(SELECT endToday FROM this.time)"
+        },
+        "access": {
+          "requireUser": true
+        }
+      }],
+      "dataConnections": [{
+        "ref": "google_calendar.raw",
+        "requireConsumerSignin": true,
+        "overrides": {
+          "swagger": {
+            "oauthConfig": {
+              "scope": "https://www.googleapis.com/auth/calendar.events.readonly"
+            },
+            "executionLimits": {
+            }
+          }
+        },
+        "title": "Google Calendar",
+        "description": "Link your Google Calendar so we can read today's events."
+      }],
+      "javascriptAPIVersion": "3",
+      "source": "backend",
+      "userSettingsDisplay": "GENERATED"
+    }
+  }
+}
