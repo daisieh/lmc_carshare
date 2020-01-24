@@ -60,6 +60,9 @@
         "function": {
           "js": "get_all_cars.js",
           "lang": "js"
+        },
+        "access": {
+          "requireApiKey": true
         }
       }, {
         "id": "list_car_calendarlist",
