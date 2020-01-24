@@ -2,9 +2,6 @@
   "v2": {
     "transposit": {
       "dependencies": [{
-        "name": "transposit/google_calendar:v1.*.*",
-        "alias": "google_calendar"
-      }, {
         "name": "transposit/google_mail:v4.*.*",
         "alias": "google_mail"
       }, {
