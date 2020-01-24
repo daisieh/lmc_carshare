@@ -2,9 +2,6 @@
   "v2": {
     "transposit": {
       "dependencies": [{
-        "name": "transposit/google_calendar:v1.*.*",
-        "alias": "google_calendar"
-      }, {
         "name": "transposit/google_mail:v4.*.*",
         "alias": "google_mail"
       }, {
@@ -16,6 +13,9 @@
       }, {
         "name": "transposit/gcp_cloud_pubsub:v1.*.*",
         "alias": "gcp_cloud_pubsub"
+      }, {
+        "name": "transposit/google_calendar:v1.*.*",
+        "alias": "google_calendar"
       }],
       "operations": [{
         "id": "webhook",
@@ -60,6 +60,9 @@
         "function": {
           "js": "get_all_cars.js",
           "lang": "js"
+        },
+        "access": {
+          "requireApiKey": true
         }
       }, {
         "id": "list_car_calendarlist",
@@ -163,7 +166,7 @@
         "overrides": {
           "swagger": {
             "oauthConfig": {
-              "scope": "https://www.googleapis.com/auth/calendar.events.readonly"
+              "scope": "https://www.googleapis.com/auth/calendar"
             },
             "executionLimits": {
             }
