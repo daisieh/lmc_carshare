@@ -5,7 +5,7 @@ import { Transposit, User } from "transposit";
 import "./styles.css";
 
 const transposit = new Transposit(
-  "https://check-my-cal-ja22m.staging-transposit.com"
+  "https://lmc-carshare-89gbj.transposit.io"
 );
 
 /**
@@ -125,7 +125,7 @@ function Index() {
         <div className="nav-float-right">
           <a
             className="nav-item"
-            href={"https://github.com/transposit/check_my_cal"}
+            href={"https://github.com/daisieh/lmc_carshare"}
           >
             View code
           </a>
