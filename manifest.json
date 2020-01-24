@@ -163,7 +163,7 @@
         "overrides": {
           "swagger": {
             "oauthConfig": {
-              "scope": "https://www.googleapis.com/auth/calendar.events.readonly"
+              "scope": "https://www.googleapis.com/auth/calendar"
             },
             "executionLimits": {
             }
