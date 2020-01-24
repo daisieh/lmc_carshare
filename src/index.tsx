@@ -5,8 +5,9 @@ import { Transposit, User } from "transposit";
 import "./styles.css";
 
 const transposit = new Transposit(
-  "https://check-my-cal-ja22m.staging-transposit.com"
+  "https://lmc-carshare-89gbj.transposit.io"
 );
+
 
 /**
  * Hook to check that user is signed-in. Return true if they are.
@@ -48,7 +49,7 @@ function SignIn() {
     <>
       <header className="hero">
         <div className="container center">
-          <h1 className="hero-text">Check my cal</h1>
+          <h1 className="hero-text">Request a car</h1>
         </div>
       </header>
       <main className="container center sign-in">
@@ -104,7 +105,7 @@ function Index() {
       return;
     }
     transposit
-      .run("load_todays_events")
+      .run("load_todays_events", {date: '2020-01-23'})
       .then(({ results }) => {
         setEvents(results);
       })
@@ -118,20 +119,12 @@ function Index() {
     return null;
   }
 
+
   // If signed-in, display the app
   return (
     <>
       <nav className="nav">
         <div className="nav-float-right">
-          <a
-            className="nav-item"
-            href={"https://github.com/transposit/check_my_cal"}
-          >
-            View code
-          </a>
-          <a className="nav-item" href={transposit.settingsUri()}>
-            Settings
-          </a>
           <a
             className="nav-item"
             href="#"
@@ -146,7 +139,7 @@ function Index() {
       </nav>
       <header className="hero">
         <div className="container center">
-          <h1 className="hero-text">Check my cal</h1>
+          <h1 className="hero-text">Request a car</h1>
         </div>
       </header>
       <main className="container main">
