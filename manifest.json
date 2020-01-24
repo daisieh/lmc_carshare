@@ -162,7 +162,6 @@
         "requireConsumerSignin": true
       }, {
         "ref": "google_calendar.raw",
-        "requireConsumerSignin": true,
         "overrides": {
           "swagger": {
             "oauthConfig": {
