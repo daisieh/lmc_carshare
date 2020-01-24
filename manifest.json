@@ -4,8 +4,116 @@
       "dependencies": [{
         "name": "transposit/google_calendar:v1.*.*",
         "alias": "google_calendar"
+      }, {
+        "name": "transposit/google_mail:v4.*.*",
+        "alias": "google_mail"
+      }, {
+        "name": "transposit/google_sheets:v1.*.*",
+        "alias": "google_sheets"
+      }, {
+        "name": "transposit/slack_webhook:v2.*.*",
+        "alias": "slack_webhook"
+      }, {
+        "name": "transposit/gcp_cloud_pubsub:v1.*.*",
+        "alias": "gcp_cloud_pubsub"
       }],
       "operations": [{
+        "id": "webhook",
+        "function": {
+          "parameters": [{
+            "name": "http_event",
+            "default": {
+              "text": "{   \"query_parameters\": {     \"api_key\": \"XXX\"   },   \"http_method\": \"POST\",   \"parsed_body\": {     \"channel_name\": \"XXX\",     \"user_id\": \"UXXX\",     \"user_name\": \"iggy\",     \"trigger_id\": \"XXX\",     \"team_domain\": \"my_domain\",     \"team_id\": \"TXXX\",     \"text\": \"\",     \"channel_id\": \"DXXX\",     \"command\": \"/test\",     \"token\": \"XXX\",     \"response_url\": \"https://hooks.slack.com/commands/TXXX/XXX/XXX\"   },   \"body\": \"token=XXX&team_id=TXXX&team_domain=my_domain&channel_id=DXXX&channel_name=XXX&user_id=UXXX&user_name=iggy&command=%2Ftest&text=&response_url=https%3A%2F%2Fhooks.slack.com%2Fcommands%2FTXXX%2FXXX%2FXXX&trigger_id=XXX\" }"
+            },
+            "type": "OBJECT"
+          }],
+          "js": "webhook.js",
+          "lang": "js"
+        },
+        "access": {
+          "requireApiKey": true,
+          "webhook": true
+        }
+      }, {
+        "id": "get_calendarlist",
+        "tql": {
+          "parameters": [{
+            "name": "vehicle",
+            "type": "STRING"
+          }],
+          "tql": "SELECT * FROM google_calendar.get_calendarlist where summary in (@vehicle)"
+        }
+      }, {
+        "id": "create_calendar_event",
+        "tql": {
+          "parameters": [{
+            "name": "vehicle",
+            "type": "STRING"
+          }, {
+            "name": "requester",
+            "type": "STRING"
+          }],
+          "tql": "SELECT * FROM google_calendar.create_calendar_event\n  WHERE calendarId=(SELECT id from this.get_calendarlist where vehicle=@vehicle)\n  AND $body.summary='test'\n  AND $body.start=(SELECT {\n    'dateTime' : '2020-01-21T08:00:00-08:00'\n  })\n  AND $body.end=(SELECT {\n    'dateTime' : '2020-01-21T10:00:00-08:00'\n  })\n  AND $body.attendees=(SELECT [{'email': @requester}])\n\n/*\n * For sample code and reference material, visit\n * https://www.transposit.com/docs/get-started/sql-quickstart\n */"
+        }
+      }, {
+        "id": "list_cars",
+        "function": {
+          "js": "get_all_cars.js",
+          "lang": "js"
+        }
+      }, {
+        "id": "list_car_calendarlist",
+        "function": {
+          "js": "list_car_calendarlist.js",
+          "lang": "js"
+        }
+      }, {
+        "id": "request_received",
+        "function": {
+          "parameters": [{
+            "name": "http_event",
+            "default": {
+              "text": "{\n    \"query_parameters\": {\n      \"api_key\": \"mk7270q14evr0qs9rsmbe4i4ml\"\n    },\n    \"headers\": {\n      \"Cookie\": \"transposit-ut=kmkp37mdom641ifc2igarh4i9o\",\n      \"Accept\": \"application/json\",\n      \"User-Agent\": \"APIs-Google; (+https://developers.google.com/webmasters/APIs-Google.html)\",\n      \"Host\": \"carshare-calendar-n82q0.transposit.io\",\n      \"From\": \"noreply@google.com\",\n      \"Accept-Encoding\": \"gzip,deflate,br\",\n      \"X-Forwarded-Port\": \"443\",\n      \"Content-Length\": \"312\",\n      \"Content-Type\": \"application/json\"\n    },\n    \"http_method\": \"POST\",\n    \"parsed_body\": {\n      \"message\": {\n        \"data\": \"eyJlbWFpbEFkZHJlc3MiOiJsbWMuY2Fyc2hhcmVAZ21haWwuY29tIiwiaGlzdG9yeUlkIjoyMDcyfQ==\",\n        \"messageId\": \"945115373745022\",\n        \"message_id\": \"945115373745022\",\n        \"publishTime\": \"2020-01-21T01:44:31.412Z\",\n        \"publish_time\": \"2020-01-21T01:44:31.412Z\"\n      },\n      \"subscription\": \"projects/carshare-265707/subscriptions/request\"\n    },\n    \"body\": \"{\\\"message\\\":{\\\"data\\\":\\\"eyJlbWFpbEFkZHJlc3MiOiJsbWMuY2Fyc2hhcmVAZ21haWwuY29tIiwiaGlzdG9yeUlkIjoyMDcyfQ==\\\",\\\"messageId\\\":\\\"945115373745022\\\",\\\"message_id\\\":\\\"945115373745022\\\",\\\"publishTime\\\":\\\"2020-01-21T01:44:31.412Z\\\",\\\"publish_time\\\":\\\"2020-01-21T01:44:31.412Z\\\"},\\\"subscription\\\":\\\"projects/carshare-265707/subscriptions/request\\\"}\\n\"\n  }\n"
+            },
+            "type": "OBJECT"
+          }],
+          "js": "request_received.js",
+          "lang": "js"
+        },
+        "access": {
+          "requireApiKey": true,
+          "webhook": true
+        }
+      }, {
+        "id": "update_statuses",
+        "function": {
+          "js": "update_statuses.js",
+          "lang": "js"
+        }
+      }, {
+        "id": "get_message",
+        "tql": {
+          "tql": "SELECT * FROM google_mail.get_message\n  WHERE userId='me'\n  AND id='16fc6048e653d2ef'\n  AND format='full'\n\n/*\n * For sample code and reference material, visit\n * https://www.transposit.com/docs/get-started/sql-quickstart\n */"
+        }
+      }, {
+        "id": "list_history_of_mailbox",
+        "tql": {
+          "tql": "SELECT * FROM google_mail.list_history_of_mailbox\n  WHERE userId='me'\n  AND startHistoryId='3681'\n\n/*\n * For sample code and reference material, visit\n * https://www.transposit.com/docs/get-started/sql-quickstart\n */"
+        }
+      }, {
+        "id": "get_cars_available_for_time",
+        "function": {
+          "parameters": [{
+            "name": "start",
+            "type": "STRING"
+          }, {
+            "name": "end",
+            "type": "STRING"
+          }],
+          "js": "get_cars_available_for_time.js",
+          "lang": "js"
+        }
+      }, {
         "id": "time",
         "function": {
           "js": "time.js",
@@ -21,6 +129,35 @@
         }
       }],
       "dataConnections": [{
+        "ref": "slack_identify.raw",
+        "overrides": {
+          "swagger": {
+            "oauthConfig": {
+              "scope": "identity.basic"
+            },
+            "executionLimits": {
+            }
+          }
+        },
+        "title": "Slack",
+        "description": "Used to identify you on Slack"
+      }, {
+        "ref": "slack_bot.raw",
+        "overrides": {
+          "swagger": {
+            "oauthConfig": {
+              "scope": "chat:write:bot"
+            },
+            "executionLimits": {
+            }
+          }
+        }
+      }, {
+        "ref": "slack.raw"
+      }, {
+        "ref": "slack.raw_slack",
+        "requireConsumerSignin": true
+      }, {
         "ref": "google_calendar.raw",
         "requireConsumerSignin": true,
         "overrides": {
@@ -37,7 +174,7 @@
       }],
       "javascriptAPIVersion": "3",
       "source": "backend",
-      "userSettingsDisplay": "GENERATED"
+      "exposeAppDataEndpoints": true
     }
   }
 }
