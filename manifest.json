@@ -13,6 +13,9 @@
       }, {
         "name": "transposit/gcp_cloud_pubsub:v1.*.*",
         "alias": "gcp_cloud_pubsub"
+      }, {
+        "name": "transposit/google_calendar:v1.*.*",
+        "alias": "google_calendar"
       }],
       "operations": [{
         "id": "webhook",
