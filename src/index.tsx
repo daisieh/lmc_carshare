@@ -3,6 +3,7 @@ import { render } from "react-dom";
 import { BrowserRouter as Router, Route } from "react-router-dom";
 import { Transposit, User } from "transposit";
 import "./styles.css";
+import { NameForm } from "./components/NameForm";
 
 const transposit = new Transposit(
   "https://lmc-carshare-89gbj.transposit.io"
@@ -144,6 +145,7 @@ function Index() {
       </header>
       <main className="container main">
         <h2 className="greeting">Hello, {user.name}</h2>
+        <NameForm value={'2020-01-23'} />
         {calendarEvents ? (
           <div className="calendar">
             <h3 className="today">🗓️ Today</h3>
