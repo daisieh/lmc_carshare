@@ -119,6 +119,10 @@
       }, {
         "id": "time",
         "function": {
+          "parameters": [{
+            "name": "date",
+            "type": "STRING"
+          }],
           "js": "time.js",
           "lang": "js"
         }

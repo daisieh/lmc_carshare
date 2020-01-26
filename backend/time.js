@@ -1,9 +1,16 @@
 (params) => {
   const moment = require("moment-timezone-with-data.js");
-  return {
-    startToday: moment().tz("America/Los_Angeles").startOf("day"),
-    endToday: moment().tz("America/Los_Angeles").endOf("day")
-  };
+  if (params.date) {
+    return {
+      startToday: moment(params.date).tz("America/Los_Angeles").startOf("day"),
+      endToday: moment(params.date).tz("America/Los_Angeles").endOf("day")
+    };
+  } else {
+    return {
+      startToday: moment().tz("America/Los_Angeles").startOf("day"),
+      endToday: moment().tz("America/Los_Angeles").endOf("day")
+    };
+  }
 }
 
 /*
