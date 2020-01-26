@@ -129,7 +129,11 @@
       }, {
         "id": "load_todays_events",
         "tql": {
-          "tql": "SELECT summary FROM google_calendar.get_calendar_events\n  WHERE calendarId=\"primary\"\n  AND singleEvents=true\n  AND timeMin=(SELECT startToday FROM this.time)\n  AND timeMax=(SELECT endToday FROM this.time)"
+          "parameters": [{
+            "name": "date",
+            "type": "STRING"
+          }],
+          "tql": "SELECT summary FROM google_calendar.get_calendar_events\n  WHERE calendarId=\"primary\"\n  AND singleEvents=true\n  AND timeMin=(SELECT startToday FROM this.time where date=@date)\n  AND timeMax=(SELECT endToday FROM this.time where date=@date)"
         },
         "access": {
           "requireUser": true
