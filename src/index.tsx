@@ -3,7 +3,41 @@ import { render } from "react-dom";
 import { BrowserRouter as Router, Route } from "react-router-dom";
 import { Transposit, User } from "transposit";
 import "./styles.css";
-import { NameForm } from "./components/NameForm";
+
+interface DateProps { value: string; }
+interface DateState { value: string; }
+
+class NameForm extends React.Component<DateProps, DateState> {
+  constructor(props) {
+    super(props);
+    this.state = {value: this.props.value};
+
+    this.handleChange = this.handleChange.bind(this);
+    this.handleSubmit = this.handleSubmit.bind(this);
+  }
+
+  handleChange(event) {
+    this.setState({value: event.target.value});
+  }
+
+  handleSubmit(event) {
+    alert('A name was submitted: ' + this.state.value);
+    event.preventDefault();
+  }
+
+  render() {
+    return (
+      <form onSubmit={this.handleSubmit}>
+        <label>
+          Name:
+          <input type="text" value={this.state.value} onChange={this.handleChange} />
+        </label>
+        <input type="submit" value="Submit" />
+      </form>
+    );
+  }
+}
+
 
 const transposit = new Transposit(
   "https://lmc-carshare-89gbj.transposit.io"
@@ -99,14 +133,18 @@ function Index() {
   const isSignedIn = useSignedIn();
   const user = useUser(isSignedIn);
 
+  // Load date
+  const [thisDate, setThisDate] = React.useState<string>('2020-01-20');
+
   // Load calendar events
   const [calendarEvents, setEvents] = React.useState<any[] | null>(null);
+  
   React.useEffect(() => {
     if (!isSignedIn) {
       return;
     }
     transposit
-      .run("load_todays_events", {date: '2020-01-23'})
+      .run("load_todays_events", {date: thisDate})
       .then(({ results }) => {
         setEvents(results);
       })
@@ -145,7 +183,7 @@ function Index() {
       </header>
       <main className="container main">
         <h2 className="greeting">Hello, {user.name}</h2>
-        <NameForm value={'2020-01-23'} />
+        <NameForm value={thisDate} />
         {calendarEvents ? (
           <div className="calendar">
             <h3 className="today">🗓️ Today</h3>
