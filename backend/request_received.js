@@ -2,28 +2,36 @@
   const base64 = require('base64.js').Base64;
   let body = http_event.parsed_body;
   let data = JSON.parse(base64.decode(body.message.data));
-    const parameters = {};
+  const parameters = {};
   parameters.userId = 'me';
-  parameters.startHistoryId = data.historyId - 1;
+  parameters.startHistoryId = parseInt(stash.get("historyId"));
   parameters.historyTypes = 'messageAdded';
-  console.log(parameters);
-  let message = api.run('google_mail.list_history_of_mailbox', parameters);
-  
-  // {
-  //       "message": {
-  //         "data": "eyJlbWFpbEFkZHJlc3MiOiJsbWMuY2Fyc2hhcmVAZ21haWwuY29tIiwiaGlzdG9yeUlkIjoxODczfQ==",
-  //         "messageId": "945081858192555",
-  //         "message_id": "945081858192555",
-  //         "publishTime": "2020-01-21T01:21:18.422Z",
-  //         "publish_time": "2020-01-21T01:21:18.422Z"
-  //       },
-  //       "subscription": "projects/carshare-265707/subscriptions/request"
-  //     }
-  return {
-    status_code: 200,
-    headers: { "Content-Type": "application/json" },
-    body: { message }
-  };
+  let history = api.run('google_mail.list_history_of_mailbox', parameters);
+  if (history.length == 0) {
+    return {
+      status_code: 200,
+      headers: { "Content-Type": "application/json" },
+      body: "nothing"
+    };
+  } else {
+    let last_hist = history[history.length - 1];
+    stash.put("historyId", last_hist.id);
+    let messageId = last_hist.messages.pop().id;
+    let message = api.run("google_mail.get_message", { id: messageId, userId: "me", format: "minimal"})[0];
+    console.log(message);
+    if (message.labelIds.includes(env.get("request_label"))) {
+      // find request by message.threadId in the sheet
+      let parameters = {};
+      parameters.range = 'Requests!A:F';
+      parameters.spreadsheetId = '1kyd3g0xuPYoyDuT6joT0gkl29YCFE56E2ktv6haRong';
+      message = api.run("google_sheets.get_sheet_values", parameters);
+    }
+    return {
+      status_code: 200,
+      headers: { "Content-Type": "application/json" },
+      body: { message }
+    };
+  }
 }
 
 /*
