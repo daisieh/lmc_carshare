@@ -21,7 +21,6 @@ class NameForm extends React.Component<DateProps, DateState> {
   }
 
   handleSubmit(event) {
-    alert('A name was submitted: ' + this.state.value);
     event.preventDefault();
   }
 
@@ -75,6 +74,27 @@ function useUser(isSignedIn: boolean): User | null {
   }, [isSignedIn]);
   return user;
 }
+
+function loadCalendarEvents(isSignedIn: boolean, thisDate: string) {
+  // Load calendar events
+  const [calendarEvents, setEvents] = React.useState<any[] | null>(null);
+  
+  React.useEffect(() => {
+    if (!isSignedIn) {
+      return;
+    }
+    transposit
+      .run("load_todays_events", {date: thisDate})
+      .then(({ results }) => {
+        setEvents(results);
+      })
+      .catch(response => {
+        console.log(response);
+      });
+  }, [isSignedIn]);
+  return calendarEvents;
+}
+
 
 /**
  * Sign-in page
@@ -136,23 +156,9 @@ function Index() {
   // Load date
   const [thisDate, setThisDate] = React.useState<string>('2020-01-20');
 
-  // Load calendar events
-  const [calendarEvents, setEvents] = React.useState<any[] | null>(null);
+  // hook for calendar events
+  const calendarEvents = loadCalendarEvents(isSignedIn, thisDate);
   
-  React.useEffect(() => {
-    if (!isSignedIn) {
-      return;
-    }
-    transposit
-      .run("load_todays_events", {date: thisDate})
-      .then(({ results }) => {
-        setEvents(results);
-      })
-      .catch(response => {
-        console.log(response);
-      });
-  }, [isSignedIn]);
-
   // If not signed-in, wait while rendering nothing
   if (!isSignedIn || !user) {
     return null;
