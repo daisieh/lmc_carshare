@@ -138,6 +138,16 @@
         "access": {
           "requireUser": true
         }
+      }, {
+        "id": "get_features_list",
+        "function": {
+          "parameters": [{
+            "name": "cars",
+            "type": "ARRAY"
+          }],
+          "js": "get_features_list.js",
+          "lang": "js"
+        }
       }],
       "dataConnections": [{
         "ref": "slack_identify.raw",

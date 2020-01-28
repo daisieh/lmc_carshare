@@ -27,6 +27,7 @@
       }
     }
   }
+  return api.run("this.get_features_list", { cars: available_cars });
   return available_cars;
 }
 
