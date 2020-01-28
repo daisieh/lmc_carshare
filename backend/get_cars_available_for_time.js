@@ -27,6 +27,7 @@
       }
     }
   }
+  return available_cars.map((x) => { return x.Description; });
   return api.run("this.get_features_list", { cars: available_cars });
   return available_cars;
 }
