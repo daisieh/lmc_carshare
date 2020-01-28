@@ -4,44 +4,92 @@ import { BrowserRouter as Router, Route } from "react-router-dom";
 import { Transposit, User } from "transposit";
 import "./styles.css";
 
-interface DateProps { value: string; }
-interface DateState { value: string; }
+const transposit = new Transposit(
+  "https://lmc-carshare-89gbj.transposit.io"
+);
 
-class NameForm extends React.Component<DateProps, DateState> {
-  constructor(props) {
-    super(props);
-    this.state = {value: this.props.value};
 
-    this.handleChange = this.handleChange.bind(this);
-    this.handleSubmit = this.handleSubmit.bind(this);
-  }
+interface SearchAvailabilityProps { value: string; }
+interface SearchAvailabilityState { value: string; }
 
-  handleChange(event) {
-    this.setState({value: event.target.value});
-  }
-
-  handleSubmit(event) {
-    event.preventDefault();
-  }
-
+class SearchAvailabilityForm extends React.Component<SearchAvailabilityProps, SearchAvailabilityState> {
   render() {
     return (
-      <form onSubmit={this.handleSubmit}>
-        <label>
-          Name:
-          <input type="text" value={this.state.value} onChange={this.handleChange} />
-        </label>
+      <form>
+        <input type="text" placeholder="Start time..." />
+        <input type="text" placeholder="End time..." />
         <input type="submit" value="Submit" />
       </form>
     );
   }
 }
 
+interface CarAvailableProps { user: {name: string;}; cars: []; }
+interface CarAvailableState {}
 
-const transposit = new Transposit(
-  "https://lmc-carshare-89gbj.transposit.io"
-);
+class CarAvailablePicker extends React.Component<CarAvailableProps, CarAvailableState> {
 
+  render() {
+    return (
+      <div>
+        <h2 className="greeting">Hello, {this.props.user.name}</h2>
+        <SearchAvailabilityForm value={'2020-01-23'} />
+        <AvailableFeaturesTable products={CARS_NAMES} />
+      </div>
+    );
+  };
+
+}
+
+interface AvailableFeaturesProps { products: string[]; }
+interface AvailableFeaturesState {}
+
+class AvailableFeaturesTable extends React.Component<AvailableFeaturesProps, AvailableFeaturesState> {
+  render() {
+    const rows : Element[] = [];
+    
+    rows.push(this.props.products.map((product) => { return (
+      <tr>
+        <td>{product}</td>
+      </tr>)
+    }));
+
+    return (
+      <table>
+        <thead>
+          <tr>
+            <th>Name</th>
+          </tr>
+        </thead>
+        <tbody>{rows}</tbody>
+      </table>
+    );
+  }
+}
+
+/*
+        {calendarEvents ? (
+          <div className="calendar">
+            <h3 className="today">🗓️ Today</h3>
+            {calendarEvents.length === 0 ? (
+              <p>
+                <em>No events today</em>
+              </p>
+            ) : (
+              <ul>
+                {calendarEvents.map((event, idx) => (
+                  <li key={idx}>{event.summary}</li>
+                ))}
+              </ul>
+            )}
+          </div>
+        ) : (
+          <div className="lds-circle">
+            <div></div>
+          </div>
+        )}
+
+*/
 
 /**
  * Hook to check that user is signed-in. Return true if they are.
@@ -188,28 +236,7 @@ function Index() {
         </div>
       </header>
       <main className="container main">
-        <h2 className="greeting">Hello, {user.name}</h2>
-        <NameForm value={thisDate} />
-        {calendarEvents ? (
-          <div className="calendar">
-            <h3 className="today">🗓️ Today</h3>
-            {calendarEvents.length === 0 ? (
-              <p>
-                <em>No events today</em>
-              </p>
-            ) : (
-              <ul>
-                {calendarEvents.map((event, idx) => (
-                  <li key={idx}>{event.summary}</li>
-                ))}
-              </ul>
-            )}
-          </div>
-        ) : (
-          <div className="lds-circle">
-            <div></div>
-          </div>
-        )}
+      <CarAvailablePicker user={user} cars={CARS_NAMES} />
       </main>
     </>
   );
@@ -231,3 +258,45 @@ function App() {
 
 const rootElement = document.getElementById("root");
 render(<App />, rootElement);
+
+const CARS_NAMES = ["Toyota Prius", "Honda Element"];
+
+const CARS = 
+[
+  {
+    "Timestamp": "20/01/2020 16:20:52",
+    "Make": "Nissan",
+    "Model": "Leaf",
+    "Color": "Orange",
+    "Features": [
+      "child friendly",
+      "eco friendly"
+    ],
+    "Email": "lmc.orange.leaf.2017@gmail.com",
+    "AlwaysAvailable": true,
+    "Confirm": true,
+    "Description": "Orange Nissan Leaf"
+  },
+  {
+    "Timestamp": "20/01/2020 16:21:11",
+    "Make": "Toyota",
+    "Model": "Prius",
+    "Color": "Blue",
+    "Features": [
+      "pet friendly",
+      "child friendly",
+      "eco friendly"
+    ],
+    "Email": "lmc.blue.prius.2009@gmail.com",
+    "AlwaysAvailable": true,
+    "Confirm": false,
+    "Description": "Blue Toyota Prius"
+  }
+];
+
+const AVAILABLE_FEATURES = 
+[
+  "pet friendly",
+  "child friendly",
+  "eco friendly"
+];
