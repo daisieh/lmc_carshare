@@ -115,6 +115,9 @@
           }],
           "js": "get_cars_available_for_time.js",
           "lang": "js"
+        },
+        "access": {
+          "requireApiKey": true
         }
       }, {
         "id": "time",
