@@ -9,60 +9,178 @@ const transposit = new Transposit(
 );
 
 
-interface SearchAvailabilityProps { value: string; }
-interface SearchAvailabilityState { value: string; }
+interface SearchAvailabilityProps {
+    startTime: string;
+    endTime: string;
+    passToParent: (startTime: string, endTime: string) => void;
+    // callParentSearch: () => void;
+}
+interface SearchAvailabilityState {
+    startTime: string;
+    endTime: string;
+    passToParent: (startTime: string, endTime: string) => void;
+    // callParentSearch: () => void;
+}
 
 class SearchAvailabilityForm extends React.Component<SearchAvailabilityProps, SearchAvailabilityState> {
+    constructor (props) {
+        super(props);
+        this.state = {
+            startTime: this.props.startTime,
+            endTime: this.props.endTime,
+            passToParent: this.props.passToParent.bind(this),
+            // callParentSearch: this.props.callParentSearch.bind(this)
+        };
+        this.handleStartChange = this.handleStartChange.bind(this);
+        this.handleEndChange = this.handleEndChange.bind(this);
+        this.handleSubmit = this.handleSubmit.bind(this);
+    }
+
+    handleStartChange(event) {
+        event.preventDefault();
+        this.setState({startTime: event.target.value})
+    }
+    handleEndChange(event) {
+        event.preventDefault();
+        this.setState({endTime: event.target.value})
+    }
+    handleSubmit(event) {
+        console.log(`handling submit`);
+        event.preventDefault();
+        this.props.passToParent(this.state.startTime, this.state.endTime);
+        // this.state.callParentSearch();
+    }
+
   render() {
     return (
-      <form>
-        <input type="text" placeholder="Start time..." />
-        <input type="text" placeholder="End time..." />
-        <input type="submit" value="Submit" />
+      <form onSubmit={this.handleSubmit}>
+        <input type="text" placeholder="Start time..." value={this.state.startTime} onChange={this.handleStartChange}/>
+        <input type="text" placeholder="End time..." value={this.state.endTime} onChange={this.handleEndChange}/>
+        <input type="submit" value="Search for available cars" />
       </form>
     );
   }
 }
 
-interface CarAvailableProps { user: {name: string;}; cars: []; }
-interface CarAvailableState {}
+interface CarAvailableProps {
+    startTime: string;
+    endTime: string;
+    user: {name: string;};
+    cars: Car[];
+}
+interface CarAvailableState {
+    startTime: string;
+    endTime: string;
+    cars: Car[];
+}
 
 class CarAvailablePicker extends React.Component<CarAvailableProps, CarAvailableState> {
+    constructor (props) {
+        super(props);
+        this.state = { startTime: this.props.startTime, endTime: this.props.endTime, cars: this.props.cars};
+        this.updateStateTimes = this.updateStateTimes.bind(this);
+        this.successCallback = this.successCallback.bind(this);
+        this.updateStateTimes(this.props.startTime, this.props.endTime);
+    }
+
+    async updateStateTimes(startTime: string, endTime: string) {
+        this.setState( {startTime: startTime, endTime: endTime});
+        console.log(`time is ${startTime} ${endTime}`);
+
+        console.log(`updating search`);
+        console.log(`looking for cars between ${startTime} ${endTime}`);
+        let x = await transposit
+            .run("get_cars_available_for_time", {start: startTime, end: endTime})
+            .then(this.successCallback)
+            .catch(response => {
+                console.log(response);
+            });
+        console.log("transposit returned");
+        console.log(x.results);
+        this.setState({cars: x.results as Car[]});
+        console.log(`state is now:`);
+        console.log(this.state.cars);
+    }
+
+    successCallback(results) {
+        console.log("transposit returned");
+        // this.setState({cars: results as Car[]}, () => { console.log(this.state.cars); });
+        return results;
+    }
 
   render() {
+        console.log("Update CarAvailablePicker render");
+      let carList = this.state.cars.map((x) => { return <p>{x.Description}</p> });
+      console.log(carList);
     return (
       <div>
         <h2 className="greeting">Hello, {this.props.user.name}</h2>
-        <SearchAvailabilityForm value={'2020-01-23'} />
-        <AvailableFeaturesTable products={CARS_NAMES} />
+        <SearchAvailabilityForm startTime={this.state.startTime} endTime={this.state.endTime} passToParent={this.updateStateTimes}/>
+        <AvailableCars cars={this.state.cars}/>
+        <p>{this.state.startTime}</p>
+          <div>{carList}</div>
       </div>
     );
   };
 
 }
 
-interface AvailableFeaturesProps { products: string[]; }
-interface AvailableFeaturesState {}
+interface Car {
+    "Timestamp": string;
+    "Make": string;
+    "Model": string;
+    "Color": string;
+    "Features": string[];
+    "Email": string;
+    "AlwaysAvailable": boolean;
+    "Confirm": boolean;
+    "Description": string;
+}
+interface AvailableCarsProps {
+    cars: Car[];
+    // updateAvailableCars: (cars: Car[]) => void;
+}
+interface AvailableCarsState {
+    cars: Car[];
+    // updateCars: (cars: Car[]) => void;
+}
 
-class AvailableFeaturesTable extends React.Component<AvailableFeaturesProps, AvailableFeaturesState> {
-  render() {
-    const rows : Element[] = [];
-    
-    rows.push(this.props.products.map((product) => { return (
-      <tr>
-        <td>{product}</td>
-      </tr>)
-    }));
+class AvailableCars extends React.Component<AvailableCarsProps, AvailableCarsState> {
+    constructor (props) {
+        super(props);
+        this.state = {
+            cars: this.props.cars
+        };
+    }
+
+    render() {
+        console.log("update AvailableCars render");
+      let cars : {email: string; description: string}[] = [];
+      for (let i in this.props.cars) {
+          cars.push({email: this.props.cars[i].Email, description: this.props.cars[i].Description});
+      }
+
+      let rows = cars.map((car) => { return (
+          <div className="car_check">
+              <label>
+                  <input
+                      type="radio"
+                      name="car"
+                      value={car.email}
+                      checked={false}
+                      className="form-check-input"
+                  />
+                  {car.description}
+              </label>
+          </div>
+)
+    });
 
     return (
-      <table>
-        <thead>
-          <tr>
-            <th>Name</th>
-          </tr>
-        </thead>
-        <tbody>{rows}</tbody>
-      </table>
+        <form>
+            {rows}
+            <input type="submit" value="Book this car" />
+        </form>
     );
   }
 }
@@ -211,7 +329,9 @@ function Index() {
   if (!isSignedIn || !user) {
     return null;
   }
-
+  const cars = [];
+  const startTime = '2020-01-20';
+  const endTime = '2020-01-21';
 
   // If signed-in, display the app
   return (
@@ -236,7 +356,7 @@ function Index() {
         </div>
       </header>
       <main className="container main">
-      <CarAvailablePicker user={user} cars={CARS_NAMES} />
+      <CarAvailablePicker user={user} startTime={startTime} endTime={endTime} cars={cars} />
       </main>
     </>
   );
@@ -259,40 +379,24 @@ function App() {
 const rootElement = document.getElementById("root");
 render(<App />, rootElement);
 
-const CARS_NAMES = ["Toyota Prius", "Honda Element"];
-
-const CARS = 
-[
-  {
-    "Timestamp": "20/01/2020 16:20:52",
-    "Make": "Nissan",
-    "Model": "Leaf",
-    "Color": "Orange",
-    "Features": [
-      "child friendly",
-      "eco friendly"
-    ],
-    "Email": "lmc.orange.leaf.2017@gmail.com",
-    "AlwaysAvailable": true,
-    "Confirm": true,
-    "Description": "Orange Nissan Leaf"
-  },
-  {
-    "Timestamp": "20/01/2020 16:21:11",
-    "Make": "Toyota",
-    "Model": "Prius",
-    "Color": "Blue",
-    "Features": [
-      "pet friendly",
-      "child friendly",
-      "eco friendly"
-    ],
-    "Email": "lmc.blue.prius.2009@gmail.com",
-    "AlwaysAvailable": true,
-    "Confirm": false,
-    "Description": "Blue Toyota Prius"
-  }
-];
+const CARS =
+    [
+        {
+            "Timestamp": "20/01/2020 16:21:11",
+            "Make": "Toyota",
+            "Model": "Prius",
+            "Color": "Blue",
+            "Features": [
+                "pet friendly",
+                "child friendly",
+                "eco friendly"
+            ],
+            "Email": "lmc.blue.prius.2009@gmail.com",
+            "AlwaysAvailable": true,
+            "Confirm": false,
+            "Description": "Blue Toyota Prius"
+        }
+    ];
 
 const AVAILABLE_FEATURES = 
 [
