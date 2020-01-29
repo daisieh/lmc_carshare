@@ -44,24 +44,6 @@
           "tql": "SELECT * FROM google_calendar.get_calendarlist where summary in (@vehicle)"
         }
       }, {
-        "id": "create_calendar_event",
-        "tql": {
-          "parameters": [{
-            "name": "vehicle",
-            "type": "STRING"
-          }, {
-            "name": "requester",
-            "type": "STRING"
-          }, {
-            "name": "start",
-            "type": "STRING"
-          }, {
-            "name": "end",
-            "type": "STRING"
-          }],
-          "tql": "SELECT * FROM google_calendar.create_calendar_event\n  WHERE calendarId=(SELECT id from this.get_calendarlist where vehicle=@vehicle)\n  AND $body.summary=@requester\n  AND $body.start=(SELECT {\n    'dateTime' : @start\n  })\n  AND $body.end=(SELECT {\n    'dateTime' : @end\n  })\n  AND $body.attendees=(SELECT [{'email': @requester},{'email': 'lmc.carshare@gmail.com'}])\n\n/*\n * For sample code and reference material, visit\n * https://www.transposit.com/docs/get-started/sql-quickstart\n */"
-        }
-      }, {
         "id": "list_cars",
         "function": {
           "js": "get_all_cars.js",
