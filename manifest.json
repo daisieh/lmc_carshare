@@ -175,6 +175,9 @@
           }],
           "js": "create_reservation.js",
           "lang": "js"
+        },
+        "access": {
+          "requireUser": true
         }
       }, {
         "id": "get_car",
