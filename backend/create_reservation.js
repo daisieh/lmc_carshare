@@ -12,7 +12,7 @@
     end : {
       dateTime : params.end
     },
-    attendees : [{'email': params.requester},{'email': 'lmc.carshare@gmail.com'}]
+    attendees : [{'email': params.requester},{'email': params.vehicle}]
   };
   return api.run('google_calendar.create_calendar_event', parameters);
 }
