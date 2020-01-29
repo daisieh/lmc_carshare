@@ -10,51 +10,56 @@ const transposit = new Transposit(
 
 
 interface SearchAvailabilityProps {
-    startTime: string;
-    endTime: string;
     passToParent: (startTime: string, endTime: string) => void;
 }
 interface SearchAvailabilityState {
-    startTime: string;
-    endTime: string;
-    passToParent: (startTime: string, endTime: string) => void;
+    startFieldValue: string;
+    endFieldValue: string;
 }
 
 class SearchAvailabilityForm extends React.Component<SearchAvailabilityProps, SearchAvailabilityState> {
     constructor (props) {
         super(props);
-        this.state = {
-            startTime: this.props.startTime,
-            endTime: this.props.endTime,
-            passToParent: this.props.passToParent.bind(this),
-        };
         this.handleStartChange = this.handleStartChange.bind(this);
         this.handleEndChange = this.handleEndChange.bind(this);
         this.handleSubmit = this.handleSubmit.bind(this);
+        this.props.passToParent.bind(this);
     }
 
     handleStartChange(event) {
         event.preventDefault();
-        this.setState({startTime: event.target.value})
+        this.setState({startFieldValue: event.target.value})
     }
     handleEndChange(event) {
         event.preventDefault();
-        this.setState({endTime: event.target.value})
+        this.setState({endFieldValue: event.target.value})
     }
     handleSubmit(event) {
         event.preventDefault();
-        this.props.passToParent(this.state.startTime, this.state.endTime);
+        this.props.passToParent(this.state.startFieldValue, this.state.endFieldValue);
     }
 
   render() {
     return (
       <form onSubmit={this.handleSubmit}>
-        <input type="text" placeholder="Start time..." value={this.state.startTime} onChange={this.handleStartChange}/>
-        <input type="text" placeholder="End time..." value={this.state.endTime} onChange={this.handleEndChange}/>
+        <input type="text" placeholder="Start time..." onChange={this.handleStartChange}/>
+        <input type="text" placeholder="End time..." onChange={this.handleEndChange}/>
         <input type="submit" value="Search for available cars" />
       </form>
     );
   }
+}
+
+interface Car {
+    "Timestamp": string;
+    "Make": string;
+    "Model": string;
+    "Color": string;
+    "Features": string[];
+    "Email": string;
+    "AlwaysAvailable": boolean;
+    "Confirm": boolean;
+    "Description": string;
 }
 
 interface CarAvailableProps {
@@ -83,7 +88,6 @@ class CarAvailablePicker extends React.Component<CarAvailableProps, CarAvailable
         this.updateChosenCar = this.updateChosenCar.bind(this);
         this.successCallback = this.successCallback.bind(this);
         this.getChosenCar = this.getChosenCar.bind(this);
-        this.updateState(this.props.startTime, this.props.endTime);
     }
 
     async updateState(startTime: string, endTime: string) {
@@ -147,7 +151,7 @@ class CarAvailablePicker extends React.Component<CarAvailableProps, CarAvailable
     return (
       <div>
         <h2 className="greeting">Hello, {this.props.user.name}</h2>
-        <SearchAvailabilityForm startTime={this.state.startTime} endTime={this.state.endTime} passToParent={this.updateState}/>
+        <SearchAvailabilityForm passToParent={this.updateState}/>
         <AvailableCars cars={this.state.cars} passToParent={this.updateChosenCar} getChosenCar={this.getChosenCar}/>
           {bookit}
         {/*<CalendarEmbed src={CALENDAR_SRC} />*/}
@@ -157,37 +161,20 @@ class CarAvailablePicker extends React.Component<CarAvailableProps, CarAvailable
 
 }
 
-interface Car {
-    "Timestamp": string;
-    "Make": string;
-    "Model": string;
-    "Color": string;
-    "Features": string[];
-    "Email": string;
-    "AlwaysAvailable": boolean;
-    "Confirm": boolean;
-    "Description": string;
-}
 interface AvailableCarsProps {
     cars: Car[];
     passToParent: (chosenCar: string) => void;
     getChosenCar: () => string;
 }
 interface AvailableCarsState {
-    cars: Car[];
-    passToParent: (chosenCar: string) => void;
-    getChosenCar: () => string;
 }
 
 class AvailableCars extends React.Component<AvailableCarsProps, AvailableCarsState> {
     constructor (props) {
         super(props);
-        this.state = {
-            cars: this.props.cars,
-            passToParent: this.props.passToParent.bind(this),
-            getChosenCar: this.props.getChosenCar.bind(this)
-        };
         this.onClick = this.onClick.bind(this);
+        this.props.passToParent.bind(this);
+        this.props.getChosenCar.bind(this);
     }
 
     onClick(event) {
@@ -197,7 +184,7 @@ class AvailableCars extends React.Component<AvailableCarsProps, AvailableCarsSta
     }
 
     render() {
-        const chosenCar = this.state.getChosenCar();
+        const chosenCar = this.props.getChosenCar();
         console.log(`Update AvailableCars to ${chosenCar}`);
       let cars : {email: string; description: string}[] = [];
       for (let i in this.props.cars) {
@@ -393,9 +380,6 @@ function Index() {
   if (!isSignedIn || !user) {
     return null;
   }
-  const cars = [];
-  const startTime = '2020-01-20';
-  const endTime = '2020-01-21';
 
   // If signed-in, display the app
   return (
@@ -420,7 +404,7 @@ function Index() {
         </div>
       </header>
       <main className="container main">
-      <CarAvailablePicker user={user} startTime={startTime} endTime={endTime} cars={cars} calSource={CALENDAR_SRC} chosenCar={""}/>
+      <CarAvailablePicker user={user} startTime={""} endTime={""} cars={[]} calSource={CALENDAR_SRC} chosenCar={""}/>
       </main>
     </>
   );
