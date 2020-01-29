@@ -3,6 +3,7 @@
   let car = api.run("this.get_car", {vehicle: params.vehicle})[0];
   const parameters = {};
   parameters.calendarId = calendar_id;
+  parameters.sendUpdates = 'all';
   parameters.$body = {
     summary : `${params.requester} using ${car.Description}`,
     start : {
