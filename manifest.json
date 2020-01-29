@@ -52,8 +52,14 @@
           }, {
             "name": "requester",
             "type": "STRING"
+          }, {
+            "name": "start",
+            "type": "STRING"
+          }, {
+            "name": "end",
+            "type": "STRING"
           }],
-          "tql": "SELECT * FROM google_calendar.create_calendar_event\n  WHERE calendarId=(SELECT id from this.get_calendarlist where vehicle=@vehicle)\n  AND $body.summary='test'\n  AND $body.start=(SELECT {\n    'dateTime' : '2020-01-21T08:00:00-08:00'\n  })\n  AND $body.end=(SELECT {\n    'dateTime' : '2020-01-21T10:00:00-08:00'\n  })\n  AND $body.attendees=(SELECT [{'email': @requester}])\n\n/*\n * For sample code and reference material, visit\n * https://www.transposit.com/docs/get-started/sql-quickstart\n */"
+          "tql": "SELECT * FROM google_calendar.create_calendar_event\n  WHERE calendarId=(SELECT id from this.get_calendarlist where vehicle=@vehicle)\n  AND $body.summary=@requester\n  AND $body.start=(SELECT {\n    'dateTime' : @start\n  })\n  AND $body.end=(SELECT {\n    'dateTime' : @end\n  })\n  AND $body.attendees=(SELECT [{'email': @requester},{'email': 'lmc.carshare@gmail.com'}])\n\n/*\n * For sample code and reference material, visit\n * https://www.transposit.com/docs/get-started/sql-quickstart\n */"
         }
       }, {
         "id": "list_cars",
@@ -149,6 +155,35 @@
             "type": "ARRAY"
           }],
           "js": "get_features_list.js",
+          "lang": "js"
+        }
+      }, {
+        "id": "create_reservation",
+        "function": {
+          "parameters": [{
+            "name": "requester",
+            "type": "STRING"
+          }, {
+            "name": "vehicle",
+            "type": "STRING"
+          }, {
+            "name": "start",
+            "type": "STRING"
+          }, {
+            "name": "end",
+            "type": "STRING"
+          }],
+          "js": "create_reservation.js",
+          "lang": "js"
+        }
+      }, {
+        "id": "get_car",
+        "function": {
+          "parameters": [{
+            "name": "vehicle",
+            "type": "STRING"
+          }],
+          "js": "get_car.js",
           "lang": "js"
         }
       }],
