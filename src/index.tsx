@@ -77,12 +77,21 @@ interface CarAvailableState {
     cars: Car[];
     calSource: string;
     chosenCar: string;
+    bookingText: string;
 }
 
 class CarAvailablePicker extends React.Component<CarAvailableProps, CarAvailableState> {
     constructor (props) {
         super(props);
-        this.state = { startTime: this.props.startTime, endTime: this.props.endTime, cars: this.props.cars, calSource: this.props.calSource, chosenCar: this.props.chosenCar, user: this.props.user};
+        this.state = {
+            startTime: this.props.startTime,
+            endTime: this.props.endTime,
+            cars: this.props.cars,
+            calSource: this.props.calSource,
+            chosenCar: this.props.chosenCar,
+            user: this.props.user,
+            bookingText: ""
+        };
         this.updateState = this.updateState.bind(this);
         this.bookCar = this.bookCar.bind(this);
         this.updateChosenCar = this.updateChosenCar.bind(this);
@@ -98,7 +107,7 @@ class CarAvailablePicker extends React.Component<CarAvailableProps, CarAvailable
             .catch(response => {
                 console.log(response);
             });
-        this.setState({startTime: x.results[0].start, endTime: x.results[0].end, cars: x.results[0].cars as Car[], calSource: CALENDAR_SRC, chosenCar: ""});
+        this.setState({startTime: x.results[0].start, endTime: x.results[0].end, cars: x.results[0].cars as Car[], calSource: CALENDAR_SRC, chosenCar: "", bookingText: ""});
         this.updateChosenCar("");
         console.log(x);
     }
@@ -124,7 +133,8 @@ class CarAvailablePicker extends React.Component<CarAvailableProps, CarAvailable
                 console.log(response);
             });
         if (x.results[0] != null) {
-            this.setState({chosenCar: "", startTime: "", endTime: "", cars: []});
+            let bookingText = `Booking ${x.results[0].status} for ${this.state.chosenCar} from ${this.state.startTime} to ${this.state.endTime}! Check your email at ${this.state.user.email} for a confirmation.`;
+            this.setState({chosenCar: "", startTime: "", endTime: "", cars: [], bookingText: bookingText});
         }
         console.log(x);
         return x;
@@ -150,6 +160,18 @@ class CarAvailablePicker extends React.Component<CarAvailableProps, CarAvailable
                 );
             }
             console.log(carEmails);
+        } else if (this.state.bookingText !== "") {
+            bookit = (
+                <div>
+                    {this.state.bookingText}
+                </div>
+            );
+        } else if (this.state.startTime !== "" && this.state.cars.length == 0) {
+            bookit = (
+                <div>
+                    No cars are available at this time. Try another time.
+                </div>
+            );
         }
     return (
       <div>
@@ -189,36 +211,35 @@ class AvailableCars extends React.Component<AvailableCarsProps, AvailableCarsSta
     render() {
         const chosenCar = this.props.getChosenCar();
         console.log(`Update AvailableCars to ${chosenCar}`);
-      let cars : {email: string; description: string}[] = [];
-      for (let i in this.props.cars) {
-          cars.push({email: this.props.cars[i].Email, description: this.props.cars[i].Description});
-      }
+        let cars: { email: string; description: string }[] = [];
+        for (let i in this.props.cars) {
+            cars.push({email: this.props.cars[i].Email, description: this.props.cars[i].Description});
+        }
+        let rows = cars.map((car) => {
+            let isChosenCar = (chosenCar === car.email);
+            return (
+                <div className="car_check">
+                    <label>
+                        <input
+                            type="radio"
+                            name="car"
+                            value={car.email}
+                            checked={isChosenCar}
+                            className="form-check-input"
+                            onChange={this.onClick}
+                        />
+                        {car.description}
+                    </label>
+                </div>
+            )
+        });
 
-      let rows = cars.map((car) => {
-          let isChosenCar = (chosenCar === car.email);
-          return (
-          <div className="car_check">
-              <label>
-                  <input
-                      type="radio"
-                      name="car"
-                      value={car.email}
-                      checked={isChosenCar}
-                      className="form-check-input"
-                      onChange={this.onClick}
-                  />
-                  {car.description}
-              </label>
-          </div>
-)
-    });
-
-    return (
-        <form>
-            {rows}
-        </form>
-    );
-  }
+        return (
+            <form>
+                {rows}
+            </form>
+        );
+    }
 }
 
 interface CalendarEmbedProps {
