@@ -123,11 +123,14 @@ class CarAvailablePicker extends React.Component<CarAvailableProps, CarAvailable
             .catch(response => {
                 console.log(response);
             });
+        if (x.results[0] != null) {
+            this.setState({chosenCar: "", startTime: "", endTime: "", cars: []});
+        }
         console.log(x);
         return x;
     }
 
-  render() {
+    render() {
         console.log(`Update CarAvailablePicker render for ${this.state.chosenCar}`);
         let bookit = <div></div>;
         if (this.state.chosenCar !== "") {
