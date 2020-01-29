@@ -34,7 +34,7 @@ ul {
 
 .container.center {
   display: flex;
-  justify-content: center;
+  justify-content: left;
 }
 
 .nav {
@@ -58,12 +58,12 @@ ul {
 }
 
 .hero {
-  padding: 32px;
+  padding: 8px;
   background-color: #2698ef;
 }
 
 .hero-text {
-  font-size: 64px;
+  font-size: 48px;
   font-family: "Fugaz One", cursive;
   text-transform: uppercase;
   text-shadow: 5px 5px 3px #7380b6;
