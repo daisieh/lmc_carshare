@@ -13,13 +13,11 @@ interface SearchAvailabilityProps {
     startTime: string;
     endTime: string;
     passToParent: (startTime: string, endTime: string) => void;
-    // callParentSearch: () => void;
 }
 interface SearchAvailabilityState {
     startTime: string;
     endTime: string;
     passToParent: (startTime: string, endTime: string) => void;
-    // callParentSearch: () => void;
 }
 
 class SearchAvailabilityForm extends React.Component<SearchAvailabilityProps, SearchAvailabilityState> {
@@ -29,7 +27,6 @@ class SearchAvailabilityForm extends React.Component<SearchAvailabilityProps, Se
             startTime: this.props.startTime,
             endTime: this.props.endTime,
             passToParent: this.props.passToParent.bind(this),
-            // callParentSearch: this.props.callParentSearch.bind(this)
         };
         this.handleStartChange = this.handleStartChange.bind(this);
         this.handleEndChange = this.handleEndChange.bind(this);
@@ -45,10 +42,8 @@ class SearchAvailabilityForm extends React.Component<SearchAvailabilityProps, Se
         this.setState({endTime: event.target.value})
     }
     handleSubmit(event) {
-        console.log(`handling submit`);
         event.preventDefault();
         this.props.passToParent(this.state.startTime, this.state.endTime);
-        // this.state.callParentSearch();
     }
 
   render() {
@@ -78,16 +73,13 @@ class CarAvailablePicker extends React.Component<CarAvailableProps, CarAvailable
     constructor (props) {
         super(props);
         this.state = { startTime: this.props.startTime, endTime: this.props.endTime, cars: this.props.cars};
-        this.updateStateTimes = this.updateStateTimes.bind(this);
+        this.updateState = this.updateState.bind(this);
         this.successCallback = this.successCallback.bind(this);
-        this.updateStateTimes(this.props.startTime, this.props.endTime);
+        this.updateState(this.props.startTime, this.props.endTime);
     }
 
-    async updateStateTimes(startTime: string, endTime: string) {
+    async updateState(startTime: string, endTime: string) {
         this.setState( {startTime: startTime, endTime: endTime});
-        console.log(`time is ${startTime} ${endTime}`);
-
-        console.log(`updating search`);
         console.log(`looking for cars between ${startTime} ${endTime}`);
         let x = await transposit
             .run("get_cars_available_for_time", {start: startTime, end: endTime})
@@ -95,30 +87,21 @@ class CarAvailablePicker extends React.Component<CarAvailableProps, CarAvailable
             .catch(response => {
                 console.log(response);
             });
-        console.log("transposit returned");
-        console.log(x.results);
         this.setState({cars: x.results as Car[]});
-        console.log(`state is now:`);
-        console.log(this.state.cars);
     }
 
     successCallback(results) {
-        console.log("transposit returned");
-        // this.setState({cars: results as Car[]}, () => { console.log(this.state.cars); });
         return results;
     }
 
   render() {
         console.log("Update CarAvailablePicker render");
       let carList = this.state.cars.map((x) => { return <p>{x.Description}</p> });
-      console.log(carList);
     return (
       <div>
         <h2 className="greeting">Hello, {this.props.user.name}</h2>
-        <SearchAvailabilityForm startTime={this.state.startTime} endTime={this.state.endTime} passToParent={this.updateStateTimes}/>
+        <SearchAvailabilityForm startTime={this.state.startTime} endTime={this.state.endTime} passToParent={this.updateState}/>
         <AvailableCars cars={this.state.cars}/>
-        <p>{this.state.startTime}</p>
-          <div>{carList}</div>
       </div>
     );
   };
@@ -323,7 +306,7 @@ function Index() {
   const [thisDate, setThisDate] = React.useState<string>('2020-01-20');
 
   // hook for calendar events
-  const calendarEvents = loadCalendarEvents(isSignedIn, thisDate);
+  // const calendarEvents = loadCalendarEvents(isSignedIn, thisDate);
   
   // If not signed-in, wait while rendering nothing
   if (!isSignedIn || !user) {
@@ -357,6 +340,9 @@ function Index() {
       </header>
       <main className="container main">
       <CarAvailablePicker user={user} startTime={startTime} endTime={endTime} cars={cars} />
+          <iframe
+              src="https://calendar.google.com/calendar/embed?height=400&amp;wkst=1&amp;bgcolor=%23ffffff&amp;ctz=America%2FVancouver&amp;src=bG1jLmNhcnNoYXJlQGdtYWlsLmNvbQ&amp;color=%2322AA99&amp;showTitle=0&amp;showPrint=0&amp;showCalendars=0&amp;mode=WEEK"
+              width="800" height="400" frameBorder="0" scrolling="no"/>
       </main>
     </>
   );
