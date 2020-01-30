@@ -1,8 +1,8 @@
 (params) => {
   const moment = require("moment-timezone-with-data.js");
   moment.tz.setDefault("America/Vancouver");
-  let start = moment(params.start_datetime).format();
-  let end = moment(params.end_datetime).format();
+  let start = moment(params.start_datetime);
+  let end = moment(params.end_datetime);
   return {start, end};
 }
 
