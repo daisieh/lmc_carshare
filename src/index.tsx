@@ -71,19 +71,23 @@ class AvailableCars extends React.Component<AvailableCarsProps, {}> {
     }
 
     render() {
-        const chosenCar = this.props.getChosenCar();
+        let chosenCar = this.props.getChosenCar();
+        let email = "";
+        if (chosenCar != null) {
+            email = chosenCar.Email;
+        }
 
-        if (chosenCar == null) {
-            console.log("AvailableCars has no chosen car");
-            return (<div></div>);
+        if (this.props.cars.length == 0) {
+            if (email === "") {
+                console.log("AvailableCars is blank");
+                return (<div></div>);
+            }
+            console.log("AvailableCars has no cars");
+            return (<div>No cars available at this time</div>);
         }
-        console.log(`Update AvailableCars to ${chosenCar.Description}`);
-        let cars: { email: string; description: string }[] = [];
-        for (let i in this.props.cars) {
-            cars.push({email: this.props.cars[i].Email, description: this.props.cars[i].Description});
-        }
+        console.log(`Update AvailableCars to ${email}`);
         let rows = this.props.cars.map((car) => {
-            let isChosenCar = (chosenCar.Email === car.Email);
+            let isChosenCar = (email === car.Email);
             return (
                 <div className="car_check">
                     <label>
@@ -208,6 +212,7 @@ class CarAvailablePicker extends React.Component<CarAvailableProps, CarAvailable
     }
 
     async updateAvailableCars(startTime: string, endTime: string) {
+        this.setState({cars: []});
         console.log(`looking for cars between ${startTime} ${endTime}`);
         let x = await transposit
             .run("get_cars_available_for_time", {start: startTime, end: endTime})
