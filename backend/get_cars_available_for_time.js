@@ -31,7 +31,7 @@
   }
   //return available_cars.map((x) => { return { Description: x.Description, Email: x.Email }; });
   //return api.run("this.get_features_list", { cars: available_cars });
-  return {start: moment(times.start).format(), end: moment(times.end).format, cars: available_cars};
+  return {start: moment(times.start).format(), end: moment(times.end).format(), cars: available_cars};
 }
 
 /*
