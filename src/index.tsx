@@ -50,16 +50,124 @@ class SearchAvailabilityForm extends React.Component<SearchAvailabilityProps, Se
   }
 }
 
-interface Car {
-    "Timestamp": string;
-    "Make": string;
-    "Model": string;
-    "Color": string;
-    "Features": string[];
-    "Email": string;
-    "AlwaysAvailable": boolean;
-    "Confirm": boolean;
-    "Description": string;
+interface AvailableCarsProps {
+    cars: Car[];
+    passToParent: (chosenCar: string) => void;
+    getChosenCar: () => Car | null;
+}
+
+class AvailableCars extends React.Component<AvailableCarsProps, {}> {
+    constructor (props) {
+        super(props);
+        this.onClick = this.onClick.bind(this);
+        this.props.passToParent.bind(this);
+        this.props.getChosenCar.bind(this);
+    }
+
+    onClick(event) {
+        let chosenCar = event.target.value;
+        console.log(`chosenCar = ${chosenCar}`);
+        this.setState( () => { this.props.passToParent(chosenCar); });
+    }
+
+    render() {
+        const chosenCar = this.props.getChosenCar();
+
+        if (chosenCar == null) {
+            console.log("AvailableCars has no chosen car");
+            return (<div></div>);
+        }
+        console.log(`Update AvailableCars to ${chosenCar.Description}`);
+        let cars: { email: string; description: string }[] = [];
+        for (let i in this.props.cars) {
+            cars.push({email: this.props.cars[i].Email, description: this.props.cars[i].Description});
+        }
+        let rows = this.props.cars.map((car) => {
+            let isChosenCar = (chosenCar.Email === car.Email);
+            return (
+                <div className="car_check">
+                    <label>
+                        <input
+                            type="radio"
+                            name="car"
+                            value={car.Email}
+                            checked={isChosenCar}
+                            className="form-check-input"
+                            onChange={this.onClick}
+                        />
+                        {car.Description}
+                    </label>
+                </div>
+            )
+        });
+
+        return (
+            <form>
+                {rows}
+            </form>
+        );
+    }
+}
+
+interface BookingStatusProps {
+    passToParent: (chosenCar: string) => void;
+    getChosenCar: () => Car;
+}
+
+interface BookingStatusState {
+}
+
+class BookingStatus extends React.Component<BookingStatusProps, {}> {
+    constructor (props) {
+        super(props);
+        this.onClick = this.onClick.bind(this);
+        this.props.passToParent.bind(this);
+        this.props.getChosenCar.bind(this);
+    }
+
+    onClick(event) {
+        let chosenCar = event.target.value;
+        console.log(`chosenCar = ${chosenCar}`);
+        this.setState( () => { this.props.passToParent(chosenCar); });
+    }
+
+    render() {
+        return (<div></div>);
+        // if (this.state.chosenCar !== "") {
+        //     let carEmails = this.state.cars.map((x) => {
+        //         return x.Email;
+        //     });
+        //     if (carEmails.length > 0) {
+        //         let carIndex = carEmails.indexOf(this.state.chosenCar);
+        //         let carDescription = this.state.cars[carIndex].Description;
+        //         return (
+        //             <div>
+        //                 You're about to book {carDescription} from {this.state.startTime} to {this.state.endTime}...
+        //                 <form onSubmit={this.bookCar}>
+        //                     <input type="submit" value="Book it!"/>
+        //                 </form>
+        //             </div>
+        //         );
+        //     }
+        //     console.log(carEmails);
+        // } else if (this.state.bookingText !== "") {
+        //     return (
+        //         <div>
+        //             {this.state.bookingText}
+        //         </div>
+        //     );
+        // } else if (this.state.startTime !== "" && this.state.cars.length == 0) {
+        //     return (
+        //         <div>
+        //             No cars are available at this time. Try another time.
+        //         </div>
+        //     );
+        // } else {
+        //     return (
+        //         <div></div>
+        //     );
+        // }
+    }
 }
 
 interface CarAvailableProps {
@@ -92,14 +200,14 @@ class CarAvailablePicker extends React.Component<CarAvailableProps, CarAvailable
             user: this.props.user,
             bookingText: ""
         };
-        this.updateState = this.updateState.bind(this);
+        this.updateAvailableCars = this.updateAvailableCars.bind(this);
         this.bookCar = this.bookCar.bind(this);
-        this.updateChosenCar = this.updateChosenCar.bind(this);
+        this.chooseCar = this.chooseCar.bind(this);
         this.successCallback = this.successCallback.bind(this);
         this.getChosenCar = this.getChosenCar.bind(this);
     }
 
-    async updateState(startTime: string, endTime: string) {
+    async updateAvailableCars(startTime: string, endTime: string) {
         console.log(`looking for cars between ${startTime} ${endTime}`);
         let x = await transposit
             .run("get_cars_available_for_time", {start: startTime, end: endTime})
@@ -108,7 +216,7 @@ class CarAvailablePicker extends React.Component<CarAvailableProps, CarAvailable
                 console.log(response);
             });
         this.setState({startTime: x.results[0].start, endTime: x.results[0].end, cars: x.results[0].cars as Car[], calSource: CALENDAR_SRC, chosenCar: "", bookingText: ""});
-        this.updateChosenCar("");
+        this.chooseCar("");
         console.log(x);
     }
 
@@ -116,12 +224,19 @@ class CarAvailablePicker extends React.Component<CarAvailableProps, CarAvailable
         return results;
     }
 
-    updateChosenCar(car: string) {
+    chooseCar(car: string) {
         this.setState({chosenCar: car});
     }
 
     getChosenCar() {
-        return this.state.chosenCar;
+        let carEmails = this.state.cars.map((x) => {
+            return x.Email;
+        });
+        if (carEmails.length > 0) {
+            let carIndex = carEmails.indexOf(this.state.chosenCar);
+            return this.state.cars[carIndex];
+        }
+        return null;
     }
 
     async bookCar(event) {
@@ -142,124 +257,12 @@ class CarAvailablePicker extends React.Component<CarAvailableProps, CarAvailable
 
     render() {
         console.log(`Update CarAvailablePicker render for ${this.state.chosenCar}`);
-        let bookit = <div></div>;
-        if (this.state.chosenCar !== "") {
-            let carEmails = this.state.cars.map((x) => {
-                return x.Email;
-            });
-            if (carEmails.length > 0) {
-                let carIndex = carEmails.indexOf(this.state.chosenCar);
-                let carDescription = this.state.cars[carIndex].Description;
-                bookit = (
-                    <div>
-                        You're about to book {carDescription} from {this.state.startTime} to {this.state.endTime}...
-                        <form onSubmit={this.bookCar}>
-                            <input type="submit" value="Book it!"/>
-                        </form>
-                    </div>
-                );
-            }
-            console.log(carEmails);
-        } else if (this.state.bookingText !== "") {
-            bookit = (
-                <div>
-                    {this.state.bookingText}
-                </div>
-            );
-        } else if (this.state.startTime !== "" && this.state.cars.length == 0) {
-            bookit = (
-                <div>
-                    No cars are available at this time. Try another time.
-                </div>
-            );
-        }
-    return (
-      <div>
-        <h2 className="greeting">Hello, {this.props.user.name}</h2>
-        <SearchAvailabilityForm passToParent={this.updateState}/>
-        <AvailableCars cars={this.state.cars} passToParent={this.updateChosenCar} getChosenCar={this.getChosenCar}/>
-          {bookit}
-        {/*<CalendarEmbed src={CALENDAR_SRC} />*/}
-      </div>
-    );
-  };
-
-}
-
-interface AvailableCarsProps {
-    cars: Car[];
-    passToParent: (chosenCar: string) => void;
-    getChosenCar: () => string;
-}
-interface AvailableCarsState {
-}
-
-class AvailableCars extends React.Component<AvailableCarsProps, AvailableCarsState> {
-    constructor (props) {
-        super(props);
-        this.onClick = this.onClick.bind(this);
-        this.props.passToParent.bind(this);
-        this.props.getChosenCar.bind(this);
-    }
-
-    onClick(event) {
-        let chosenCar = event.target.value;
-        console.log(`chosenCar = ${chosenCar}`);
-        this.setState( () => { this.props.passToParent(chosenCar); });
-    }
-
-    render() {
-        const chosenCar = this.props.getChosenCar();
-        console.log(`Update AvailableCars to ${chosenCar}`);
-        let cars: { email: string; description: string }[] = [];
-        for (let i in this.props.cars) {
-            cars.push({email: this.props.cars[i].Email, description: this.props.cars[i].Description});
-        }
-        let rows = cars.map((car) => {
-            let isChosenCar = (chosenCar === car.email);
-            return (
-                <div className="car_check">
-                    <label>
-                        <input
-                            type="radio"
-                            name="car"
-                            value={car.email}
-                            checked={isChosenCar}
-                            className="form-check-input"
-                            onChange={this.onClick}
-                        />
-                        {car.description}
-                    </label>
-                </div>
-            )
-        });
-
-        return (
-            <form>
-                {rows}
-            </form>
-        );
-    }
-}
-
-interface CalendarEmbedProps {
-    src: string;
-}
-interface CalendarEmbedState {
-    src: string;
-}
-
-class CalendarEmbed extends React.Component<CalendarEmbedProps, CalendarEmbedState> {
-    constructor (props) {
-        super(props);
-        this.state = { src: this.props.src };
-    }
-
-    render() {
-        console.log("updating calendar");
         return (
             <div>
-                <iframe src={this.state.src} width="720" height="400" frameBorder="0" scrolling="no"/>
+                <h2 className="greeting">Hello, {this.props.user.name}</h2>
+                <SearchAvailabilityForm passToParent={this.updateAvailableCars}/>
+                <AvailableCars cars={this.state.cars} passToParent={this.chooseCar} getChosenCar={this.getChosenCar}/>
+                {/*<CalendarEmbed src={CALENDAR_SRC} />*/}
             </div>
         );
     };
@@ -321,27 +324,6 @@ function useUser(isSignedIn: boolean): User | null {
   }, [isSignedIn]);
   return user;
 }
-
-// function loadCalendarEvents(isSignedIn: boolean, thisDate: string) {
-//   // Load calendar events
-//   const [calendarEvents, setEvents] = React.useState<any[] | null>(null);
-//
-//   React.useEffect(() => {
-//     if (!isSignedIn) {
-//       return;
-//     }
-//     transposit
-//       .run("load_todays_events", {date: thisDate})
-//       .then(({ results }) => {
-//         setEvents(results);
-//       })
-//       .catch(response => {
-//         console.log(response);
-//       });
-//   }, [isSignedIn]);
-//   return calendarEvents;
-// }
-
 
 /**
  * Sign-in page
@@ -450,6 +432,53 @@ function App() {
 
 const rootElement = document.getElementById("root");
 render(<App />, rootElement);
+
+interface Car {
+    "Timestamp": string;
+    "Make": string;
+    "Model": string;
+    "Color": string;
+    "Features": string[];
+    "Email": string;
+    "AlwaysAvailable": boolean;
+    "Confirm": boolean;
+    "Description": string;
+}
+
+interface Event {
+    "kind": string,
+    "etag": string,
+    "id": string,
+    "status": string,
+    "htmlLink": string,
+    "created": string,
+    "updated": string,
+    "summary": string,
+    "creator": {
+        "email": string
+    },
+    "organizer": {
+        "email": string,
+        "displayName": string,
+        "self": boolean
+    },
+    "start": {
+        "dateTime": string
+    },
+    "end": {
+        "dateTime": string
+    },
+    "iCalUID": string,
+    "sequence": number,
+    "attendees":
+        {
+            "email": string,
+            "responseStatus": string
+        }[],
+    "reminders": {
+        "useDefault": boolean
+    }
+}
 
 const CALENDAR_SRC = "https://calendar.google.com/calendar/embed?height=600&amp;wkst=1&amp;bgcolor=%23ffffff&amp;ctz=America%2FVancouver&amp;src=bG1jLmNhcnNoYXJlQGdtYWlsLmNvbQ&amp;color=%2322AA99";
 
