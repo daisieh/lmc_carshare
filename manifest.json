@@ -172,7 +172,7 @@
           "lang": "js"
         }
       }, {
-        "id": "normalize_range",
+        "id": "normalize_times",
         "function": {
           "parameters": [{
             "name": "start_datetime",
