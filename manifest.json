@@ -171,6 +171,24 @@
           "js": "get_car.js",
           "lang": "js"
         }
+      }, {
+        "id": "normalize_range",
+        "function": {
+          "parameters": [{
+            "name": "start_datetime",
+            "default": {
+              "text": "2020/02/03 15:00"
+            },
+            "type": "STRING",
+            "required": true
+          }, {
+            "name": "end_datetime",
+            "type": "STRING",
+            "required": true
+          }],
+          "js": "normalize_range.js",
+          "lang": "js"
+        }
       }],
       "dataConnections": [{
         "ref": "slack_identify.raw",
