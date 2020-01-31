@@ -109,29 +109,26 @@ class AvailableCars extends React.Component<AvailableCarsProps, {}> {
 }
 
 interface BookingStatusProps {
-    passToParent: (chosenCar: string) => void;
+    reserveCar: () => void;
     getChosenCar: () => Car;
-}
-
-interface BookingStatusState {
+    startTime: string;
+    endTime: string;
 }
 
 class BookingStatus extends React.Component<BookingStatusProps, {}> {
     constructor (props) {
         super(props);
-        this.onClick = this.onClick.bind(this);
-        this.props.passToParent.bind(this);
+        this.handleSubmit = this.handleSubmit.bind(this);
+        this.props.reserveCar.bind(this);
         this.props.getChosenCar.bind(this);
     }
 
-    onClick(event) {
-        let chosenCar = event.target.value;
-        console.log(`chosenCar = ${chosenCar}`);
-        this.setState( () => { this.props.passToParent(chosenCar); });
+    handleSubmit(event) {
+        event.preventDefault();
+        this.props.reserveCar();
     }
 
     render() {
-        return (<div></div>);
         // if (this.state.chosenCar !== "") {
         //     let carEmails = this.state.cars.map((x) => {
         //         return x.Email;
@@ -139,14 +136,25 @@ class BookingStatus extends React.Component<BookingStatusProps, {}> {
         //     if (carEmails.length > 0) {
         //         let carIndex = carEmails.indexOf(this.state.chosenCar);
         //         let carDescription = this.state.cars[carIndex].Description;
-        //         return (
-        //             <div>
-        //                 You're about to book {carDescription} from {this.state.startTime} to {this.state.endTime}...
-        //                 <form onSubmit={this.bookCar}>
-        //                     <input type="submit" value="Book it!"/>
-        //                 </form>
-        //             </div>
-        //         );
+        if (this.props.getChosenCar() != null) {
+            let chosenCar = this.props.getChosenCar();
+            let carDescription = "";
+            if (chosenCar != null) {
+                carDescription = chosenCar.Description;
+            }
+            return (
+                <div>
+                    You're about to book {carDescription} from {this.props.startTime} to {this.props.endTime}...
+                    <form onSubmit={this.handleSubmit}>
+                        <input type="submit" value="Book it!"/>
+                    </form>
+                </div>
+            );
+        } else {
+            return (
+                <div></div>
+            );
+        }
         //     }
         //     console.log(carEmails);
         // } else if (this.state.bookingText !== "") {
@@ -237,8 +245,7 @@ class CarAvailablePicker extends React.Component<CarAvailableProps, CarAvailable
         return null;
     }
 
-    async bookCar(event) {
-        event.preventDefault();
+    async bookCar() {
         let x = await transposit
             .run("create_reservation", {start: this.state.startTime, end: this.state.endTime, requester: this.state.user.email, vehicle: this.state.chosenCar})
             .then(this.successCallback)
