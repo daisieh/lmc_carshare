@@ -174,7 +174,6 @@ interface CarAvailableProps {
     endTime: string;
     user: {name: string; email: string;};
     cars: Car[];
-    calSource: string;
     chosenCar: string;
 }
 interface CarAvailableState {
@@ -182,7 +181,6 @@ interface CarAvailableState {
     endTime: string;
     user: {name: string; email: string;};
     cars: Car[];
-    calSource: string;
     chosenCar: string;
     bookingText: string;
     isInitialState: boolean;
@@ -195,7 +193,6 @@ class CarAvailablePicker extends React.Component<CarAvailableProps, CarAvailable
             startTime: this.props.startTime,
             endTime: this.props.endTime,
             cars: this.props.cars,
-            calSource: this.props.calSource,
             chosenCar: this.props.chosenCar,
             user: this.props.user,
             bookingText: "",
@@ -216,7 +213,7 @@ class CarAvailablePicker extends React.Component<CarAvailableProps, CarAvailable
             .catch(response => {
                 console.log(response);
             });
-        this.setState({startTime: x.results[0].start, endTime: x.results[0].end, cars: x.results[0].cars as Car[], calSource: CALENDAR_SRC, chosenCar: "", bookingText: "", isInitialState: false});
+        this.setState({startTime: x.results[0].start, endTime: x.results[0].end, cars: x.results[0].cars as Car[], chosenCar: "", bookingText: "", isInitialState: false});
         this.chooseCar("");
         console.log(x);
     }
@@ -258,7 +255,6 @@ class CarAvailablePicker extends React.Component<CarAvailableProps, CarAvailable
 
     render() {
         console.log(`Update CarAvailablePicker render for ${this.state.chosenCar}`);
-        let availableCars = "";
         if (this.state.isInitialState) {
             return (
                 <div>
@@ -419,7 +415,7 @@ function Index() {
         </div>
       </header>
       <main className="container main">
-      <CarAvailablePicker user={user} startTime={""} endTime={""} cars={[]} calSource={CALENDAR_SRC} chosenCar={""}/>
+      <CarAvailablePicker user={user} startTime={""} endTime={""} cars={[]} chosenCar={""}/>
       </main>
     </>
   );
@@ -488,8 +484,6 @@ interface Event {
         "useDefault": boolean
     }
 }
-
-const CALENDAR_SRC = "https://calendar.google.com/calendar/embed?height=600&amp;wkst=1&amp;bgcolor=%23ffffff&amp;ctz=America%2FVancouver&amp;src=bG1jLmNhcnNoYXJlQGdtYWlsLmNvbQ&amp;color=%2322AA99";
 
 const AVAILABLE_FEATURES =
 [
