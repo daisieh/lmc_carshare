@@ -10,7 +10,7 @@ const transposit = new Transposit(
 
 
 interface SearchAvailabilityProps {
-    passToParent: (startTime: string, endTime: string) => void;
+    submitTime: (startTime: string, endTime: string) => void;
 }
 interface SearchAvailabilityState {
     startFieldValue: string;
@@ -23,7 +23,7 @@ class SearchAvailabilityForm extends React.Component<SearchAvailabilityProps, Se
         this.handleStartChange = this.handleStartChange.bind(this);
         this.handleEndChange = this.handleEndChange.bind(this);
         this.handleSubmit = this.handleSubmit.bind(this);
-        this.props.passToParent.bind(this);
+        this.props.submitTime.bind(this);
     }
 
     handleStartChange(event) {
@@ -36,7 +36,7 @@ class SearchAvailabilityForm extends React.Component<SearchAvailabilityProps, Se
     }
     handleSubmit(event) {
         event.preventDefault();
-        this.props.passToParent(this.state.startFieldValue, this.state.endFieldValue);
+        this.props.submitTime(this.state.startFieldValue, this.state.endFieldValue);
     }
 
   render() {
@@ -76,16 +76,11 @@ class AvailableCars extends React.Component<AvailableCarsProps, {}> {
         if (chosenCar != null) {
             email = chosenCar.Email;
         }
-
+        console.log(`there are ${this.props.cars.length} cars, chosen car is ${email}`);
         if (this.props.cars.length == 0) {
-            if (email === "") {
-                console.log("AvailableCars is blank");
-                return (<div></div>);
-            }
             console.log("AvailableCars has no cars");
             return (<div>No cars available at this time</div>);
         }
-        console.log(`Update AvailableCars to ${email}`);
         let rows = this.props.cars.map((car) => {
             let isChosenCar = (email === car.Email);
             return (
@@ -190,6 +185,7 @@ interface CarAvailableState {
     calSource: string;
     chosenCar: string;
     bookingText: string;
+    isInitialState: boolean;
 }
 
 class CarAvailablePicker extends React.Component<CarAvailableProps, CarAvailableState> {
@@ -202,7 +198,8 @@ class CarAvailablePicker extends React.Component<CarAvailableProps, CarAvailable
             calSource: this.props.calSource,
             chosenCar: this.props.chosenCar,
             user: this.props.user,
-            bookingText: ""
+            bookingText: "",
+            isInitialState: true
         };
         this.updateAvailableCars = this.updateAvailableCars.bind(this);
         this.bookCar = this.bookCar.bind(this);
@@ -212,7 +209,6 @@ class CarAvailablePicker extends React.Component<CarAvailableProps, CarAvailable
     }
 
     async updateAvailableCars(startTime: string, endTime: string) {
-        this.setState({cars: []});
         console.log(`looking for cars between ${startTime} ${endTime}`);
         let x = await transposit
             .run("get_cars_available_for_time", {start: startTime, end: endTime})
@@ -220,7 +216,7 @@ class CarAvailablePicker extends React.Component<CarAvailableProps, CarAvailable
             .catch(response => {
                 console.log(response);
             });
-        this.setState({startTime: x.results[0].start, endTime: x.results[0].end, cars: x.results[0].cars as Car[], calSource: CALENDAR_SRC, chosenCar: "", bookingText: ""});
+        this.setState({startTime: x.results[0].start, endTime: x.results[0].end, cars: x.results[0].cars as Car[], calSource: CALENDAR_SRC, chosenCar: "", bookingText: "", isInitialState: false});
         this.chooseCar("");
         console.log(x);
     }
@@ -262,12 +258,20 @@ class CarAvailablePicker extends React.Component<CarAvailableProps, CarAvailable
 
     render() {
         console.log(`Update CarAvailablePicker render for ${this.state.chosenCar}`);
+        let availableCars = "";
+        if (this.state.isInitialState) {
+            return (
+                <div>
+                    <h2 className="greeting">Hello for the first time, {this.props.user.name}</h2>
+                    <SearchAvailabilityForm submitTime={this.updateAvailableCars}/>
+                </div>
+            );
+        }
         return (
             <div>
                 <h2 className="greeting">Hello, {this.props.user.name}</h2>
-                <SearchAvailabilityForm passToParent={this.updateAvailableCars}/>
+                <SearchAvailabilityForm submitTime={this.updateAvailableCars}/>
                 <AvailableCars cars={this.state.cars} passToParent={this.chooseCar} getChosenCar={this.getChosenCar}/>
-                {/*<CalendarEmbed src={CALENDAR_SRC} />*/}
             </div>
         );
     };
