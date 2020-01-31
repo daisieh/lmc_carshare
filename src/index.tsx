@@ -110,7 +110,7 @@ class AvailableCars extends React.Component<AvailableCarsProps, {}> {
 
 interface BookingStatusProps {
     reserveCar: () => void;
-    getChosenCar: () => Car;
+    getChosenCar: () => Car | null;
     startTime: string;
     endTime: string;
 }
@@ -275,6 +275,7 @@ class CarAvailablePicker extends React.Component<CarAvailableProps, CarAvailable
                 <h2 className="greeting">Hello, {this.props.user.name}</h2>
                 <SearchAvailabilityForm submitTime={this.updateAvailableCars}/>
                 <AvailableCars cars={this.state.cars} passToParent={this.chooseCar} getChosenCar={this.getChosenCar}/>
+                <BookingStatus reserveCar={this.bookCar} getChosenCar={this.getChosenCar} startTime={this.state.startTime} endTime={this.state.endTime} />
             </div>
         );
     };
