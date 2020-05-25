@@ -14,7 +14,8 @@
     },
     attendees : [{'email': params.requester},{'email': params.vehicle}]
   };
-  return api.run('google_calendar.create_calendar_event', parameters);
+  //return api.run('google_calendar.create_calendar_event', parameters);
+  
 }
 
 /*
