@@ -1,4 +1,5 @@
 (params) => {
+  console.log(uuid())
   let this_car = api.run("this.get_car", {vehicle: params.car_email})[0];
   if (this_car.Confirm && params.confirmed == null) {
     //send an email

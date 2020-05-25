@@ -190,7 +190,7 @@
           "lang": "js"
         }
       }, {
-        "id": "confirm_request_webhook",
+        "id": "handle_request",
         "function": {
           "parameters": [{
             "name": "starttime",
@@ -207,6 +207,9 @@
           }, {
             "name": "confirmed",
             "type": "BOOLEAN"
+          }, {
+            "name": "uuid",
+            "type": "STRING"
           }],
           "js": "untitled.js",
           "lang": "js"
