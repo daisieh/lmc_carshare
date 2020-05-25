@@ -2,7 +2,10 @@ import * as React from "react";
 import { render } from "react-dom";
 import { BrowserRouter as Router, Route } from "react-router-dom";
 import { Transposit, User } from "transposit";
+import { Formik, Form, useField } from "formik";
+import * as Yup from "yup";
 import "./styles.css";
+import moment from "moment";
 
 const transposit = new Transposit(
   "https://lmc-carshare-89gbj.transposit.io"
@@ -141,6 +144,14 @@ class BookingStatus extends React.Component<BookingStatusProps, {}> {
             let carDescription = "";
             if (chosenCar != null) {
                 carDescription = chosenCar.Description;
+            }
+            let now = moment();
+            if (moment(this.props.endTime).isBefore(now) || moment(this.props.startTime).isBefore(now)) {
+                return (
+                    <div>
+                        Either {this.props.startTime} or {this.props.endTime} is in the past.
+                    </div>
+                )
             }
             return (
                 <div>
