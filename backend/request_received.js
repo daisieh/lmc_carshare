@@ -7,19 +7,29 @@
   parameters.startHistoryId = parseInt(stash.get("historyId"));
   parameters.historyTypes = 'messageAdded';
   let history = api.run('google_mail.list_history_of_mailbox', parameters);
-  let last_hist = history[history.length - 1];
-  stash.put("historyId", last_hist.id);
+  console.log(history);
+  if (history.length == 0) {
+    console.log("nothing");
+    return {
+      status_code: 200,
+      headers: { "Content-Type": "application/json" },
+      body: "nothing"
+    };
+  } else {
+    let last_hist = history[history.length - 1];
+    stash.put("historyId", last_hist.id);
     // for (var i in history) {
       let messageId = last_hist.messages.pop().id;
       let message = api.run("google_mail.get_message", { id: messageId, userId: "me"})[0];
       console.log(message);
       console.log(base64.decode(message.payload.body.data));
-    }
-  return {
-    status_code: 200,
-    headers: { "Content-Type": "application/json" },
-    body: { history }
-  };
+    //}
+    return {
+      status_code: 200,
+      headers: { "Content-Type": "application/json" },
+      body: { history }
+    };
+  }
 }
 
 /*
