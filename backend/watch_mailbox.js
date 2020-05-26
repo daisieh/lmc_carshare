@@ -1,12 +1,16 @@
 (params) => {
   const parameters = {};
+  //parameters.userId = 'me';
+  //return api.run('google_mail.list_labels', parameters);
+  //const parameters = {};
   parameters.userId = 'me';
   parameters.$body = {
-    labelIds : [ 'Car Requests' ],
+    labelIds : [ 'Label_3087422522999134978' ],
     labelFilterAction : 'include',
     topicName : 'projects/carshare-265707/topics/requests'
   };
-  return api.run('google_mail.set_push_notification', parameters);
+  let result = api.run('google_mail.set_push_notification', parameters);
+  stash.put("historyId", result[0].historyId);
 }
 
 /*
