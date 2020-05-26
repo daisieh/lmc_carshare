@@ -211,16 +211,6 @@
           "js": "watch_mailbox.js",
           "lang": "js"
         }
-      }, {
-        "id": "untitled_1",
-        "function": {
-          "js": "untitled_1.js",
-          "lang": "js"
-        },
-        "access": {
-          "requireApiKey": true,
-          "webhook": true
-        }
       }],
       "dataConnections": [{
         "ref": "slack_identify.raw",
