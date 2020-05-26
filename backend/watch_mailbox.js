@@ -7,7 +7,7 @@
   parameters.$body = {
     labelIds : [ 'Label_3087422522999134978' ],
     labelFilterAction : 'include',
-    topicName : 'projects/carshare-265707/topics/requests'
+    topicName : 'projects/carshare-265707/topics/requests2'
   };
   let result = api.run('google_mail.set_push_notification', parameters);
   stash.put("historyId", result[0].historyId);
