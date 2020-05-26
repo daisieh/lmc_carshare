@@ -214,11 +214,6 @@
       }, {
         "id": "untitled_1",
         "function": {
-          "parameters": [{
-            "name": "context",
-            "description": "The 'context' parameter is often essential to operations published to Mission Control",
-            "type": "OBJECT"
-          }],
           "js": "untitled_1.js",
           "lang": "js"
         },
