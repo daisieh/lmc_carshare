@@ -8,6 +8,8 @@
   //parameters.historyTypes = 'messageAdded';
   let history = api.run('google_mail.list_history_of_mailbox', parameters);
   console.log(history);
+  let last_hist_id = history[history.length - 1].id;
+  stash.put("historyId", last_hist_id);
     // for (var i in history) {
     //   let messageId = history[i].id;
     //   let message = api.run("google_mail.get_message", { id: messageId, userId: "me"})[0];
