@@ -16,9 +16,6 @@
   };
   //return api.run('google_calendar.create_calendar_event', parameters);
   
-  // create a request:
-  let uuid = setImmediate(() => {});
-  stash.put(uuid, )
 }
 
 /*
