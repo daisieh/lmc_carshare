@@ -12,7 +12,7 @@
     end : {
       dateTime : params.end
     },
-    attendees : [{'email': params.requester},{'email': params.vehicle}]
+    attendees : [{'email': params.requester, responseStatus: "accepted"},{'email': params.vehicle, responseStatus: "accepted"}]
   };
   //return api.run('google_calendar.create_calendar_event', parameters);
   

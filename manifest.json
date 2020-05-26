@@ -82,11 +82,6 @@
           "lang": "js"
         }
       }, {
-        "id": "get_message",
-        "tql": {
-          "tql": "SELECT * FROM google_mail.get_message\n  WHERE userId='me'\n  AND id='16fc6048e653d2ef'\n  AND format='full'\n\n/*\n * For sample code and reference material, visit\n * https://www.transposit.com/docs/get-started/sql-quickstart\n */"
-        }
-      }, {
         "id": "list_history_of_mailbox",
         "tql": {
           "tql": "SELECT * FROM google_mail.list_history_of_mailbox\n  WHERE userId='me'\n  AND startHistoryId='3681'\n\n/*\n * For sample code and reference material, visit\n * https://www.transposit.com/docs/get-started/sql-quickstart\n */"
@@ -103,28 +98,6 @@
           }],
           "js": "get_cars_available_for_time.js",
           "lang": "js"
-        },
-        "access": {
-          "requireUser": true
-        }
-      }, {
-        "id": "time",
-        "function": {
-          "parameters": [{
-            "name": "date",
-            "type": "STRING"
-          }],
-          "js": "time.js",
-          "lang": "js"
-        }
-      }, {
-        "id": "load_todays_events",
-        "tql": {
-          "parameters": [{
-            "name": "date",
-            "type": "STRING"
-          }],
-          "tql": "SELECT summary FROM google_calendar.get_calendar_events\n  WHERE calendarId=\"primary\"\n  AND singleEvents=true\n  AND timeMin=(SELECT startToday FROM this.time where date=@date)\n  AND timeMax=(SELECT endToday FROM this.time where date=@date)"
         },
         "access": {
           "requireUser": true
@@ -199,7 +172,7 @@
             "name": "endtime",
             "type": "STRING"
           }, {
-            "name": "car_email",
+            "name": "vehicle",
             "type": "STRING"
           }, {
             "name": "requester",
@@ -212,6 +185,19 @@
             "type": "STRING"
           }],
           "js": "untitled.js",
+          "lang": "js"
+        }
+      }, {
+        "id": "send_car_conf_email",
+        "function": {
+          "parameters": [{
+            "name": "requester",
+            "type": "STRING"
+          }, {
+            "name": "uuid",
+            "type": "STRING"
+          }],
+          "js": "send_car_conf_email.js",
           "lang": "js"
         }
       }],
