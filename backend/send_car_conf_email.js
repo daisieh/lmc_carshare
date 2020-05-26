@@ -6,6 +6,7 @@
   parameters.contentType = "text/html";
   parameters[`from`] = 'lmc.carshare@gmail.com';
   parameters.userId = 'me';
+  console.log(params.uuid);
   return api.run('google_mail.send_message', parameters);
 }
 
