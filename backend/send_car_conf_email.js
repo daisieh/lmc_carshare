@@ -1,9 +1,10 @@
-(params) => {
+(params) => { 
   const parameters = {};
   parameters.to = params.requester;
   parameters.subject = 'A car request';
   parameters.message = `${params.uuid}`;
-  // parameters[`from`] = 'lmc.carshare@gmail.com';
+  parameters.contentType = "text/html";
+  parameters[`from`] = 'lmc.carshare@gmail.com';
   parameters.userId = 'me';
   return api.run('google_mail.send_message', parameters);
 }

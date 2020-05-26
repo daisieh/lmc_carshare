@@ -200,6 +200,17 @@
           "js": "send_car_conf_email.js",
           "lang": "js"
         }
+      }, {
+        "id": "watch_mailbox",
+        "function": {
+          "parameters": [{
+            "name": "context",
+            "description": "The 'context' parameter is often essential to operations published to Mission Control",
+            "type": "OBJECT"
+          }],
+          "js": "watch_mailbox.js",
+          "lang": "js"
+        }
       }],
       "dataConnections": [{
         "ref": "slack_identify.raw",
