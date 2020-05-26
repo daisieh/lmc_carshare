@@ -1,7 +1,7 @@
 (params) => { 
   const parameters = {};
   parameters.to = params.requester;
-  parameters.subject = 'A car request';
+  parameters.subject = 'Your car has been requested';
   parameters.message = `${params.uuid}`;
   parameters.contentType = "text/html";
   parameters[`from`] = 'lmc.carshare@gmail.com';

@@ -2,9 +2,9 @@
   const parameters = {};
   parameters.userId = 'me';
   parameters.$body = {
-    labelIds : [ '<string>' ],
-    labelFilterAction : 'exclude | include',
-    topicName : '<string>'
+    labelIds : [ 'Car Requests' ],
+    labelFilterAction : 'include',
+    topicName : 'projects/carshare-265707/topics/requests'
   };
   return api.run('google_mail.set_push_notification', parameters);
 }
