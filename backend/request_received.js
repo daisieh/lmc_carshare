@@ -2,11 +2,10 @@
   const base64 = require('base64.js').Base64;
   let body = http_event.parsed_body;
   let data = JSON.parse(base64.decode(body.message.data));
-    const parameters = {};
+  const parameters = {};
   parameters.userId = 'me';
-  parameters.startHistoryId = data.historyId - 1;
+  parameters.startHistoryId = stash.get("historyId");
   parameters.historyTypes = 'messageAdded';
-  console.log(parameters);
   let message = api.run('google_mail.list_history_of_mailbox', parameters);
   
   // {
