@@ -221,6 +221,10 @@
           }],
           "js": "untitled_1.js",
           "lang": "js"
+        },
+        "access": {
+          "requireApiKey": true,
+          "webhook": true
         }
       }],
       "dataConnections": [{
