@@ -5,7 +5,7 @@
   const parameters = {};
   parameters.userId = 'me';
   parameters.startHistoryId = parseInt(stash.get("historyId"));
-  //parameters.historyTypes = 'messageAdded';
+  parameters.historyTypes = 'messageAdded';
   let history = api.run('google_mail.list_history_of_mailbox', parameters);
   console.log(history);
   let last_hist_id = history[history.length - 1].id;
