@@ -11,6 +11,7 @@
   };
   let result = api.run('google_mail.set_push_notification', parameters);
   stash.put("historyId", result[0].historyId);
+  return result;
 }
 
 /*
