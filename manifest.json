@@ -198,6 +198,16 @@
           "js": "get_request_sheet_data.js",
           "lang": "js"
         }
+      }, {
+        "id": "append_request_sheet_data",
+        "function": {
+          "parameters": [{
+            "name": "data",
+            "type": "ARRAY"
+          }],
+          "js": "append_request_sheet_data.js",
+          "lang": "js"
+        }
       }],
       "dataConnections": [{
         "ref": "slack_identify.raw",

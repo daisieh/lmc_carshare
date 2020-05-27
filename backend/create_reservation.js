@@ -22,19 +22,7 @@
   let message = api.run('google_mail.send_message', request_params)[0];
   console.log(message);
   // add the request to the google sheet
-  let parameters = {};
-  parameters.valueInputOption = 'USER_ENTERED';
-  parameters.range = 'Requests!A:F';
-  parameters.spreadsheetId = '1kyd3g0xuPYoyDuT6joT0gkl29YCFE56E2ktv6haRong';
-  parameters.responseValueRenderOption = 'FORMATTED_VALUE';
-  parameters.insertDataOption = 'INSERT_ROWS';
-  parameters.responseDateTimeRenderOption = 'FORMATTED_STRING';
-  parameters.$body = {
-//     threadId	vehicle	requester	start	end	confirmed
-    values : [ [ message.threadId, params.vehicle, params.requester, params.start, params.end, confirmed ] ]
-  };
-  return api.run('google_sheets.append_sheet_values', parameters);
-  
+  return api.run("this.append_request_sheet_data", {data: [ message.threadId, params.vehicle, params.requester, params.start, params.end, confirmed ]});
   
   parameters = {};
   parameters.calendarId = calendar_id;
