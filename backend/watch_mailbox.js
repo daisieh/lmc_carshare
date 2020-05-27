@@ -3,7 +3,7 @@
   const parameters = {};
   parameters.userId = 'me';
   parameters.$body = {
-    labelIds : [ 'Label_3087422522999134978' ],
+    labelIds : [ env.get("request_label") ],
     //labelFilterAction : 'include',
     topicName : 'projects/carshare-265707/topics/requests'
   };

@@ -24,7 +24,7 @@
   // add the request to the google sheet
   let parameters = {};
   parameters.valueInputOption = 'USER_ENTERED';
-  parameters.range = '=Requests!A:F';
+  parameters.range = 'Requests!A:F';
   parameters.spreadsheetId = '1kyd3g0xuPYoyDuT6joT0gkl29YCFE56E2ktv6haRong';
   parameters.responseValueRenderOption = 'FORMATTED_VALUE';
   parameters.insertDataOption = 'INSERT_ROWS';
