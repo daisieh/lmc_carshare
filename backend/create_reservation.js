@@ -20,7 +20,7 @@
   }
 
   let message = api.run('google_mail.send_message', request_params)[0];
-
+  console.log(message);
   // add the request to the google sheet
   let parameters = {};
   parameters.valueInputOption = 'USER_ENTERED';
