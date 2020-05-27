@@ -257,6 +257,11 @@
       }],
       "javascriptAPIVersion": "3",
       "source": "backend",
+      "appSettings": [{
+        "name": "request_label",
+        "type": "STRING",
+        "default": "Label_3087422522999134978"
+      }],
       "exposeAppDataEndpoints": true
     }
   }
