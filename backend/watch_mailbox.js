@@ -1,12 +1,10 @@
 (params) => {
+  //return api.run('google_mail.stop_push_notifications', {userId: 'me'});
   const parameters = {};
-  //parameters.userId = 'me';
-  //return api.run('google_mail.list_labels', parameters);
-  //const parameters = {};
   parameters.userId = 'me';
   parameters.$body = {
     labelIds : [ 'Label_3087422522999134978' ],
-    labelFilterAction : 'include',
+    //labelFilterAction : 'include',
     topicName : 'projects/carshare-265707/topics/requests'
   };
   let result = api.run('google_mail.set_push_notification', parameters);

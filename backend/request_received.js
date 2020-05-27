@@ -20,14 +20,14 @@
     stash.put("historyId", last_hist.id);
     // for (var i in history) {
       let messageId = last_hist.messages.pop().id;
-      let message = api.run("google_mail.get_message", { id: messageId, userId: "me", format: "raw"})[0];
+      let message = api.run("google_mail.get_message", { id: messageId, userId: "me", format: "minimal"})[0];
     console.log(message);  
     console.log(base64.decode(message.raw));
     //}
     return {
       status_code: 200,
       headers: { "Content-Type": "application/json" },
-      body: { history }
+      body: { message }
     };
   }
 }
