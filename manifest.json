@@ -182,19 +182,6 @@
           "lang": "js"
         }
       }, {
-        "id": "send_car_conf_email",
-        "function": {
-          "parameters": [{
-            "name": "requester",
-            "type": "STRING"
-          }, {
-            "name": "uuid",
-            "type": "STRING"
-          }],
-          "js": "send_car_conf_email.js",
-          "lang": "js"
-        }
-      }, {
         "id": "watch_mailbox",
         "function": {
           "parameters": [{
@@ -203,6 +190,12 @@
             "type": "OBJECT"
           }],
           "js": "watch_mailbox.js",
+          "lang": "js"
+        }
+      }, {
+        "id": "get_request_sheet_data",
+        "function": {
+          "js": "get_request_sheet_data.js",
           "lang": "js"
         }
       }],
