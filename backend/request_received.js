@@ -19,13 +19,13 @@
     let messageId = last_hist.messages.pop().id;
     let message = api.run("google_mail.get_message", { id: messageId, userId: "me", format: "minimal"})[0];
     console.log(message);
-    //if (env.get("request_label") in message.labelIds) {
+    if (message.labelIds.includes(env.get("request_label"))) {
       // find request by message.threadId in the sheet
       let parameters = {};
       parameters.range = 'Requests!A:F';
       parameters.spreadsheetId = '1kyd3g0xuPYoyDuT6joT0gkl29YCFE56E2ktv6haRong';
       message = api.run("google_sheets.get_sheet_values", parameters);
-    //}
+    }
     return {
       status_code: 200,
       headers: { "Content-Type": "application/json" },
