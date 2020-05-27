@@ -76,12 +76,6 @@
           "webhook": true
         }
       }, {
-        "id": "update_statuses",
-        "function": {
-          "js": "update_statuses.js",
-          "lang": "js"
-        }
-      }, {
         "id": "list_history_of_mailbox",
         "tql": {
           "tql": "SELECT * FROM google_mail.list_history_of_mailbox\n  WHERE userId='me'\n  AND startHistoryId='3681'\n\n/*\n * For sample code and reference material, visit\n * https://www.transposit.com/docs/get-started/sql-quickstart\n */"
