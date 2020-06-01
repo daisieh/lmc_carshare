@@ -34,6 +34,7 @@
   parameters.sendUpdates = 'all';
   parameters.$body = {
     summary : `${request.requester} using ${car.Description}`,
+    conferenceDataVersion: 0,
     start : {
       dateTime : request.start
     },
