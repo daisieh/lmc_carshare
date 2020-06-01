@@ -1,8 +1,7 @@
 (params) => {
   let requests = api.run("this.list_requests");
   let values = [];
-  if (requests.length )
-  values.push(Object.keys(requests[0]));
+  values.push(requests.shift());
 console.log(values);
   // look for the request to see if it needs to be updated
   let is_updated = false;
