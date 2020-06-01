@@ -23,14 +23,25 @@
       // find request by message.threadId in the sheet
       let requests = api.run("this.list_requests");
       for (var i in requests) {
-        if (message.threadId === requests[i].threadId) {
-          requests[i].confirmed = true;
+        let request = requests[i];
+        if (message.threadId === request.threadId) {
+          request.confirmed = true;
         }
-        api.run("this.update_append_request", requests[i]);
+        api.run("this.update_append_request", request);
+        let car = api.run("this.get_car", {licence: request.vehicle});
+        let request_params = { 
+          to: request.requester,
+          subject: 'Your carshare request has been confirmed',
+          message: `You've been approved to borrow ${car.Description} from ${request.start} to ${request.end}.`,
+          userId: 'me'
+        };
+
+        let message = api.run('google_mail.send_message', request_params)[0];
+        
         return {
           status_code: 200,
           headers: { "Content-Type": "application/json" },
-          body: { "success" }
+          body: { message }
         };
       }
     }
