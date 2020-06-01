@@ -25,12 +25,12 @@
       console.log(message);
       for (var i in requests) {
         let request = requests[i];
-        console.log(request);
         if (message.threadId === request.threadId) {
+          console.log(request);
           console.log("confirmed");
           request.confirmed = true;
           api.run("this.update_append_request", request);
-          let car = api.run("this.get_car", {licence: request.vehicle});
+          let car = api.run("this.get_car", {licence: request.vehicle})[0];
           let request_params = { 
             to: request.requester,
             subject: 'Your carshare request has been confirmed',
