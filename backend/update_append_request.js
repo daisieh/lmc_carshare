@@ -30,8 +30,11 @@
     values.push(val);
   }
   parameters.$body = { values : values };
-  return api.run('google_sheets.update_sheet_values', parameters);  
-  return values;
+  let result = api.run('google_sheets.update_sheet_values', parameters);
+  if (result[0].updatedColumns != 7) {
+    throw "couldn't update requests";
+  }
+  return requests;
 }
 
 /*
