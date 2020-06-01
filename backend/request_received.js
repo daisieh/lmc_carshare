@@ -26,6 +26,7 @@
       for (var i in requests) {
         let request = requests[i];
         if (message.threadId === request.threadId) {
+          console.log("confirmed");
           request.confirmed = true;
         }
         api.run("this.update_append_request", request);
