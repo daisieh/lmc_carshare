@@ -36,7 +36,7 @@
           userId: 'me'
         };
 
-        let message = api.run('google_mail.send_message', request_params)[0];
+        message = api.run('google_mail.send_message', request_params)[0];
         
         return {
           status_code: 200,
