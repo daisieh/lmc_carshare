@@ -24,7 +24,7 @@
   // add the request to the google sheet
   return api.run("this.append_request_sheet_data", {data: [ message.threadId, params.vehicle, params.requester, params.start, params.end, confirmed ]});
   
-  parameters = {};
+  let parameters = {};
   parameters.calendarId = calendar_id;
   parameters.sendUpdates = 'all';
   parameters.$body = {
@@ -39,8 +39,7 @@
   };
   
 
-  //return api.run('google_calendar.create_calendar_event', parameters);
-  
+  return api.run('google_calendar.create_calendar_event', parameters);
 }
 
 /*
