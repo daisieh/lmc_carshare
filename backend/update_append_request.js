@@ -1,17 +1,21 @@
 (params) => {
-  // add the request to the google sheet
-  let parameters = {};
-  parameters.valueInputOption = 'USER_ENTERED';
-  parameters.range = 'Requests!A:F';
-  parameters.spreadsheetId = '1kyd3g0xuPYoyDuT6joT0gkl29YCFE56E2ktv6haRong';
-  parameters.responseValueRenderOption = 'FORMATTED_VALUE';
-  parameters.insertDataOption = 'INSERT_ROWS';
-  parameters.responseDateTimeRenderOption = 'FORMATTED_STRING';
-  parameters.$body = {
-//     threadId	vehicle	requester	start	end	confirmed
-    values : [ params.data ]
-  };
-  return api.run('google_sheets.append_sheet_values', parameters);
+  if ("threadId" in params && params.threadId !== "") {
+    let requests = api.run("this.list_requests");
+    // look for the request to see if it needs to be updated
+    let is_updated = false;
+    for (var i in requests) {
+      if (requests[i].threadId === params.threadId) {
+        console.log (`updating ${params.threadId}`);
+        requests[i] = params;
+        is_updated = true;
+      }
+    }
+    if (is_updated == false) {
+      // append to the end:
+      requests.push(params);
+    }
+  }
+  return requests;
 }
 
 /*

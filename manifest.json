@@ -154,7 +154,6 @@
       }, {
         "id": "watch_mailbox",
         "function": {
-          "parameters": [],
           "js": "watch_mailbox.js",
           "lang": "js"
         }
@@ -187,7 +186,7 @@
             "type": "STRING"
           }, {
             "name": "confirmed",
-            "type": "STRING"
+            "type": "BOOLEAN"
           }],
           "js": "update_append_request.js",
           "lang": "js"
