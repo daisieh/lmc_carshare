@@ -22,7 +22,7 @@
       // find request by message.threadId in the sheet
       let requests = api.run("this.list_requests");
       requests.shift();
-      console.log(requests);
+      console.log(message);
       for (var i in requests) {
         let request = requests[i];
         if (message.threadId === request.threadId) {
