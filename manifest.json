@@ -168,8 +168,26 @@
         "id": "update_append_request",
         "function": {
           "parameters": [{
-            "name": "data",
-            "type": "ARRAY"
+            "name": "threadId",
+            "type": "STRING"
+          }, {
+            "name": "vehicle",
+            "type": "STRING"
+          }, {
+            "name": "requester",
+            "type": "STRING"
+          }, {
+            "name": "start",
+            "type": "STRING"
+          }, {
+            "name": "end",
+            "type": "STRING"
+          }, {
+            "name": "eventId",
+            "type": "STRING"
+          }, {
+            "name": "confirmed",
+            "type": "STRING"
           }],
           "js": "update_append_request.js",
           "lang": "js"
