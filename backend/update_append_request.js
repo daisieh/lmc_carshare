@@ -2,7 +2,6 @@
   let requests = api.run("this.list_requests");
   let values = [];
   values.push(requests.shift());
-console.log(values);
   // look for the request to see if it needs to be updated
   let is_updated = false;
   for (var i in requests) {

@@ -191,7 +191,7 @@
             "type": "STRING"
           }, {
             "name": "confirmed",
-            "type": "BOOLEAN"
+            "type": "STRING"
           }],
           "js": "update_append_request.js",
           "lang": "js"
