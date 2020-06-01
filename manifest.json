@@ -44,18 +44,6 @@
           "tql": "SELECT * FROM google_calendar.get_calendarlist where summary in (@vehicle)"
         }
       }, {
-        "id": "create_calendar_event",
-        "tql": {
-          "parameters": [{
-            "name": "vehicle",
-            "type": "STRING"
-          }, {
-            "name": "requester",
-            "type": "STRING"
-          }],
-          "tql": "SELECT * FROM google_calendar.create_calendar_event\n  WHERE calendarId=(SELECT id from this.get_calendarlist where vehicle=@vehicle)\n  AND $body.summary='test'\n  AND $body.start=(SELECT {\n    'dateTime' : '2020-01-21T08:00:00-08:00'\n  })\n  AND $body.end=(SELECT {\n    'dateTime' : '2020-01-21T10:00:00-08:00'\n  })\n  AND $body.attendees=(SELECT [{'email': @requester}])\n\n/*\n * For sample code and reference material, visit\n * https://www.transposit.com/docs/get-started/sql-quickstart\n */"
-        }
-      }, {
         "id": "list_cars",
         "function": {
           "js": "get_all_cars.js",
@@ -88,22 +76,6 @@
           "webhook": true
         }
       }, {
-        "id": "update_statuses",
-        "function": {
-          "js": "update_statuses.js",
-          "lang": "js"
-        }
-      }, {
-        "id": "get_message",
-        "tql": {
-          "tql": "SELECT * FROM google_mail.get_message\n  WHERE userId='me'\n  AND id='16fc6048e653d2ef'\n  AND format='full'\n\n/*\n * For sample code and reference material, visit\n * https://www.transposit.com/docs/get-started/sql-quickstart\n */"
-        }
-      }, {
-        "id": "list_history_of_mailbox",
-        "tql": {
-          "tql": "SELECT * FROM google_mail.list_history_of_mailbox\n  WHERE userId='me'\n  AND startHistoryId='3681'\n\n/*\n * For sample code and reference material, visit\n * https://www.transposit.com/docs/get-started/sql-quickstart\n */"
-        }
-      }, {
         "id": "get_cars_available_for_time",
         "function": {
           "parameters": [{
@@ -115,20 +87,121 @@
           }],
           "js": "get_cars_available_for_time.js",
           "lang": "js"
-        }
-      }, {
-        "id": "time",
-        "function": {
-          "js": "time.js",
-          "lang": "js"
-        }
-      }, {
-        "id": "load_todays_events",
-        "tql": {
-          "tql": "SELECT summary FROM google_calendar.get_calendar_events\n  WHERE calendarId=\"primary\"\n  AND singleEvents=true\n  AND timeMin=(SELECT startToday FROM this.time)\n  AND timeMax=(SELECT endToday FROM this.time)"
         },
         "access": {
           "requireUser": true
+        }
+      }, {
+        "id": "get_features_list",
+        "function": {
+          "parameters": [{
+            "name": "cars",
+            "type": "ARRAY"
+          }],
+          "js": "get_features_list.js",
+          "lang": "js"
+        }
+      }, {
+        "id": "create_reservation",
+        "function": {
+          "parameters": [{
+            "name": "requester",
+            "type": "STRING"
+          }, {
+            "name": "vehicle",
+            "type": "STRING"
+          }, {
+            "name": "start",
+            "type": "STRING"
+          }, {
+            "name": "end",
+            "type": "STRING"
+          }],
+          "js": "create_reservation.js",
+          "lang": "js"
+        },
+        "access": {
+          "requireUser": true
+        }
+      }, {
+        "id": "get_car",
+        "function": {
+          "parameters": [{
+            "name": "vehicle",
+            "type": "STRING"
+          }],
+          "js": "get_car.js",
+          "lang": "js"
+        }
+      }, {
+        "id": "normalize_times",
+        "function": {
+          "parameters": [{
+            "name": "start_datetime",
+            "default": {
+              "text": "2020/02/03 15:00"
+            },
+            "type": "STRING",
+            "required": true
+          }, {
+            "name": "end_datetime",
+            "type": "STRING",
+            "required": true
+          }],
+          "js": "normalize_range.js",
+          "lang": "js"
+        }
+      }, {
+        "id": "handle_request",
+        "function": {
+          "parameters": [{
+            "name": "starttime",
+            "type": "STRING"
+          }, {
+            "name": "endtime",
+            "type": "STRING"
+          }, {
+            "name": "vehicle",
+            "type": "STRING"
+          }, {
+            "name": "requester",
+            "type": "STRING"
+          }, {
+            "name": "confirmed",
+            "type": "BOOLEAN"
+          }, {
+            "name": "uuid",
+            "type": "STRING"
+          }],
+          "js": "untitled.js",
+          "lang": "js"
+        }
+      }, {
+        "id": "watch_mailbox",
+        "function": {
+          "parameters": [{
+            "name": "context",
+            "description": "The 'context' parameter is often essential to operations published to Mission Control",
+            "type": "OBJECT"
+          }],
+          "js": "watch_mailbox.js",
+          "lang": "js"
+        }
+      }, {
+        "id": "list_requests",
+        "function": {
+          "js": "get_request_sheet_data.js",
+          "lang": "js"
+        }
+      }, {
+        "id": "update_append_request",
+        "function": {
+          "parameters": [{
+            "name": "data",
+            "type": "ARRAY"
+          }],
+          "js": "append_request_sheet_data.js",
+          "lang": "js"
         }
       }],
       "dataConnections": [{
@@ -162,7 +235,6 @@
         "requireConsumerSignin": true
       }, {
         "ref": "google_calendar.raw",
-        "requireConsumerSignin": true,
         "overrides": {
           "swagger": {
             "oauthConfig": {
@@ -177,6 +249,11 @@
       }],
       "javascriptAPIVersion": "3",
       "source": "backend",
+      "appSettings": [{
+        "name": "request_label",
+        "type": "STRING",
+        "default": "Label_3087422522999134978"
+      }],
       "exposeAppDataEndpoints": true
     }
   }
