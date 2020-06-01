@@ -11,6 +11,9 @@
     car.Features = car.Tags.split(", ");
     delete car.Tags;
 
+    car.Licence = car["Licence plate"];
+    delete car["Licence plate"];
+
     car.Email = car["Email address"];
     delete car["Email address"];
 
@@ -28,8 +31,8 @@
     }
     delete car["Confirmation"];
 
-    car["Description"] = `${car.Color} ${car.Make} ${car.Model}`;
-    cars[car["Email"]] = car;
+    car["Description"] = `${car.Color} ${car.Make} ${car.Model} ${car.Licence}`;
+    cars[car["Licence"]] = car;
   }
   
   return cars;

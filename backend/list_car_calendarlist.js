@@ -18,12 +18,10 @@
       summary : cars_to_map[i],
       timeZone : 'America/Vancouver'
     };
-    let cal = api.run('google_calendar.create_calendar', parameters);
+    let cal = api.run('google_calendar.create_calendar', parameters)[0];
     calendars[cars_to_map[i]] = cal;
   }
-  
-  
-  
+    
   return calendars;
 }
 

@@ -18,16 +18,38 @@
     stash.put("historyId", last_hist.id);
     let messageId = last_hist.messages.pop().id;
     let message = api.run("google_mail.get_message", { id: messageId, userId: "me", format: "minimal"})[0];
-    console.log(message);
     if (message.labelIds.includes(env.get("request_label"))) {
       // find request by message.threadId in the sheet
-      let parameters = {};
-      parameters.range = 'Requests!A:F';
-      parameters.spreadsheetId = '1kyd3g0xuPYoyDuT6joT0gkl29YCFE56E2ktv6haRong';
-      message = api.run("google_sheets.get_sheet_values", parameters);
+      let requests = api.run("this.list_requests");
+      requests.shift();
+      console.log(message);
+      for (var i in requests) {
+        let request = requests[i];
+        if (message.threadId === request.threadId) {
+          console.log(request);
+          console.log("confirmed");
+          request.confirmed = true;
+          api.run("this.update_append_request", request);
+          let car = api.run("this.get_car", {licence: request.vehicle})[0];
+          let request_params = { 
+            to: request.requester,
+            subject: 'Your carshare request has been confirmed',
+            message: `You've been approved to borrow ${car.Description} from ${request.start} to ${request.end}.`,
+            userId: 'me'
+          };
+
+          message = api.run('google_mail.send_message', request_params)[0];
+
+          return {
+            status_code: 200,
+            headers: { "Content-Type": "application/json" },
+            body: { message }
+          };
+        }
+      }
     }
     return {
-      status_code: 200,
+      status_code: 500,
       headers: { "Content-Type": "application/json" },
       body: { message }
     };

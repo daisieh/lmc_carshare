@@ -125,9 +125,13 @@
         }
       }, {
         "id": "get_car",
+        "description": "Use either licence plate or owner's email to get a car",
         "function": {
           "parameters": [{
-            "name": "vehicle",
+            "name": "owner",
+            "type": "STRING"
+          }, {
+            "name": "licence",
             "type": "STRING"
           }],
           "js": "get_car.js",
@@ -154,7 +158,6 @@
       }, {
         "id": "watch_mailbox",
         "function": {
-          "parameters": [],
           "js": "watch_mailbox.js",
           "lang": "js"
         }
@@ -169,7 +172,8 @@
         "function": {
           "parameters": [{
             "name": "threadId",
-            "type": "STRING"
+            "type": "STRING",
+            "required": true
           }, {
             "name": "vehicle",
             "type": "STRING"
