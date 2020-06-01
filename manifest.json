@@ -168,7 +168,8 @@
         "function": {
           "parameters": [{
             "name": "threadId",
-            "type": "STRING"
+            "type": "STRING",
+            "required": true
           }, {
             "name": "vehicle",
             "type": "STRING"
