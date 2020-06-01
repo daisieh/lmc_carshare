@@ -152,31 +152,6 @@
           "lang": "js"
         }
       }, {
-        "id": "handle_request",
-        "function": {
-          "parameters": [{
-            "name": "starttime",
-            "type": "STRING"
-          }, {
-            "name": "endtime",
-            "type": "STRING"
-          }, {
-            "name": "vehicle",
-            "type": "STRING"
-          }, {
-            "name": "requester",
-            "type": "STRING"
-          }, {
-            "name": "confirmed",
-            "type": "BOOLEAN"
-          }, {
-            "name": "uuid",
-            "type": "STRING"
-          }],
-          "js": "untitled.js",
-          "lang": "js"
-        }
-      }, {
         "id": "watch_mailbox",
         "function": {
           "parameters": [{
