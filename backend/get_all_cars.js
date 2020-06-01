@@ -31,7 +31,7 @@
     }
     delete car["Confirmation"];
 
-    car["Description"] = `${car.Color} ${car.Make} ${car.Model}`;
+    car["Description"] = `${car.Color} ${car.Make} ${car.Model} ${car.Licence}`;
     cars[car["Licence"]] = car;
   }
   
