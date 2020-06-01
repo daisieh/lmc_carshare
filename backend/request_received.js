@@ -20,7 +20,8 @@
     let message = api.run("google_mail.get_message", { id: messageId, userId: "me", format: "minimal"})[0];
     if (message.labelIds.includes(env.get("request_label"))) {
       // find request by message.threadId in the sheet
-      let requests = api.run("this.list_requests").shift();
+      let requests = api.run("this.list_requests");
+      requests.shift();
       console.log(requests);
       for (var i in requests) {
         let request = requests[i];
