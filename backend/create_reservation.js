@@ -41,8 +41,7 @@
     end : {
       dateTime : request.end
     },
-    attendees : [{'email': request.requester, responseStatus: "accepted"},
-                 {'email': car.Email, responseStatus: "accepted"}]
+    attendees : [{'email': request.requester, responseStatus: "accepted"}]
   };
   
   let event = api.run('google_calendar.create_calendar_event', parameters)[0];

@@ -21,13 +21,21 @@
     console.log(message);
     if (message.labelIds.includes(env.get("request_label"))) {
       // find request by message.threadId in the sheet
-      let parameters = {};
-      parameters.range = 'Requests!A:F';
-      parameters.spreadsheetId = '1kyd3g0xuPYoyDuT6joT0gkl29YCFE56E2ktv6haRong';
-      message = api.run("google_sheets.get_sheet_values", parameters);
+      let requests = api.run("this.list_requests");
+      for (var i in requests) {
+        if (message.threadId === requests[i].threadId) {
+          requests[i].confirmed = true;
+        }
+        api.run("this.update_append_request", requests[i]);
+        return {
+          status_code: 200,
+          headers: { "Content-Type": "application/json" },
+          body: { "success" }
+        };
+      }
     }
     return {
-      status_code: 200,
+      status_code: 500,
       headers: { "Content-Type": "application/json" },
       body: { message }
     };
