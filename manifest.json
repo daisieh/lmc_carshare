@@ -154,18 +154,14 @@
       }, {
         "id": "watch_mailbox",
         "function": {
-          "parameters": [{
-            "name": "context",
-            "description": "The 'context' parameter is often essential to operations published to Mission Control",
-            "type": "OBJECT"
-          }],
+          "parameters": [],
           "js": "watch_mailbox.js",
           "lang": "js"
         }
       }, {
         "id": "list_requests",
         "function": {
-          "js": "get_request_sheet_data.js",
+          "js": "list_requests.js",
           "lang": "js"
         }
       }, {
@@ -175,7 +171,7 @@
             "name": "data",
             "type": "ARRAY"
           }],
-          "js": "append_request_sheet_data.js",
+          "js": "update_append_request.js",
           "lang": "js"
         }
       }],
