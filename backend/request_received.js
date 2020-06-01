@@ -25,26 +25,27 @@
       console.log(message);
       for (var i in requests) {
         let request = requests[i];
+        console.log(request);
         if (message.threadId === request.threadId) {
           console.log("confirmed");
           request.confirmed = true;
-        }
-        api.run("this.update_append_request", request);
-        let car = api.run("this.get_car", {licence: request.vehicle});
-        let request_params = { 
-          to: request.requester,
-          subject: 'Your carshare request has been confirmed',
-          message: `You've been approved to borrow ${car.Description} from ${request.start} to ${request.end}.`,
-          userId: 'me'
-        };
+          api.run("this.update_append_request", request);
+          let car = api.run("this.get_car", {licence: request.vehicle});
+          let request_params = { 
+            to: request.requester,
+            subject: 'Your carshare request has been confirmed',
+            message: `You've been approved to borrow ${car.Description} from ${request.start} to ${request.end}.`,
+            userId: 'me'
+          };
 
-        message = api.run('google_mail.send_message', request_params)[0];
-        
-        return {
-          status_code: 200,
-          headers: { "Content-Type": "application/json" },
-          body: { message }
-        };
+          message = api.run('google_mail.send_message', request_params)[0];
+
+          return {
+            status_code: 200,
+            headers: { "Content-Type": "application/json" },
+            body: { message }
+          };
+        }
       }
     }
     return {
