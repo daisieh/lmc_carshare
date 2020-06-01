@@ -41,11 +41,13 @@
       dateTime : request.end
     },
     attendees : [{'email': request.requester, responseStatus: "accepted"},
-                 {'email': request.vehicle, responseStatus: "accepted"}]
+                 {'email': car.Email, responseStatus: "accepted"}]
   };
   
-  let event = api.run('google_calendar.create_calendar_event', parameters);
-  return event;
+  let event = api.run('google_calendar.create_calendar_event', parameters)[0];
+  request.eventId = event.id;
+  
+  return api.run("this.update_append_request", request);
 }
 
 /*

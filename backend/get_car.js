@@ -4,7 +4,6 @@
   }
   let cars = api.run("this.list_cars")[0];
   for (var i in cars) {
-    console.log(cars[i]);
     if (cars[i].Licence === params.licence) {
       return cars[i];
     }
