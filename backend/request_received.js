@@ -21,7 +21,7 @@
     console.log(message);
     if (message.labelIds.includes(env.get("request_label"))) {
       // find request by message.threadId in the sheet
-      let requests = api.run("this.list_requests");
+      let requests = api.run("this.list_requests").shift();
       for (var i in requests) {
         let request = requests[i];
         if (message.threadId === request.threadId) {
