@@ -1,7 +1,7 @@
 (params) => {
   let calendar_id = api.run("this.get_calendarlist", {vehicle: params.vehicle})[0].id;
   let car = api.run("this.get_car", {vehicle: params.vehicle})[0];
-  let request = { vehicle: params.vehicle,
+  let request = { vehicle: car.email,
                   requester: params.requester,
                   start: params.start,
                   end: params.end

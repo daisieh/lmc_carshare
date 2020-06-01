@@ -1,9 +1,15 @@
 (params) => {
+  if ("licence" in params && "owner" in params) {
+    throw "can't get car with both licence and owner";
+  }
   let cars = api.run("this.list_cars")[0];
-  let keys = Object.keys(cars);
-  let index = keys.indexOf(params.vehicle);
-  if (index >= 0) {
-    return cars[params.vehicle];
+  for (var i in cars) {
+    if (cars[i].Licence === params.licence) {
+      return cars[i];
+    }
+    if (cars[i].Email === params.email) {
+      return cars[i];
+    }
   }
   return null;
 }

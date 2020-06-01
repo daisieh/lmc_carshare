@@ -125,9 +125,13 @@
         }
       }, {
         "id": "get_car",
+        "description": "Use either licence plate or owner's email to get a car",
         "function": {
           "parameters": [{
-            "name": "vehicle",
+            "name": "owner",
+            "type": "STRING"
+          }, {
+            "name": "licence",
             "type": "STRING"
           }],
           "js": "get_car.js",
