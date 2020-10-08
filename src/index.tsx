@@ -2,8 +2,8 @@ import * as React from "react";
 import { render } from "react-dom";
 import { BrowserRouter as Router, Route } from "react-router-dom";
 import { Transposit, User } from "transposit";
-import { Formik, Form, useField } from "formik";
-import * as Yup from "yup";
+// import { Formik, Form, useField } from "formik";
+// import * as Yup from "yup";
 import "./styles.css";
 import moment from "moment";
 
@@ -80,7 +80,7 @@ class AvailableCars extends React.Component<AvailableCarsProps, {}> {
             email = chosenCar.Email;
         }
         console.log(`there are ${this.props.cars.length} cars, chosen car is ${email}`);
-        if (this.props.cars.length == 0) {
+        if (this.props.cars.length === 0) {
             console.log("AvailableCars has no cars");
             return (<div>No cars available at this time</div>);
         }
@@ -293,30 +293,6 @@ class CarAvailablePicker extends React.Component<CarAvailableProps, CarAvailable
 
 }
 
-/*
-        {calendarEvents ? (
-          <div className="calendar">
-            <h3 className="today">🗓️ Today</h3>
-            {calendarEvents.length === 0 ? (
-              <p>
-                <em>No events today</em>
-              </p>
-            ) : (
-              <ul>
-                {calendarEvents.map((event, idx) => (
-                  <li key={idx}>{event.summary}</li>
-                ))}
-              </ul>
-            )}
-          </div>
-        ) : (
-          <div className="lds-circle">
-            <div></div>
-          </div>
-        )}
-
-*/
-
 /**
  * Hook to check that user is signed-in. Return true if they are.
  */
@@ -418,7 +394,7 @@ function Index() {
         <div className="nav-float-right">
           <a
             className="nav-item"
-            href="#"
+            href="#top"
             onClick={event => {
               event.preventDefault();
               transposit.signOut(`${window.location.origin}/signin`);
@@ -464,49 +440,8 @@ interface Car {
     "Color": string;
     "Features": string[];
     "Email": string;
+    "Licence": string;
     "AlwaysAvailable": boolean;
     "Confirm": boolean;
     "Description": string;
 }
-
-interface Event {
-    "kind": string,
-    "etag": string,
-    "id": string,
-    "status": string,
-    "htmlLink": string,
-    "created": string,
-    "updated": string,
-    "summary": string,
-    "creator": {
-        "email": string
-    },
-    "organizer": {
-        "email": string,
-        "displayName": string,
-        "self": boolean
-    },
-    "start": {
-        "dateTime": string
-    },
-    "end": {
-        "dateTime": string
-    },
-    "iCalUID": string,
-    "sequence": number,
-    "attendees":
-        {
-            "email": string,
-            "responseStatus": string
-        }[],
-    "reminders": {
-        "useDefault": boolean
-    }
-}
-
-const AVAILABLE_FEATURES =
-[
-  "pet friendly",
-  "child friendly",
-  "eco friendly"
-];
