@@ -2,8 +2,8 @@ import * as React from "react";
 import { render } from "react-dom";
 import { BrowserRouter as Router, Route } from "react-router-dom";
 import { Transposit, User } from "transposit";
-import { Formik, Form, useField } from "formik";
-import * as Yup from "yup";
+// import { Formik, Form, useField } from "formik";
+// import * as Yup from "yup";
 import "./styles.css";
 import moment from "moment";
 
