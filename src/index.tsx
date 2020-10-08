@@ -293,30 +293,6 @@ class CarAvailablePicker extends React.Component<CarAvailableProps, CarAvailable
 
 }
 
-/*
-        {calendarEvents ? (
-          <div className="calendar">
-            <h3 className="today">🗓️ Today</h3>
-            {calendarEvents.length === 0 ? (
-              <p>
-                <em>No events today</em>
-              </p>
-            ) : (
-              <ul>
-                {calendarEvents.map((event, idx) => (
-                  <li key={idx}>{event.summary}</li>
-                ))}
-              </ul>
-            )}
-          </div>
-        ) : (
-          <div className="lds-circle">
-            <div></div>
-          </div>
-        )}
-
-*/
-
 /**
  * Hook to check that user is signed-in. Return true if they are.
  */
@@ -473,49 +449,8 @@ interface Car {
     "Color": string;
     "Features": string[];
     "Email": string;
+    "Licence": string;
     "AlwaysAvailable": boolean;
     "Confirm": boolean;
     "Description": string;
 }
-
-interface Event {
-    "kind": string,
-    "etag": string,
-    "id": string,
-    "status": string,
-    "htmlLink": string,
-    "created": string,
-    "updated": string,
-    "summary": string,
-    "creator": {
-        "email": string
-    },
-    "organizer": {
-        "email": string,
-        "displayName": string,
-        "self": boolean
-    },
-    "start": {
-        "dateTime": string
-    },
-    "end": {
-        "dateTime": string
-    },
-    "iCalUID": string,
-    "sequence": number,
-    "attendees":
-        {
-            "email": string,
-            "responseStatus": string
-        }[],
-    "reminders": {
-        "useDefault": boolean
-    }
-}
-
-const AVAILABLE_FEATURES =
-[
-  "pet friendly",
-  "child friendly",
-  "eco friendly"
-];
