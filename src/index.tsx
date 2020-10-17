@@ -80,7 +80,7 @@ class AvailableCars extends React.Component<AvailableCarsProps, {}> {
             email = chosenCar.Email;
         }
         console.log(`there are ${this.props.cars.length} cars, chosen car is ${email}`);
-        if (this.props.cars.length == 0) {
+        if (this.props.cars.length === 0) {
             console.log("AvailableCars has no cars");
             return (<div>No cars available at this time</div>);
         }
@@ -398,9 +398,9 @@ function Index() {
           >
             View code
           </a>
-          <a className="nav-item" href={transposit.settingsUri()}>
-            Settings
-          </a>
+          {/*<a className="nav-item" href={transposit.settingsUri()}>*/}
+          {/*  Settings*/}
+          {/*</a>*/}
           <a
             className="nav-item"
             href="#"
