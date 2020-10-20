@@ -405,7 +405,7 @@ function Index() {
             className="nav-item"
             onClick={event => {
               event.preventDefault();
-              transposit.signOut(`${window.location.origin}/signin`);
+              transposit.signOut("https://github.com/daisieh/lmc_carshare");
             }}
           >
             Sign out
