@@ -403,9 +403,10 @@ function Index() {
           </a>
           <a
             className="nav-item"
+            href={"https://github.com/daisieh/lmc_carshare"}
             onClick={event => {
               event.preventDefault();
-              transposit.signOut("https://github.com/daisieh/lmc_carshare");
+              transposit.signOut(`${window.location.origin}/signin`);
             }}
           >
             Sign out
