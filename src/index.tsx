@@ -398,12 +398,11 @@ function Index() {
           >
             View code
           </a>
-          {/*<a className="nav-item" href={transposit.settingsUri()}>*/}
-          {/*  Settings*/}
-          {/*</a>*/}
+          <a className="nav-item" href={"https://github.com/daisieh/lmc_carshare"}>
+            Settings
+          </a>
           <a
             className="nav-item"
-            href="#"
             onClick={event => {
               event.preventDefault();
               transposit.signOut(`${window.location.origin}/signin`);
