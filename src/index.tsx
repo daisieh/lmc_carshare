@@ -1,6 +1,7 @@
 import * as React from "react";
 import { render } from "react-dom";
 import { BrowserRouter as Router, Route } from "react-router-dom";
+import { DatePicker } from 'rsuite';
 import { Transposit, User } from "transposit";
 // import { Formik, Form, useField } from "formik";
 // import * as Yup from "yup";
@@ -43,13 +44,25 @@ class SearchAvailabilityForm extends React.Component<SearchAvailabilityProps, Se
     }
 
   render() {
-    return (
-      <form onSubmit={this.handleSubmit}>
-        <input type="text" placeholder="Start time..." onChange={this.handleStartChange}/>
-        <input type="text" placeholder="End time..." onChange={this.handleEndChange}/>
-        <input type="submit" value="Search for available cars" />
-      </form>
-    );
+      return (
+          <DatePicker
+              format="YYYY-MM-DD HH:mm:ss"
+              ranges={[
+                  {
+                      label: 'Now',
+                      value: new Date()
+                  }
+              ]}
+          />
+      );
+
+      // return (
+    //   <form onSubmit={this.handleSubmit}>
+    //     <input type="text" placeholder="Start time..." onChange={this.handleStartChange}/>
+    //     <input type="text" placeholder="End time..." onChange={this.handleEndChange}/>
+    //     <input type="submit" value="Search for available cars" />
+    //   </form>
+    // );
   }
 }
 
