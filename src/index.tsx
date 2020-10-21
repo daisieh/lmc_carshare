@@ -6,7 +6,7 @@ import { Transposit, User } from "transposit";
 // import { Formik, Form, useField } from "formik";
 // import * as Yup from "yup";
 import "./styles.css";
-import 'rsuite/lib/styles/index.less';
+import 'rsuite/lib/DatePicker/styles';
 import moment from "moment";
 
 const transposit = new Transposit(
