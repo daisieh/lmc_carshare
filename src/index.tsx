@@ -394,16 +394,7 @@ function Index() {
         <div className="nav-float-right">
           <a
             className="nav-item"
-            href={"https://github.com/daisieh/lmc_carshare"}
-          >
-            View code {transposit.settingsUri()}
-          </a>
-          <a className="nav-item" href={transposit.settingsUri()}>
-            Settings
-          </a>
-          <a
-            className="nav-item"
-            href={"https://github.com/daisieh/lmc_carshare"}
+            href="#top"
             onClick={event => {
               event.preventDefault();
               transposit.signOut(`${window.location.origin}/signin`);
