@@ -398,7 +398,7 @@ function Index() {
           >
             View code {transposit.settingsUri()}
           </a>
-          <a className="nav-item" href={"https://github.com/daisieh/lmc_carshare"}>
+          <a className="nav-item" href={transposit.settingsUri()}>
             Settings
           </a>
           <a
