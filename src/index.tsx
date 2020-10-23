@@ -55,7 +55,7 @@ class SearchAvailabilityForm extends React.Component<SearchAvailabilityProps, Se
                 ranges={[
                     {
                         label: 'Now',
-                        value: this.state.startFieldValue
+                        value: new Date()
                     }
                 ]}
                 onChange={this.handleSubmit}
