@@ -43,7 +43,7 @@ class SearchAvailabilityForm extends React.Component<SearchAvailabilityProps, Se
     }
 
     handleSubmit(event) {
-        event.preventDefault();
+        // event.preventDefault();
         console.log("hello hello");
         this.props.submitTime(this.state.startFieldValue, this.state.endFieldValue);
     }
