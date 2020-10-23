@@ -58,7 +58,7 @@ class SearchAvailabilityForm extends React.Component<SearchAvailabilityProps, Se
                         value: new Date()
                     }
                 ]}
-                onSelect={this.handleSubmit}
+                onChange={this.handleSubmit}
             />
         );
     }
