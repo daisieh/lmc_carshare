@@ -45,7 +45,7 @@ class SearchAvailabilityForm extends React.Component<SearchAvailabilityProps, Se
     handleSubmit(event) {
         // event.preventDefault();
         console.log("hello hello");
-        this.props.submitTime(this.state.startFieldValue.toDateString(), this.state.endFieldValue.toDateString());
+        this.props.submitTime(this.state.startFieldValue.toDateString(), this.state.startFieldValue.toDateString());
     }
 
     render() {
@@ -55,7 +55,7 @@ class SearchAvailabilityForm extends React.Component<SearchAvailabilityProps, Se
                 ranges={[
                     {
                         label: 'Now',
-                        value: new Date()
+                        value: this.state.startFieldValue
                     }
                 ]}
                 onChange={this.handleSubmit}
