@@ -231,7 +231,7 @@ class CarAvailablePicker extends React.Component<CarAvailableProps, CarAvailable
             .run("get_cars_available_for_time", {start: startTime, end: endTime})
             .then(this.successCallback)
             .catch(response => {
-                console.log(response);
+                console.log(response.toString());
             });
         this.setState({
             startTime: x.results[0].start,
