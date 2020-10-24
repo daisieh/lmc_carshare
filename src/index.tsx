@@ -19,8 +19,8 @@ interface SearchAvailabilityProps {
 }
 
 interface SearchAvailabilityState {
-    startFieldValue: Date;
-    endFieldValue: Date;
+    startFieldValue: string;
+    endFieldValue: string;
 }
 
 class SearchAvailabilityForm extends React.Component<SearchAvailabilityProps, SearchAvailabilityState> {
@@ -34,33 +34,46 @@ class SearchAvailabilityForm extends React.Component<SearchAvailabilityProps, Se
 
     handleStartChange(event) {
         event.preventDefault();
-        this.setState({startFieldValue: event.target.value})
+        this.setState({startFieldValue: event.toString()})
     }
 
     handleEndChange(event) {
         event.preventDefault();
-        this.setState({endFieldValue: event.target.value})
+        this.setState({endFieldValue: event.toString()})
     }
 
     handleSubmit(event) {
-        // event.preventDefault();
-        console.log("hello hello " + event.toString());
         let time = moment(event.toString());
-        this.props.submitTime(time.toString(), time.add(1,'hours').toString());
+        this.props.submitTime(this.state.startFieldValue, this.state.endFieldValue);
     }
 
     render() {
         return (
-            <DatePicker
-                format="YYYY-MM-DD HH:mm"
-                ranges={[
-                    {
-                        label: 'Now',
-                        value: new Date()
-                    }
-                ]}
-                onChange={this.handleSubmit}
-            />
+            <div>
+                <DatePicker
+                    format="YYYY-MM-DD HH:mm"
+                    ranges={[
+                        {
+                            label: 'Now',
+                            value: new Date()
+                        }
+                    ]}
+                    onChange={this.handleStartChange}
+                />
+                <DatePicker
+                    format="YYYY-MM-DD HH:mm"
+                    ranges={[
+                        {
+                            label: 'Now',
+                            value: new Date()
+                        }
+                    ]}
+                    onChange={this.handleEndChange}
+                />
+                <form onSubmit={this.handleSubmit}>
+                    <input type="submit" value="Search Cars"/>
+                </form>
+            </div>
         );
     }
 }
