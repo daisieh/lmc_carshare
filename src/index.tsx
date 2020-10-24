@@ -33,8 +33,8 @@ class SearchAvailabilityForm extends React.Component<SearchAvailabilityProps, Se
     }
 
     handleStartChange(event) {
-        console.log("start is " + this.state.startFieldValue);
         this.setState({startFieldValue: event.toString()})
+        console.log("start is " + this.state.startFieldValue);
     }
 
     handleEndChange(event) {
