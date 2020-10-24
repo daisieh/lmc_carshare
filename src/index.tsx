@@ -34,6 +34,7 @@ class SearchAvailabilityForm extends React.Component<SearchAvailabilityProps, Se
 
     handleStartChange(event) {
         event.preventDefault();
+        console.log("start is " + this.state.startFieldValue);
         this.setState({startFieldValue: event.toString()})
     }
 
@@ -43,6 +44,7 @@ class SearchAvailabilityForm extends React.Component<SearchAvailabilityProps, Se
     }
 
     handleSubmit(event) {
+        console.log("hello " + this.state.startFieldValue + " " + this.state.endFieldValue);
         this.props.submitTime(this.state.startFieldValue, this.state.endFieldValue);
     }
 
