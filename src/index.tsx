@@ -53,7 +53,7 @@ class SearchAvailabilityForm extends React.Component<SearchAvailabilityProps, Se
         let submitButton = '                <form onSubmit={this.handleSubmit}>\n' +
             '                    <input type="submit" value="Search Cars"/>\n' +
             '                </form>\n';
-        if (this.state.startFieldValue == null && this.state.endFieldValue == null) {
+        if (this.state.startFieldValue == null) {
             submitButton = '';
         } else {
             console.log("submit");
@@ -68,7 +68,7 @@ class SearchAvailabilityForm extends React.Component<SearchAvailabilityProps, Se
                             value: new Date()
                         }
                     ]}
-                    onChange={this.handleSubmit}
+                    onChange={this.handleStartChange}
                 />
                 {submitButton}
             </div>
