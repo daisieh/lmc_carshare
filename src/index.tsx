@@ -60,7 +60,7 @@ class SearchAvailabilityForm extends React.Component<SearchAvailabilityProps, Se
                             value: new Date()
                         }
                     ]}
-                    onChange={this.handleStartChange}
+                    onChange={this.handleSubmit}
                 />
                 <form onSubmit={this.handleSubmit}>
                     <input type="submit" value="Search Cars"/>
