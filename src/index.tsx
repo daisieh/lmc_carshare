@@ -33,8 +33,8 @@ class SearchAvailabilityForm extends React.Component<SearchAvailabilityProps, Se
     }
 
     handleStartChange(event) {
-        event.preventDefault();
-        this.setState({startFieldValue: event.target.value})
+        //event.preventDefault();
+        this.setState({startFieldValue: event.toString()})
     }
 
     handleEndChange(event) {
@@ -44,23 +44,28 @@ class SearchAvailabilityForm extends React.Component<SearchAvailabilityProps, Se
 
     handleSubmit(event) {
         // event.preventDefault();
-        console.log("hello hello " + event.toString());
-        let time = moment(event.toString());
+        console.log("hello hello " + this.state.startFieldValue);
+        let time = moment(this.state.startFieldValue);
         this.props.submitTime(time.toString(), time.add(1,'hours').toString());
     }
 
     render() {
         return (
-            <DatePicker
-                format="YYYY-MM-DD HH:mm"
-                ranges={[
-                    {
-                        label: 'Now',
-                        value: new Date()
-                    }
-                ]}
-                onChange={this.handleSubmit}
-            />
+            <div>
+                <DatePicker
+                    format="YYYY-MM-DD HH:mm"
+                    ranges={[
+                        {
+                            label: 'Now',
+                            value: new Date()
+                        }
+                    ]}
+                    onChange={this.handleStartChange}
+                />
+                <form onSubmit={this.handleSubmit}>
+                    <input type="submit" value="Search Cars"/>
+                </form>
+            </div>
         );
     }
 }
