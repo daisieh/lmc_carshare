@@ -51,6 +51,13 @@ class SearchAvailabilityForm extends React.Component<SearchAvailabilityProps, Se
         this.props.submitTime(this.state.startFieldValue.toString(), this.state.endFieldValue.toString());
     }
 
+    handleStartClean(event) {
+        this.setState({startFieldValue: new Date()});
+    }
+
+    handleEndClean(event) {
+        this.setState({endFieldValue: new Date()});
+    }
     render() {
         return (
             <div>
@@ -63,6 +70,7 @@ class SearchAvailabilityForm extends React.Component<SearchAvailabilityProps, Se
                         }
                     ]}
                     onChange={this.handleStartChange}
+                    onClean={this.handleStartClean}
                     value={this.state.startFieldValue}
                 />
                 <DatePicker
@@ -74,6 +82,7 @@ class SearchAvailabilityForm extends React.Component<SearchAvailabilityProps, Se
                         }
                     ]}
                     onChange={this.handleEndChange}
+                    onClean={this.handleEndClean}
                     value={this.state.endFieldValue}
                 />
                 <Button onClick={this.handleSubmit}>Submit</Button>
