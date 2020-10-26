@@ -52,7 +52,7 @@ class SearchAvailabilityForm extends React.Component<SearchAvailabilityProps, Se
     }
 
     render() {
-        let disabled = (this.state.startFieldValue == null);
+        let disabled = (this.state.startFieldValue === null);
         console.log("hi " + disabled);
         return (
             <div>
