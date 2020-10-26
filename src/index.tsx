@@ -36,7 +36,7 @@ class SearchAvailabilityForm extends React.Component<SearchAvailabilityProps, Se
     }
 
     handleStartChange(event) {
-        console.log('start change');
+        console.log('start change' + event.toString());
         let time = moment(event.toString());
         this.setState({startFieldValue: time.toDate(), endFieldValue: time.add(1,'hour').toDate()});
         this.props.submitTime("","");
