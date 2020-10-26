@@ -231,7 +231,7 @@ class CarAvailablePicker extends React.Component<CarAvailableProps, CarAvailable
     }
 
     async updateAvailableCars(startTime: string, endTime: string) {
-        if (startTime == "" && endTime == "") {
+        if (startTime === "" && endTime === "") {
             console.log("reset");
             this.setState({
                 startTime: startTime,
