@@ -1,17 +1,39 @@
 (params) => {
-  // add the request to the google sheet
+  let requests = api.run("this.list_requests");
+  let values = [];
+  values.push(requests.shift());
+  // look for the request to see if it needs to be updated
+  let is_updated = false;
+  for (var i in requests) {
+    if (requests[i].threadId === params.threadId) {
+      console.log (`updating ${params.threadId}`);
+      requests[i] = params;
+      is_updated = true;
+    }
+  }
+  if (is_updated == false) {
+    // append to the end:
+    requests.push(params);
+  }
+  
+  // convert back to array for sheet:
   let parameters = {};
-  parameters.valueInputOption = 'USER_ENTERED';
-  parameters.range = 'Requests!A:F';
+  parameters.range = 'Requests!A:G';
   parameters.spreadsheetId = '1kyd3g0xuPYoyDuT6joT0gkl29YCFE56E2ktv6haRong';
-  parameters.responseValueRenderOption = 'FORMATTED_VALUE';
-  parameters.insertDataOption = 'INSERT_ROWS';
-  parameters.responseDateTimeRenderOption = 'FORMATTED_STRING';
-  parameters.$body = {
-//     threadId	vehicle	requester	start	end	confirmed
-    values : [ params.data ]
-  };
-  return api.run('google_sheets.append_sheet_values', parameters);
+  parameters.valueInputOption = "RAW";
+  for (var i in requests) {
+    let val = [];
+    for (var j in values[0]) {
+      val.push(requests[i][values[0][j]]);
+    }
+    values.push(val);
+  }
+  parameters.$body = { values : values };
+  let result = api.run('google_sheets.update_sheet_values', parameters);
+  if (result[0].updatedColumns != 7) {
+    throw "couldn't update requests";
+  }
+  return requests;
 }
 
 /*

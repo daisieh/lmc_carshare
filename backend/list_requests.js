@@ -5,6 +5,7 @@
   let raw_data = api.run("google_sheets.get_sheet_values", parameters)[0];
   let results = [];
   let names = raw_data.values[0];
+  results.push(names);
   for (var i in raw_data.values) {
     if (i == 0) continue;
     let row = raw_data.values[i];
