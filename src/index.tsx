@@ -53,6 +53,7 @@ class SearchAvailabilityForm extends React.Component<SearchAvailabilityProps, Se
     }
 
     handleStartClean(event) {
+        console.log("start clean");
         this.setState({startFieldValue: new Date()});
     }
 
