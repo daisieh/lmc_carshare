@@ -36,11 +36,15 @@ class SearchAvailabilityForm extends React.Component<SearchAvailabilityProps, Se
     }
 
     handleStartChange(event) {
-        this.setState({startFieldValue: event.toString()})
+        let time = moment(event.toString());
+        this.setState({startFieldValue: time.toDate(), endFieldValue: time.add(1,'hour').toDate()});
+        this.props.submitTime("","");
     }
 
     handleEndChange(event) {
-        this.setState({endFieldValue: event.target.value})
+        let time = moment(event.toString());
+        this.setState({endFieldValue: time.toDate()});
+        this.props.submitTime("","");
     }
 
     handleSubmit(event) {
@@ -48,8 +52,6 @@ class SearchAvailabilityForm extends React.Component<SearchAvailabilityProps, Se
     }
 
     render() {
-        let disabled = (this.state.startFieldValue === null);
-        console.log("hi " + disabled);
         return (
             <div>
                 <DatePicker
@@ -74,7 +76,7 @@ class SearchAvailabilityForm extends React.Component<SearchAvailabilityProps, Se
                     onChange={this.handleEndChange}
                     value={this.state.endFieldValue}
                 />
-                <Button onClick={this.handleSubmit} disabled={disabled}>Submit</Button>
+                <Button onClick={this.handleSubmit}>Submit</Button>
             </div>
         );
     }
@@ -229,6 +231,18 @@ class CarAvailablePicker extends React.Component<CarAvailableProps, CarAvailable
     }
 
     async updateAvailableCars(startTime: string, endTime: string) {
+        if (startTime == "" && endTime == "") {
+            console.log("reset");
+            this.setState({
+                startTime: startTime,
+                endTime: endTime,
+                cars: [],
+                chosenCar: "",
+                bookingText: "",
+                isInitialState: false
+            });
+            return;
+        }
         console.log(`looking for cars between ${startTime} ${endTime}`);
         let x = await transposit
             .run("get_cars_available_for_time", {start: startTime, end: endTime})
