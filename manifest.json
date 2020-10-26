@@ -247,7 +247,7 @@
         "type": "STRING",
         "default": "Label_3087422522999134978"
       }],
-      "exposeAppDataEndpoints": true
+      "exposeAppDataEndpoints": false
     }
   }
 }
