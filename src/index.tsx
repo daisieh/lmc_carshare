@@ -20,8 +20,8 @@ interface SearchAvailabilityProps {
 }
 
 interface SearchAvailabilityState {
-    startFieldValue: Date | null;
-    endFieldValue: Date | null;
+    startFieldValue: Date;
+    endFieldValue: Date;
 }
 
 class SearchAvailabilityForm extends React.Component<SearchAvailabilityProps, SearchAvailabilityState> {
@@ -66,9 +66,9 @@ class SearchAvailabilityForm extends React.Component<SearchAvailabilityProps, Se
                         }
                     ]}
                     onChange={this.handleStartChange}
-
+                    value={this.state.startFieldValue}
                 />
-                <Button key={"Submit"} onClick={this.handleSubmit} disabled={disabled}/>
+                <Button onClick={this.handleSubmit} disabled={disabled}>Submit</Button>
             </div>
         );
     }
