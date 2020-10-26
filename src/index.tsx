@@ -2,6 +2,7 @@ import * as React from "react";
 import {render} from "react-dom";
 import {BrowserRouter as Router, Route} from "react-router-dom";
 import {DatePicker} from 'rsuite';
+import {Button} from 'rsuite';
 import {Transposit, User} from "transposit";
 // import { Formik, Form, useField } from "formik";
 // import * as Yup from "yup";
@@ -50,14 +51,8 @@ class SearchAvailabilityForm extends React.Component<SearchAvailabilityProps, Se
     }
 
     render() {
-        let submitButton = '                <form onSubmit={this.handleSubmit}>\n' +
-            '                    <input type="submit" value="Search Cars"/>\n' +
-            '                </form>\n';
-        if (this.state.startFieldValue == null) {
-            submitButton = '';
-        } else {
-            console.log("submit");
-        }
+        let disabled = (this.state.startFieldValue == null);
+        console.log("hi " + disabled);
         return (
             <div>
                 <DatePicker
@@ -70,7 +65,7 @@ class SearchAvailabilityForm extends React.Component<SearchAvailabilityProps, Se
                     ]}
                     onChange={this.handleStartChange}
                 />
-                {submitButton}
+                <Button key={"Submit"} onClick={this.handleSubmit} disabled={disabled}/>
             </div>
         );
     }
