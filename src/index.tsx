@@ -31,25 +31,21 @@ class SearchAvailabilityForm extends React.Component<SearchAvailabilityProps, Se
         this.handleEndChange = this.handleEndChange.bind(this);
         this.handleSubmit = this.handleSubmit.bind(this);
         this.props.submitTime.bind(this);
-        let now = moment();
+        let now = moment().add(1,'hour').startOf('hour');
         this.state = { startFieldValue: now.toDate(), endFieldValue: now.add(1,'hour').toDate()};
     }
 
     handleStartChange(event) {
-        //event.preventDefault();
         this.setState({startFieldValue: event.toString()})
     }
 
     handleEndChange(event) {
-        event.preventDefault();
         this.setState({endFieldValue: event.target.value})
     }
 
     handleSubmit(event) {
-        // event.preventDefault();
-        console.log("hello hello " + this.state.startFieldValue);
         let time = moment(this.state.startFieldValue);
-        this.props.submitTime(time.toString(), time.add(1,'hours').toString());
+        this.props.submitTime(this.state.startFieldValue.toString(), this.state.endFieldValue.toString());
     }
 
     render() {
@@ -67,6 +63,17 @@ class SearchAvailabilityForm extends React.Component<SearchAvailabilityProps, Se
                     ]}
                     onChange={this.handleStartChange}
                     value={this.state.startFieldValue}
+                />
+                <DatePicker
+                    format="YYYY-MM-DD HH:mm"
+                    ranges={[
+                        {
+                            label: 'Now',
+                            value: new Date()
+                        }
+                    ]}
+                    onChange={this.handleEndChange}
+                    value={this.state.endFieldValue}
                 />
                 <Button onClick={this.handleSubmit} disabled={disabled}>Submit</Button>
             </div>
