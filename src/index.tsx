@@ -36,7 +36,11 @@ class SearchAvailabilityForm extends React.Component<SearchAvailabilityProps, Se
     }
 
     handleStartChange(event) {
-        let time = moment(event.toString());
+        let time = moment();
+        if (event) {
+            time = moment(event.toString());
+        }
+        console.log('start change ' + time.toString());
         this.setState({startFieldValue: time.toDate(), endFieldValue: time.add(1,'hour').toDate()});
         this.props.submitTime("","");
     }
@@ -166,6 +170,8 @@ class BookingStatus extends React.Component<BookingStatusProps, {}> {
         if (this.props.getChosenCar() != null) {
             let chosenCar = this.props.getChosenCar();
             let carDescription = "";
+            let startTime = moment(this.props.startTime).local().format("YYYY-MM-DD HH:MM");
+            let endTime = moment(this.props.endTime).local().format("YYYY-MM-DD HH:MM");
             if (chosenCar != null) {
                 carDescription = chosenCar.Description;
             }
@@ -173,16 +179,14 @@ class BookingStatus extends React.Component<BookingStatusProps, {}> {
             if (moment(this.props.endTime).isBefore(now) || moment(this.props.startTime).isBefore(now)) {
                 return (
                     <div>
-                        Either {this.props.startTime} or {this.props.endTime} is in the past.
+                        Either {startTime} or {endTime} is in the past.
                     </div>
                 )
             }
             return (
                 <div>
-                    You're about to book {carDescription} from {this.props.startTime} to {this.props.endTime}...
-                    <form onSubmit={this.handleSubmit}>
-                        <input type="submit" value="Book it!"/>
-                    </form>
+                    You're about to book {carDescription} from {startTime} to {endTime}...
+                    <Button onClick={this.handleSubmit}>Book it!</Button>
                 </div>
             );
         } else {
@@ -239,7 +243,7 @@ class CarAvailablePicker extends React.Component<CarAvailableProps, CarAvailable
                 cars: [],
                 chosenCar: "",
                 bookingText: "",
-                isInitialState: false
+                isInitialState: true
             });
             return;
         }
