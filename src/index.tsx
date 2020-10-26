@@ -31,7 +31,8 @@ class SearchAvailabilityForm extends React.Component<SearchAvailabilityProps, Se
         this.handleEndChange = this.handleEndChange.bind(this);
         this.handleSubmit = this.handleSubmit.bind(this);
         this.props.submitTime.bind(this);
-        this.setState({ startFieldValue: null, endFieldValue: null});
+        let now = moment();
+        this.state = { startFieldValue: now.toDate(), endFieldValue: now.add(1,'hour').toDate()};
     }
 
     handleStartChange(event) {
@@ -65,6 +66,7 @@ class SearchAvailabilityForm extends React.Component<SearchAvailabilityProps, Se
                         }
                     ]}
                     onChange={this.handleStartChange}
+
                 />
                 <Button key={"Submit"} onClick={this.handleSubmit} disabled={disabled}/>
             </div>
