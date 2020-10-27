@@ -307,14 +307,6 @@ class CarAvailablePicker extends React.Component<CarAvailableProps, CarAvailable
 
     render() {
         console.log(`Update CarAvailablePicker render for ${this.state.chosenCar}`);
-        if (this.state.isInitialState) {
-            return (
-                <div>
-                    <h2 className="greeting">Hello for the first time, {this.props.user.name}</h2>
-                    <SearchAvailabilityForm submitTime={this.updateAvailableCars}/>
-                </div>
-            );
-        }
         return (
             <div>
                 <h2 className="greeting">Hello, {this.props.user.name}</h2>
