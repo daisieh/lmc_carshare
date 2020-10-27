@@ -243,7 +243,7 @@ class CarAvailablePicker extends React.Component<CarAvailableProps, CarAvailable
                 cars: [],
                 chosenCar: "",
                 bookingText: "",
-                isInitialState: false
+                isInitialState: true
             });
             return;
         }
