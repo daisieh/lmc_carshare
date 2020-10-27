@@ -170,8 +170,8 @@ class BookingStatus extends React.Component<BookingStatusProps, {}> {
         if (this.props.getChosenCar() != null) {
             let chosenCar = this.props.getChosenCar();
             let carDescription = "";
-            let startTime = moment(this.props.startTime).local().format("YYYY-MM-DD HH:MM");
-            let endTime = moment(this.props.endTime).local().format("YYYY-MM-DD HH:MM");
+            let startTime = moment(this.props.startTime).format("YYYY-MM-DD HH:MM ZZ");
+            let endTime = moment(this.props.endTime).format("YYYY-MM-DD HH:MM ZZ");
             if (chosenCar != null) {
                 carDescription = chosenCar.Description;
             }
@@ -307,14 +307,6 @@ class CarAvailablePicker extends React.Component<CarAvailableProps, CarAvailable
 
     render() {
         console.log(`Update CarAvailablePicker render for ${this.state.chosenCar}`);
-        if (this.state.isInitialState) {
-            return (
-                <div>
-                    <h2 className="greeting">Hello for the first time, {this.props.user.name}</h2>
-                    <SearchAvailabilityForm submitTime={this.updateAvailableCars}/>
-                </div>
-            );
-        }
         return (
             <div>
                 <h2 className="greeting">Hello, {this.props.user.name}</h2>
