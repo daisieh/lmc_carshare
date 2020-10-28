@@ -192,7 +192,9 @@ class BookingStatus extends React.Component<BookingStatusProps, {}> {
             );
         } else {
             return (
-                <div></div>
+                <div>
+                    Check your email for a confirmation of your booking!
+                </div>
             );
         }
     }
