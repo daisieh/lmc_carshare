@@ -209,8 +209,6 @@ interface CarAvailableProps {
 interface CarAvailableState {
     startTime: string;
     endTime: string;
-    startPacificTime: string;
-    endPacificTime: string;
     user: { name: string; email: string; };
     cars: Car[];
     chosenCar: string;
@@ -224,8 +222,6 @@ class CarAvailablePicker extends React.Component<CarAvailableProps, CarAvailable
         this.state = {
             startTime: this.props.startTime,
             endTime: this.props.endTime,
-            startPacificTime: "",
-            endPacificTime: "",
             cars: this.props.cars,
             chosenCar: this.props.chosenCar,
             user: this.props.user,
@@ -262,8 +258,6 @@ class CarAvailablePicker extends React.Component<CarAvailableProps, CarAvailable
         this.setState({
             startTime: x.results[0].start,
             endTime: x.results[0].end,
-            startPacificTime: x.results[0].startPacific,
-            endPacificTime: x.results[0].endPacific,
             cars: x.results[0].cars as Car[],
             chosenCar: "",
             bookingText: "",
@@ -321,7 +315,7 @@ class CarAvailablePicker extends React.Component<CarAvailableProps, CarAvailable
                 <AvailableCars cars={this.state.cars} passToParent={this.chooseCar} getChosenCar={this.getChosenCar}/>
                 <BookingStatus reserveCar={this.bookCar} getChosenCar={this.getChosenCar}
                                startTime={this.state.startTime} endTime={this.state.endTime}
-                               startDisplayTime={this.state.startPacificTime} endDisplayTime={this.state.endPacificTime}
+                               startDisplayTime={this.state.startTime} endDisplayTime={this.state.endTime}
                 />
             </div>
         );
