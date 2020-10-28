@@ -1,9 +1,8 @@
 (params) => {
   const moment = require('moment-timezone-with-data.js');
   let calendars = api.run("this.list_car_calendarlist")[0];
-  let times = api.run("this.normalize_times", {start_datetime: params.start, end_datetime: params.end})[0];
-  let startTime = moment(times.start).tz("America/Vancouver").format("YYYY-MM-DD HH:mm zz");
-  let endTime = moment(times.end).tz("America/Vancouver").format("YYYY-MM-DD HH:mm zz");
+  let startTime = moment(params.start).tz("America/Vancouver");
+  let endTime = moment(params.end).tz("America/Vancouver");
   console.log(`looking for cars between ${startTime} and ${endTime}`);
   let cars = api.run("this.list_cars")[0];
   let available_cars = [];
@@ -11,7 +10,7 @@
   for (var i in calendars) {
     calendar_ids.push({id: calendars[i].id});
   }
-  let freebusy = api.run('google_calendar.get_calendars_freebusy', {$body: { timeMax : times.end, timeMin : times.start, items : calendar_ids , timeZone: 'America/Vancouver'}})[0];
+  let freebusy = api.run('google_calendar.get_calendars_freebusy', {$body: { timeMax : endTime, timeMin : startTime, items : calendar_ids , timeZone: 'America/Vancouver'}})[0];
   // return freebusy;
   
   for (var i in calendars) {
@@ -29,13 +28,9 @@
       }
     }
   }
-  //return available_cars.map((x) => { return { Description: x.Description, Email: x.Email }; });
-  //return api.run("this.get_features_list", { cars: available_cars });
   return { 
-    start: moment(times.start).format(), 
-    end: moment(times.end).format(), 
-    startPacific: startTime, 
-    endPacific: endTime,
+    start: startTime.format("YYYY-MM-DD HH:mm zz"), 
+    end: endTime.format("YYYY-MM-DD HH:mm zz"), 
     cars: available_cars
   };
 }
