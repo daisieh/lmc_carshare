@@ -177,6 +177,12 @@ class BookingStatus extends React.Component<BookingStatusProps, {}> {
 
     render() {
         if (this.props.bookingComplete) {
+            return (
+                <div>
+                    Check your email for a confirmation of your booking!
+                </div>
+            );
+        } else if (this.props.getChosenCar() !== null) {
             let chosenCar = this.props.getChosenCar();
             let carDescription = "";
             if (chosenCar != null) {
@@ -198,9 +204,7 @@ class BookingStatus extends React.Component<BookingStatusProps, {}> {
             );
         } else {
             return (
-                <div>
-                    Check your email for a confirmation of your booking!
-                </div>
+                <div></div>
             );
         }
     }
