@@ -1,4 +1,5 @@
 (params) => {
+  const moment = require('moment.js');
   let car = api.run("this.get_car", {owner: params.vehicle})[0];
   let calendar_id = api.run("this.list_car_calendarlist")[0][car.Licence].id;
   let request = { vehicle: car.Licence,
@@ -36,10 +37,10 @@
     summary : `${request.requester} using ${car.Description}`,
     conferenceDataVersion: 0,
     start : {
-      dateTime : request.start
+      dateTime : moment(request.start).format()
     },
     end : {
-      dateTime : request.end
+      dateTime : moment(request.end).format()
     },
     attendees : [{'email': request.requester, responseStatus: "accepted"}]
   };
