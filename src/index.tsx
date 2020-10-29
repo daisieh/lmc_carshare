@@ -16,12 +16,13 @@ const transposit = new Transposit(
 
 
 interface SearchAvailabilityProps {
-    submitTime: (startTime: string, endTime: string) => void;
+    updateTime: (startTime: string, endTime: string) => void;
+    submitTimes: () => void;
+    startTimeValue: string;
+    endTimeValue: string;
 }
 
 interface SearchAvailabilityState {
-    startFieldValue: Date;
-    endFieldValue: Date;
 }
 
 class SearchAvailabilityForm extends React.Component<SearchAvailabilityProps, SearchAvailabilityState> {
@@ -30,30 +31,29 @@ class SearchAvailabilityForm extends React.Component<SearchAvailabilityProps, Se
         this.handleStartChange = this.handleStartChange.bind(this);
         this.handleEndChange = this.handleEndChange.bind(this);
         this.handleSubmit = this.handleSubmit.bind(this);
-        this.props.submitTime.bind(this);
-        let now = moment().add(1,'hour').startOf('hour');
-        this.state = { startFieldValue: now.toDate(), endFieldValue: now.add(1,'hour').toDate()};
+        this.props.updateTime.bind(this);
+        this.props.submitTimes.bind(this);
+        this.props.updateTime("", "");
     }
 
     handleStartChange(event) {
-        let time = moment();
         if (event) {
-            time = moment(event.toString());
+            this.props.updateTime(moment(event.toString()).format(), "");
+        } else {
+            this.props.updateTime("", "");
         }
-        console.log('start change ' + time.toString());
-        this.setState({startFieldValue: time.toDate(), endFieldValue: time.add(1,'hour').toDate()});
-        this.props.submitTime("","");
     }
 
     handleEndChange(event) {
-        let time = moment(event.toString());
-        this.setState({endFieldValue: time.toDate()});
-        this.props.submitTime("","");
+        if (event) {
+            this.props.updateTime("", moment(event.toString()).format());
+        } else {
+            this.props.updateTime("", "");
+        }
     }
 
     handleSubmit(event) {
-        console.log("handleSubmit " + this.state.startFieldValue.toString() + " " + this.state.endFieldValue.toString())
-        this.props.submitTime(this.state.startFieldValue.toString(), this.state.endFieldValue.toString());
+        this.props.submitTimes();
     }
 
     render() {
@@ -61,25 +61,13 @@ class SearchAvailabilityForm extends React.Component<SearchAvailabilityProps, Se
             <div>
                 <DatePicker
                     format="YYYY-MM-DD HH:mm"
-                    ranges={[
-                        {
-                            label: 'Now',
-                            value: new Date()
-                        }
-                    ]}
                     onChange={this.handleStartChange}
-                    value={this.state.startFieldValue}
+                    value={new Date(this.props.startTimeValue)}
                 />
                 <DatePicker
                     format="YYYY-MM-DD HH:mm"
-                    ranges={[
-                        {
-                            label: 'Now',
-                            value: new Date()
-                        }
-                    ]}
                     onChange={this.handleEndChange}
-                    value={this.state.endFieldValue}
+                    value={new Date(this.props.endTimeValue)}
                 />
                 <Button onClick={this.handleSubmit}>Submit</Button>
             </div>
@@ -91,6 +79,7 @@ interface AvailableCarsProps {
     cars: Car[];
     passToParent: (chosenCar: string) => void;
     getChosenCar: () => Car | null;
+    carsListed: boolean;
 }
 
 class AvailableCars extends React.Component<AvailableCarsProps, {}> {
@@ -110,40 +99,44 @@ class AvailableCars extends React.Component<AvailableCarsProps, {}> {
     }
 
     render() {
-        let chosenCar = this.props.getChosenCar();
-        let email = "";
-        if (chosenCar != null) {
-            email = chosenCar.Email;
-        }
-        console.log(`there are ${this.props.cars.length} cars, chosen car is ${email}`);
-        if (this.props.cars.length === 0) {
-            console.log("AvailableCars has no cars");
-            return (<div>No cars available at this time</div>);
-        }
-        let rows = this.props.cars.map((car) => {
-            let isChosenCar = (email === car.Email);
-            return (
-                <div className="car_check">
-                    <label>
-                        <input
-                            type="radio"
-                            name="car"
-                            value={car.Email}
-                            checked={isChosenCar}
-                            className="form-check-input"
-                            onChange={this.onClick}
-                        />
-                        {car.Description}
-                    </label>
-                </div>
-            )
-        });
+        if (this.props.carsListed) {
+            let chosenCar = this.props.getChosenCar();
+            let email = "";
+            if (chosenCar != null) {
+                email = chosenCar.Email;
+            }
+            console.log(`there are ${this.props.cars.length} cars, chosen car is ${email}`);
+            if (this.props.cars.length === 0) {
+                console.log("AvailableCars has no cars");
+                return (<div>No cars available at this time</div>);
+            }
+            let rows = this.props.cars.map((car) => {
+                let isChosenCar = (email === car.Email);
+                return (
+                    <div className="car_check">
+                        <label>
+                            <input
+                                type="radio"
+                                name="car"
+                                value={car.Email}
+                                checked={isChosenCar}
+                                className="form-check-input"
+                                onChange={this.onClick}
+                            />
+                            {car.Description}
+                        </label>
+                    </div>
+                )
+            });
 
-        return (
-            <form>
-                {rows}
-            </form>
-        );
+            return (
+                <form>
+                    {rows}
+                </form>
+            );
+        } else {
+            return ( <div></div>);
+        }
     }
 }
 
@@ -154,6 +147,7 @@ interface BookingStatusProps {
     endTime: string;
     startDisplayTime: string;
     endDisplayTime: string;
+    bookingComplete: boolean;
 }
 
 class BookingStatus extends React.Component<BookingStatusProps, {}> {
@@ -170,20 +164,27 @@ class BookingStatus extends React.Component<BookingStatusProps, {}> {
     }
 
     render() {
-        if (this.props.getChosenCar() != null) {
+        if (this.props.bookingComplete) {
+            return (
+                <div>
+                    Check your email for a confirmation of your booking!
+                </div>
+            );
+        } else if (this.props.getChosenCar() !== null) {
+            console.log(this.props.getChosenCar());
             let chosenCar = this.props.getChosenCar();
             let carDescription = "";
             if (chosenCar != null) {
                 carDescription = chosenCar.Description;
             }
-            let now = moment();
-            if (moment(this.props.endTime).isBefore(now) || moment(this.props.startTime).isBefore(now)) {
-                return (
-                    <div>
-                        Either {this.props.startDisplayTime} or {this.props.endDisplayTime} is in the past.
-                    </div>
-                )
-            }
+            // let now = moment();
+            // if (moment(this.props.endTime).isBefore(now) || moment(this.props.startTime).isBefore(now)) {
+            //     return (
+            //         <div>
+            //             Either {this.props.startDisplayTime} or {this.props.endDisplayTime} is in the past.
+            //         </div>
+            //     )
+            // }
             return (
                 <div>
                     You're about to book {carDescription} from {this.props.startDisplayTime} to {this.props.endDisplayTime}...
@@ -192,9 +193,7 @@ class BookingStatus extends React.Component<BookingStatusProps, {}> {
             );
         } else {
             return (
-                <div>
-                    Check your email for a confirmation of your booking!
-                </div>
+                <div></div>
             );
         }
     }
@@ -214,8 +213,8 @@ interface CarAvailableState {
     user: { name: string; email: string; };
     cars: Car[];
     chosenCar: string;
-    bookingText: string;
-    isInitialState: boolean;
+    bookingComplete: boolean;
+    carsListed: boolean;
 }
 
 class CarAvailablePicker extends React.Component<CarAvailableProps, CarAvailableState> {
@@ -227,29 +226,58 @@ class CarAvailablePicker extends React.Component<CarAvailableProps, CarAvailable
             cars: this.props.cars,
             chosenCar: this.props.chosenCar,
             user: this.props.user,
-            bookingText: "",
-            isInitialState: true
+            bookingComplete: false,
+            carsListed: false
         };
         this.updateAvailableCars = this.updateAvailableCars.bind(this);
+        this.updateTimes = this.updateTimes.bind(this);
         this.bookCar = this.bookCar.bind(this);
         this.chooseCar = this.chooseCar.bind(this);
         this.successCallback = this.successCallback.bind(this);
         this.getChosenCar = this.getChosenCar.bind(this);
+        this.updateTimes("","");
     }
 
-    async updateAvailableCars(startTime: string, endTime: string) {
+    updateTimes(startTime: string, endTime: string) {
+        let start = moment().add(1,'hour').startOf('hour');
+        let end = start.clone().add(1,'hour');
         if (startTime === "" && endTime === "") {
-            console.log("reset");
+            console.log(`reset to ${start.format()} and ${end.format()}`);
             this.setState({
-                startTime: startTime,
-                endTime: endTime,
+                startTime: start.format(),
+                endTime: end.format(),
                 cars: [],
                 chosenCar: "",
-                bookingText: "",
-                isInitialState: true
+                bookingComplete: false,
+                carsListed: false
             });
             return;
+        } else if (endTime !== "") {
+            end = moment(endTime);
+            // set start to at least an hour before
+            if (start.add(1, "hour").isAfter(end)) {
+                start = end.clone().subtract(1, "hour");
+            }
+            console.log("endtime " + start.format() + " " + end.format());
+        } else if (startTime !== "") {
+            start = moment(startTime);
+            // set end to at least an hour after
+            if (end.subtract(1,"hour").isBefore(start)) {
+                end = start.clone().add(1, "hour");
+            }
+            console.log("starttime " + start.format() + " " + end.format());
         }
+        this.setState({
+            startTime: start.format(),
+            endTime: end.format(),
+            carsListed: true
+        });
+        this.chooseCar("");
+    }
+
+    async updateAvailableCars() {
+        let startTime = this.state.startTime;
+        let endTime = this.state.endTime;
         console.log(`looking for cars between ${startTime} ${endTime}`);
         let x = await transposit
             .run("get_cars_available_for_time", {start: startTime, end: endTime})
@@ -258,12 +286,9 @@ class CarAvailablePicker extends React.Component<CarAvailableProps, CarAvailable
                 console.log(response);
             });
         this.setState({
-            startTime: x.results[0].start,
-            endTime: x.results[0].end,
             cars: x.results[0].cars as Car[],
             chosenCar: "",
-            bookingText: "",
-            isInitialState: false
+            carsListed: true
         });
         this.chooseCar("");
         console.log(x);
@@ -278,14 +303,28 @@ class CarAvailablePicker extends React.Component<CarAvailableProps, CarAvailable
     }
 
     getChosenCar() {
-        let carEmails = this.state.cars.map((x) => {
-            return x.Email;
-        });
-        if (carEmails.length > 0) {
+        if (this.state.cars.length > 0) {
+            let carEmails = this.state.cars.map((x) => {
+                return x.Email;
+            });
             let carIndex = carEmails.indexOf(this.state.chosenCar);
+            if (carIndex < 0) {
+                return null;
+            }
             return this.state.cars[carIndex];
         }
         return null;
+    }
+
+    resetPicker() {
+        this.setState({
+                cars: [],
+                chosenCar: "",
+                bookingComplete: false,
+                carsListed: false
+            }
+        );
+        this.updateTimes("","");
     }
 
     async bookCar() {
@@ -301,8 +340,8 @@ class CarAvailablePicker extends React.Component<CarAvailableProps, CarAvailable
                 console.log(response);
             });
         if (x.results[0] != null) {
-            let bookingText = `Booking ${x.results[0].status} for ${this.state.chosenCar} from ${this.state.startTime} to ${this.state.endTime}! Check your email at ${this.state.user.email} for a confirmation.`;
-            this.setState({chosenCar: "", startTime: "", endTime: "", cars: [], bookingText: bookingText});
+            this.resetPicker();
+            this.setState({chosenCar: "", cars: [], carsListed: false, bookingComplete: true});
         }
         console.log(x);
         return x;
@@ -313,9 +352,10 @@ class CarAvailablePicker extends React.Component<CarAvailableProps, CarAvailable
         return (
             <div>
                 <h2 className="greeting">Hello, {this.props.user.name}</h2>
-                <SearchAvailabilityForm submitTime={this.updateAvailableCars}/>
-                <AvailableCars cars={this.state.cars} passToParent={this.chooseCar} getChosenCar={this.getChosenCar}/>
-                <BookingStatus reserveCar={this.bookCar} getChosenCar={this.getChosenCar}
+                <SearchAvailabilityForm updateTime={this.updateTimes} submitTimes={this.updateAvailableCars}
+                                        startTimeValue={this.state.startTime} endTimeValue={this.state.endTime}/>
+                <AvailableCars cars={this.state.cars} passToParent={this.chooseCar} getChosenCar={this.getChosenCar} carsListed={this.state.carsListed}/>
+                <BookingStatus reserveCar={this.bookCar} getChosenCar={this.getChosenCar} bookingComplete={this.state.bookingComplete}
                                startTime={this.state.startTime} endTime={this.state.endTime}
                                startDisplayTime={this.state.startTime} endDisplayTime={this.state.endTime}
                 />
