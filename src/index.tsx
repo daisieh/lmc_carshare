@@ -270,12 +270,14 @@ class CarAvailablePicker extends React.Component<CarAvailableProps, CarAvailable
             if (start.isSameOrAfter(end.subtract(1,"hour"))) {
                 start = end.subtract(1, "hour");
             }
+            console.log("endtime " + start.format() + " " + end.format);
         } else if (startTime !== "") {
             start = moment(startTime);
             // set end to at least an hour after
             if (end.isBefore(start.add(1,"hour"))) {
                 end = start.add(1, "hour");
             }
+            console.log("starttime " + start.format() + " " + end.format);
         }
         this.setState({
             startTime: start.format(),
