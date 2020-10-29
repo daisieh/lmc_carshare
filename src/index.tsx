@@ -16,12 +16,13 @@ const transposit = new Transposit(
 
 
 interface SearchAvailabilityProps {
-    submitTime: (startTime: string, endTime: string) => void;
+    updateTime: (startTime: string, endTime: string) => void;
+    submitTimes: () => void;
+    startTimeValue: string;
+    endTimeValue: string;
 }
 
 interface SearchAvailabilityState {
-    startFieldValue: Date;
-    endFieldValue: Date;
 }
 
 class SearchAvailabilityForm extends React.Component<SearchAvailabilityProps, SearchAvailabilityState> {
@@ -30,9 +31,9 @@ class SearchAvailabilityForm extends React.Component<SearchAvailabilityProps, Se
         this.handleStartChange = this.handleStartChange.bind(this);
         this.handleEndChange = this.handleEndChange.bind(this);
         this.handleSubmit = this.handleSubmit.bind(this);
-        this.props.submitTime.bind(this);
-        let now = moment().add(1,'hour').startOf('hour');
-        this.state = { startFieldValue: now.toDate(), endFieldValue: now.add(1,'hour').toDate()};
+        this.props.updateTime.bind(this);
+        this.props.submitTimes.bind(this);
+        this.props.updateTime("", "");
     }
 
     handleStartChange(event) {
@@ -41,19 +42,19 @@ class SearchAvailabilityForm extends React.Component<SearchAvailabilityProps, Se
             time = moment(event.toString());
         }
         console.log('start change ' + time.toString());
-        this.setState({startFieldValue: time.toDate(), endFieldValue: time.add(1,'hour').toDate()});
-        this.props.submitTime("","");
+        this.props.updateTime(time.format(), "");
     }
 
     handleEndChange(event) {
-        let time = moment(event.toString());
-        this.setState({endFieldValue: time.toDate()});
-        this.props.submitTime("","");
+        let time = moment();
+        if (event) {
+            time = moment(event.toString());
+        }
+        this.props.updateTime("", time.format());
     }
 
     handleSubmit(event) {
-        console.log("handleSubmit " + this.state.startFieldValue.toString() + " " + this.state.endFieldValue.toString())
-        this.props.submitTime(this.state.startFieldValue.toString(), this.state.endFieldValue.toString());
+        this.props.submitTimes();
     }
 
     render() {
@@ -68,7 +69,7 @@ class SearchAvailabilityForm extends React.Component<SearchAvailabilityProps, Se
                         }
                     ]}
                     onChange={this.handleStartChange}
-                    value={this.state.startFieldValue}
+                    value={new Date(this.props.startTimeValue)}
                 />
                 <DatePicker
                     format="YYYY-MM-DD HH:mm"
@@ -79,7 +80,7 @@ class SearchAvailabilityForm extends React.Component<SearchAvailabilityProps, Se
                         }
                     ]}
                     onChange={this.handleEndChange}
-                    value={this.state.endFieldValue}
+                    value={new Date(this.props.endTimeValue)}
                 />
                 <Button onClick={this.handleSubmit}>Submit</Button>
             </div>
@@ -241,23 +242,52 @@ class CarAvailablePicker extends React.Component<CarAvailableProps, CarAvailable
             carsListed: false
         };
         this.updateAvailableCars = this.updateAvailableCars.bind(this);
+        this.updateTimes = this.updateTimes.bind(this);
         this.bookCar = this.bookCar.bind(this);
         this.chooseCar = this.chooseCar.bind(this);
         this.successCallback = this.successCallback.bind(this);
         this.getChosenCar = this.getChosenCar.bind(this);
     }
 
-    async updateAvailableCars(startTime: string, endTime: string) {
+    updateTimes(startTime: string, endTime: string) {
+        let now = moment();
+        let start = now.startOf('hour');
+        let end = now.add(1,'hour').startOf('hour');
         if (startTime === "" && endTime === "") {
             console.log("reset");
             this.setState({
+                startTime: start.format(),
+                endTime: end.format(),
                 cars: [],
                 chosenCar: "",
                 bookingComplete: false,
                 carsListed: false
             });
             return;
+        } else if (endTime !== "") {
+            end = moment(endTime);
+            // set start to at least an hour before
+            if (start.isSameOrAfter(end.subtract(1,"hour"))) {
+                start = end.subtract(1, "hour");
+            }
+        } else if (startTime !== "") {
+            start = moment(startTime);
+            // set end to at least an hour after
+            if (end.isBefore(start.add(1,"hour"))) {
+                end = start.add(1, "hour");
+            }
         }
+        this.setState({
+            startTime: start.format(),
+            endTime: end.format(),
+            carsListed: true
+        });
+        this.chooseCar("");
+    }
+
+    async updateAvailableCars() {
+        let startTime = this.state.startTime;
+        let endTime = this.state.endTime;
         console.log(`looking for cars between ${startTime} ${endTime}`);
         let x = await transposit
             .run("get_cars_available_for_time", {start: startTime, end: endTime})
@@ -331,7 +361,8 @@ class CarAvailablePicker extends React.Component<CarAvailableProps, CarAvailable
         return (
             <div>
                 <h2 className="greeting">Hello, {this.props.user.name}</h2>
-                <SearchAvailabilityForm submitTime={this.updateAvailableCars}/>
+                <SearchAvailabilityForm updateTime={this.updateTimes} submitTimes={this.updateAvailableCars}
+                                        startTimeValue={this.state.startTime} endTimeValue={this.state.endTime}/>
                 <AvailableCars cars={this.state.cars} passToParent={this.chooseCar} getChosenCar={this.getChosenCar} carsListed={this.state.carsListed}/>
                 <BookingStatus reserveCar={this.bookCar} getChosenCar={this.getChosenCar} bookingComplete={this.state.bookingComplete}
                                startTime={this.state.startTime} endTime={this.state.endTime}
