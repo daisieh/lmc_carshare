@@ -251,8 +251,6 @@ class CarAvailablePicker extends React.Component<CarAvailableProps, CarAvailable
         if (startTime === "" && endTime === "") {
             console.log("reset");
             this.setState({
-                startTime: startTime,
-                endTime: endTime,
                 cars: [],
                 chosenCar: "",
                 bookingComplete: false,
@@ -322,7 +320,7 @@ class CarAvailablePicker extends React.Component<CarAvailableProps, CarAvailable
                 console.log(response);
             });
         if (x.results[0] != null) {
-            this.setState({chosenCar: "", startTime: "", endTime: "", cars: [], bookingComplete: true});
+            this.setState({chosenCar: "", startTime: "", endTime: "", cars: [], carsListed: false, bookingComplete: true});
         }
         console.log(x);
         return x;
