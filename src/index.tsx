@@ -20,6 +20,7 @@ interface SearchAvailabilityProps {
     submitTimes: () => void;
     startTimeValue: string;
     endTimeValue: string;
+    carsListed: boolean;
 }
 
 interface SearchAvailabilityState {
@@ -63,11 +64,13 @@ class SearchAvailabilityForm extends React.Component<SearchAvailabilityProps, Se
                     format="YYYY-MM-DD HH:mm"
                     onChange={this.handleStartChange}
                     value={new Date(this.props.startTimeValue)}
+                    disabled={!this.props.carsListed}
                 />
                 <DatePicker
                     format="YYYY-MM-DD HH:mm"
                     onChange={this.handleEndChange}
                     value={new Date(this.props.endTimeValue)}
+                    disabled={!this.props.carsListed}
                 />
                 <Button onClick={this.handleSubmit}>Submit</Button>
             </div>
@@ -353,7 +356,8 @@ class CarAvailablePicker extends React.Component<CarAvailableProps, CarAvailable
             <div>
                 <h2 className="greeting">Hello, {this.props.user.name}</h2>
                 <SearchAvailabilityForm updateTime={this.updateTimes} submitTimes={this.updateAvailableCars}
-                                        startTimeValue={this.state.startTime} endTimeValue={this.state.endTime}/>
+                                        startTimeValue={this.state.startTime} endTimeValue={this.state.endTime}
+                                        carsListed={this.state.carsListed}/>
                 <AvailableCars cars={this.state.cars} passToParent={this.chooseCar} getChosenCar={this.getChosenCar} carsListed={this.state.carsListed}/>
                 <BookingStatus reserveCar={this.bookCar} getChosenCar={this.getChosenCar} bookingComplete={this.state.bookingComplete}
                                startTime={this.state.startTime} endTime={this.state.endTime}
