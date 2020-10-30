@@ -247,6 +247,7 @@ class CarAvailablePicker extends React.Component<CarAvailableProps, CarAvailable
         this.chooseCar = this.chooseCar.bind(this);
         this.successCallback = this.successCallback.bind(this);
         this.getChosenCar = this.getChosenCar.bind(this);
+        this.updateTimes("","");
     }
 
     updateTimes(startTime: string, endTime: string) {
@@ -254,7 +255,7 @@ class CarAvailablePicker extends React.Component<CarAvailableProps, CarAvailable
         let start = now.startOf('hour');
         let end = now.add(1,'hour').startOf('hour');
         if (startTime === "" && endTime === "") {
-            console.log("reset");
+            console.log(`reset to ${start.format()} and ${end.format()}`);
             this.setState({
                 startTime: start.format(),
                 endTime: end.format(),
