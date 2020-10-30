@@ -284,7 +284,7 @@ class CarAvailablePicker extends React.Component<CarAvailableProps, CarAvailable
     successCallback(results) {
         console.log(results.results[0]);
         this.setState({
-            cars: results[0].cars as Car[],
+            cars: results.results[0].cars as Car[],
             chosenCar: "",
             carsListed: true
         });
