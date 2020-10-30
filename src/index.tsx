@@ -335,9 +335,10 @@ class CarAvailablePicker extends React.Component<CarAvailableProps, CarAvailable
             });
         if (x.results[0] != null) {
             this.resetPicker();
-            this.setState({chosenCar: "", cars: [], carsListed: false, bookingComplete: true});
+            this.setState({bookingComplete: true});
         }
         console.log(x);
+        this.setState({chosenCar: "", cars: [], carsListed: false});
         return x;
     }
 
