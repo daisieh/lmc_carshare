@@ -119,7 +119,7 @@ class AvailableCars extends React.Component<AvailableCarsProps, {}> {
             let rows = this.props.cars.map((car) => {
                 let isChosenCar = (email === car.Email);
                 return (
-                        <Radio checked={isChosenCar} onChange={this.onClick}>{car.Description}</Radio>
+                        <Radio checked={isChosenCar} onChange={this.onClick}>{car.Description} value={car.Email}</Radio>
                 )
             });
 
