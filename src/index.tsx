@@ -171,6 +171,7 @@ class BookingStatus extends React.Component<BookingStatusProps, {}> {
                 </div>
             );
         } else if (this.props.getChosenCar() !== null) {
+            console.log(this.props.getChosenCar());
             let chosenCar = this.props.getChosenCar();
             let carDescription = "";
             if (chosenCar != null) {
