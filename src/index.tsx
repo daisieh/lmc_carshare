@@ -37,20 +37,19 @@ class SearchAvailabilityForm extends React.Component<SearchAvailabilityProps, Se
     }
 
     handleStartChange(event) {
-        let time = moment();
         if (event) {
-            time = moment(event.toString());
+            this.props.updateTime(moment(event.toString()).format(), "");
+        } else {
+            this.props.updateTime("", "");
         }
-        console.log('start change ' + time.toString());
-        this.props.updateTime(time.format(), "");
     }
 
     handleEndChange(event) {
-        let time = moment();
         if (event) {
-            time = moment(event.toString());
+            this.props.updateTime("", moment(event.toString()).format());
+        } else {
+            this.props.updateTime("", "");
         }
-        this.props.updateTime("", time.format());
     }
 
     handleSubmit(event) {
@@ -178,13 +177,13 @@ class BookingStatus extends React.Component<BookingStatusProps, {}> {
                 carDescription = chosenCar.Description;
             }
             let now = moment();
-            if (moment(this.props.endTime).isBefore(now) || moment(this.props.startTime).isBefore(now)) {
-                return (
-                    <div>
-                        Either {this.props.startDisplayTime} or {this.props.endDisplayTime} is in the past.
-                    </div>
-                )
-            }
+            // if (moment(this.props.endTime).isBefore(now) || moment(this.props.startTime).isBefore(now)) {
+            //     return (
+            //         <div>
+            //             Either {this.props.startDisplayTime} or {this.props.endDisplayTime} is in the past.
+            //         </div>
+            //     )
+            // }
             return (
                 <div>
                     You're about to book {carDescription} from {this.props.startDisplayTime} to {this.props.endDisplayTime}...
