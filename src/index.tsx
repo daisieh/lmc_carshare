@@ -303,10 +303,10 @@ class CarAvailablePicker extends React.Component<CarAvailableProps, CarAvailable
     }
 
     getChosenCar() {
-        let carEmails = this.state.cars.map((x) => {
-            return x.Email;
-        });
-        if (carEmails.length > 0) {
+        if (this.state.cars.length > 0) {
+            let carEmails = this.state.cars.map((x) => {
+                return x.Email;
+            });
             let carIndex = carEmails.indexOf(this.state.chosenCar);
             if (carIndex < 0) {
                 return null;
