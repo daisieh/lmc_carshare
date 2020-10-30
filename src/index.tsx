@@ -1,8 +1,7 @@
 import * as React from "react";
 import {render} from "react-dom";
 import {BrowserRouter as Router, Route} from "react-router-dom";
-import {DatePicker} from 'rsuite';
-import {Button} from 'rsuite';
+import {DatePicker, Button, Radio} from 'rsuite';
 import {Transposit, User} from "transposit";
 // import { Formik, Form, useField } from "formik";
 // import * as Yup from "yup";
@@ -95,8 +94,9 @@ class AvailableCars extends React.Component<AvailableCarsProps, {}> {
         this.props.getChosenCar.bind(this);
     }
 
-    onClick(event) {
-        let chosenCar = event.target.value;
+    onClick(value, checked, event) {
+        console.log(value);
+        let chosenCar = value;
         console.log(`chosenCar = ${chosenCar}`);
         this.setState(() => {
             this.props.passToParent(chosenCar);
@@ -119,26 +119,14 @@ class AvailableCars extends React.Component<AvailableCarsProps, {}> {
             let rows = this.props.cars.map((car) => {
                 let isChosenCar = (email === car.Email);
                 return (
-                    <div className="car_check">
-                        <label>
-                            <input
-                                type="radio"
-                                name="car"
-                                value={car.Email}
-                                checked={isChosenCar}
-                                className="form-check-input"
-                                onChange={this.onClick}
-                            />
-                            {car.Description}
-                        </label>
-                    </div>
+                        <Radio checked={isChosenCar} onChange={this.onClick} value={car.Email}>{car.Description}</Radio>
                 )
             });
 
             return (
-                <form>
+                <div>
                     {rows}
-                </form>
+                </div>
             );
         } else {
             return ( <div></div>);
@@ -285,22 +273,22 @@ class CarAvailablePicker extends React.Component<CarAvailableProps, CarAvailable
         let startTime = this.state.startTime;
         let endTime = this.state.endTime;
         console.log(`looking for cars between ${startTime} ${endTime}`);
-        let x = await transposit
+        await transposit
             .run("get_cars_available_for_time", {start: startTime, end: endTime})
             .then(this.successCallback)
             .catch(response => {
                 console.log(response);
             });
+    }
+
+    successCallback(results) {
+        console.log(results.results[0]);
         this.setState({
-            cars: x.results[0].cars as Car[],
+            cars: results.results[0].cars as Car[],
             chosenCar: "",
             carsListed: true
         });
         this.chooseCar("");
-        console.log(x);
-    }
-
-    successCallback(results) {
         return results;
     }
 
@@ -347,9 +335,10 @@ class CarAvailablePicker extends React.Component<CarAvailableProps, CarAvailable
             });
         if (x.results[0] != null) {
             this.resetPicker();
-            this.setState({chosenCar: "", cars: [], carsListed: false, bookingComplete: true});
+            this.setState({bookingComplete: true});
         }
         console.log(x);
+        this.setState({chosenCar: "", cars: [], carsListed: false});
         return x;
     }
 
