@@ -240,6 +240,7 @@ class CarAvailablePicker extends React.Component<CarAvailableProps, CarAvailable
         this.chooseCar = this.chooseCar.bind(this);
         this.successCallback = this.successCallback.bind(this);
         this.getChosenCar = this.getChosenCar.bind(this);
+        this.resetPicker = this.resetPicker.bind(this);
         this.updateTimes("","");
     }
 
