@@ -94,7 +94,7 @@ class AvailableCars extends React.Component<AvailableCarsProps, {}> {
         this.props.getChosenCar.bind(this);
     }
 
-    onClick(value: any, checked: boolean, event) {
+    onClick(value, checked, event) {
         console.log(value);
         let chosenCar = event.target.value;
         console.log(`chosenCar = ${chosenCar}`);
@@ -119,7 +119,7 @@ class AvailableCars extends React.Component<AvailableCarsProps, {}> {
             let rows = this.props.cars.map((car) => {
                 let isChosenCar = (email === car.Email);
                 return (
-                        <Radio checked={isChosenCar} onChange={this.onClick}>{car.Description} value={car.Email}</Radio>
+                        <Radio checked={isChosenCar} onChange={this.onClick} value={car.Email}>{car.Description}</Radio>
                 )
             });
 
