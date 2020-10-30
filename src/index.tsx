@@ -96,7 +96,7 @@ class AvailableCars extends React.Component<AvailableCarsProps, {}> {
 
     onClick(value, checked, event) {
         console.log(value);
-        let chosenCar = event.target.value;
+        let chosenCar = value;
         console.log(`chosenCar = ${chosenCar}`);
         this.setState(() => {
             this.props.passToParent(chosenCar);
