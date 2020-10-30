@@ -1,8 +1,7 @@
 import * as React from "react";
 import {render} from "react-dom";
 import {BrowserRouter as Router, Route} from "react-router-dom";
-import {DatePicker} from 'rsuite';
-import {Button} from 'rsuite';
+import {DatePicker, Button, Radio} from 'rsuite';
 import {Transposit, User} from "transposit";
 // import { Formik, Form, useField } from "formik";
 // import * as Yup from "yup";
@@ -119,26 +118,14 @@ class AvailableCars extends React.Component<AvailableCarsProps, {}> {
             let rows = this.props.cars.map((car) => {
                 let isChosenCar = (email === car.Email);
                 return (
-                    <div className="car_check">
-                        <label>
-                            <input
-                                type="radio"
-                                name="car"
-                                value={car.Email}
-                                checked={isChosenCar}
-                                className="form-check-input"
-                                onChange={this.onClick}
-                            />
-                            {car.Description}
-                        </label>
-                    </div>
+                        <Radio checked={isChosenCar} onChange={this.onClick}>{car.Description}</Radio>
                 )
             });
 
             return (
-                <form>
+                <div>
                     {rows}
-                </form>
+                </div>
             );
         } else {
             return ( <div></div>);
