@@ -62,23 +62,11 @@ class SearchAvailabilityForm extends React.Component<SearchAvailabilityProps, Se
             <div>
                 <DatePicker
                     format="YYYY-MM-DD HH:mm"
-                    ranges={[
-                        {
-                            label: 'Now',
-                            value: new Date()
-                        }
-                    ]}
                     onChange={this.handleStartChange}
                     value={new Date(this.props.startTimeValue)}
                 />
                 <DatePicker
                     format="YYYY-MM-DD HH:mm"
-                    ranges={[
-                        {
-                            label: 'Now',
-                            value: new Date()
-                        }
-                    ]}
                     onChange={this.handleEndChange}
                     value={new Date(this.props.endTimeValue)}
                 />
@@ -298,8 +286,6 @@ class CarAvailablePicker extends React.Component<CarAvailableProps, CarAvailable
                 console.log(response);
             });
         this.setState({
-            // startTime: x.results[0].start,
-            // endTime: x.results[0].end,
             cars: x.results[0].cars as Car[],
             chosenCar: "",
             carsListed: true
