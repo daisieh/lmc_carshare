@@ -104,6 +104,7 @@ class AvailableCars extends React.Component<AvailableCarsProps, {}> {
     }
 
     render() {
+        console.log("carsListed = " + this.props.carsListed);
         if (this.props.carsListed) {
             let chosenCar = this.props.getChosenCar();
             let email = "";
