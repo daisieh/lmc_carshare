@@ -276,8 +276,7 @@ class CarAvailablePicker extends React.Component<CarAvailableProps, CarAvailable
         }
         this.setState({
             startTime: start.format(),
-            endTime: end.format(),
-            carsListed: true
+            endTime: end.format()
         });
         this.chooseCar("");
     }
