@@ -273,7 +273,7 @@ class CarAvailablePicker extends React.Component<CarAvailableProps, CarAvailable
         let startTime = this.state.startTime;
         let endTime = this.state.endTime;
         console.log(`looking for cars between ${startTime} ${endTime}`);
-        let x = await transposit
+        await transposit
             .run("get_cars_available_for_time", {start: startTime, end: endTime})
             .then(this.successCallback)
             .catch(response => {
