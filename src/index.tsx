@@ -64,15 +64,17 @@ class SearchAvailabilityForm extends React.Component<SearchAvailabilityProps, Se
                     format="YYYY-MM-DD HH:mm"
                     onChange={this.handleStartChange}
                     value={new Date(this.props.startTimeValue)}
-                    disabled={this.props.carsListed}
+                    // disabled={this.props.carsListed}
                 />
                 <DatePicker
                     format="YYYY-MM-DD HH:mm"
                     onChange={this.handleEndChange}
                     value={new Date(this.props.endTimeValue)}
-                    disabled={this.props.carsListed}
+                    // disabled={this.props.carsListed}
                 />
-                <Button onClick={this.handleSubmit} disabled={this.props.carsListed}>Submit</Button>
+                <Button onClick={this.handleSubmit}
+                        // disabled={this.props.carsListed}
+                >Submit</Button>
             </div>
         );
     }
