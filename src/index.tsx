@@ -72,7 +72,7 @@ class SearchAvailabilityForm extends React.Component<SearchAvailabilityProps, Se
                     value={new Date(this.props.endTimeValue)}
                     disabled={this.props.carsListed}
                 />
-                <Button onClick={this.handleSubmit}>Submit</Button>
+                <Button onClick={this.handleSubmit} disabled={this.props.carsListed}>Submit</Button>
             </div>
         );
     }
@@ -363,6 +363,7 @@ class CarAvailablePicker extends React.Component<CarAvailableProps, CarAvailable
                                startTime={this.state.startTime} endTime={this.state.endTime}
                                startDisplayTime={this.state.startTime} endDisplayTime={this.state.endTime}
                 />
+                <Button onClick={this.resetPicker}>Reset</Button>
             </div>
         );
     };
