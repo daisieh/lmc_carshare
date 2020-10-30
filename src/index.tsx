@@ -253,7 +253,7 @@ class CarAvailablePicker extends React.Component<CarAvailableProps, CarAvailable
     updateTimes(startTime: string, endTime: string) {
         let now = moment();
         let start = now.startOf('hour');
-        let end = now.add(1,'hour').startOf('hour');
+        let end = start.add(1,'hour');
         if (startTime === "" && endTime === "") {
             console.log(`reset to ${start.format()} and ${end.format()}`);
             this.setState({
