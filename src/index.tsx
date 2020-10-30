@@ -64,15 +64,17 @@ class SearchAvailabilityForm extends React.Component<SearchAvailabilityProps, Se
                     format="YYYY-MM-DD HH:mm"
                     onChange={this.handleStartChange}
                     value={new Date(this.props.startTimeValue)}
-                    disabled={this.props.carsListed}
+                    // disabled={this.props.carsListed}
                 />
                 <DatePicker
                     format="YYYY-MM-DD HH:mm"
                     onChange={this.handleEndChange}
                     value={new Date(this.props.endTimeValue)}
-                    disabled={this.props.carsListed}
+                    // disabled={this.props.carsListed}
                 />
-                <Button onClick={this.handleSubmit}>Submit</Button>
+                <Button onClick={this.handleSubmit}
+                        // disabled={this.props.carsListed}
+                >Submit</Button>
             </div>
         );
     }
@@ -102,6 +104,7 @@ class AvailableCars extends React.Component<AvailableCarsProps, {}> {
     }
 
     render() {
+        console.log("carsListed = " + this.props.carsListed);
         if (this.props.carsListed) {
             let chosenCar = this.props.getChosenCar();
             let email = "";
@@ -238,6 +241,7 @@ class CarAvailablePicker extends React.Component<CarAvailableProps, CarAvailable
         this.chooseCar = this.chooseCar.bind(this);
         this.successCallback = this.successCallback.bind(this);
         this.getChosenCar = this.getChosenCar.bind(this);
+        this.resetPicker = this.resetPicker.bind(this);
         this.updateTimes("","");
     }
 
@@ -272,8 +276,7 @@ class CarAvailablePicker extends React.Component<CarAvailableProps, CarAvailable
         }
         this.setState({
             startTime: start.format(),
-            endTime: end.format(),
-            carsListed: true
+            endTime: end.format()
         });
         this.chooseCar("");
     }
@@ -363,6 +366,7 @@ class CarAvailablePicker extends React.Component<CarAvailableProps, CarAvailable
                                startTime={this.state.startTime} endTime={this.state.endTime}
                                startDisplayTime={this.state.startTime} endDisplayTime={this.state.endTime}
                 />
+                <Button onClick={this.resetPicker}>Reset</Button>
             </div>
         );
     };
