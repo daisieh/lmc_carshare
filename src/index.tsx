@@ -251,9 +251,8 @@ class CarAvailablePicker extends React.Component<CarAvailableProps, CarAvailable
     }
 
     updateTimes(startTime: string, endTime: string) {
-        let now = moment();
-        let start = now.startOf('hour');
-        let end = start.add(1,'hour');
+        let start = moment().startOf('hour');
+        let end = start.clone().add(1,'hour');
         if (startTime === "" && endTime === "") {
             console.log(`reset to ${start.format()} and ${end.format()}`);
             this.setState({
@@ -268,15 +267,15 @@ class CarAvailablePicker extends React.Component<CarAvailableProps, CarAvailable
         } else if (endTime !== "") {
             end = moment(endTime);
             // set start to at least an hour before
-            if (start.isSameOrAfter(end.subtract(1,"hour"))) {
-                start = end.subtract(1, "hour");
+            if (start.add(1, "hour").isAfter(end)) {
+                start = end.clone().subtract(1, "hour");
             }
             console.log("endtime " + start.format() + " " + end.format());
         } else if (startTime !== "") {
             start = moment(startTime);
             // set end to at least an hour after
-            if (end.isBefore(start.add(1,"hour"))) {
-                end = start.add(1, "hour");
+            if (end.subtract(1,"hour").isBefore(start)) {
+                end = start.clone().add(1, "hour");
             }
             console.log("starttime " + start.format() + " " + end.format());
         }
