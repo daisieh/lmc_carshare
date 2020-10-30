@@ -176,7 +176,7 @@ class BookingStatus extends React.Component<BookingStatusProps, {}> {
             if (chosenCar != null) {
                 carDescription = chosenCar.Description;
             }
-            let now = moment();
+            // let now = moment();
             // if (moment(this.props.endTime).isBefore(now) || moment(this.props.startTime).isBefore(now)) {
             //     return (
             //         <div>
