@@ -330,7 +330,7 @@ class CarAvailablePicker extends React.Component<CarAvailableProps, CarAvailable
 
     async bookCar() {
         console.log("book car");
-        let x = await transposit
+        await transposit
             .run("create_reservation", {
                 start: this.state.startTime,
                 end: this.state.endTime,
