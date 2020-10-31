@@ -227,7 +227,8 @@ class CarAvailablePicker extends React.Component<CarAvailableProps, CarAvailable
         this.updateTimes = this.updateTimes.bind(this);
         this.bookCar = this.bookCar.bind(this);
         this.chooseCar = this.chooseCar.bind(this);
-        this.successCallback = this.successCallback.bind(this);
+        this.carsAvailableSuccess = this.carsAvailableSuccess.bind(this);
+        this.carBookedSuccess = this.carBookedSuccess.bind(this);
         this.getChosenCar = this.getChosenCar.bind(this);
         this.resetPicker = this.resetPicker.bind(this);
         this.updateTimes("","");
@@ -275,13 +276,13 @@ class CarAvailablePicker extends React.Component<CarAvailableProps, CarAvailable
         console.log(`looking for cars between ${startTime} ${endTime}`);
         await transposit
             .run("get_cars_available_for_time", {start: startTime, end: endTime})
-            .then(this.successCallback)
+            .then(this.carsAvailableSuccess)
             .catch(response => {
                 console.log(response);
             });
     }
 
-    successCallback(results) {
+    carsAvailableSuccess(results) {
         console.log(results.results[0]);
         this.setState({
             cars: results.results[0].cars as Car[],
@@ -289,6 +290,12 @@ class CarAvailablePicker extends React.Component<CarAvailableProps, CarAvailable
             carsListed: true
         });
         this.chooseCar("");
+        return results;
+    }
+
+    carBookedSuccess(results) {
+        this.setState({chosenCar: "", cars: [], carsListed: false, bookingComplete: true});
+        console.log(results);
         return results;
     }
 
@@ -322,6 +329,7 @@ class CarAvailablePicker extends React.Component<CarAvailableProps, CarAvailable
     }
 
     async bookCar() {
+        console.log("book car");
         let x = await transposit
             .run("create_reservation", {
                 start: this.state.startTime,
@@ -329,17 +337,10 @@ class CarAvailablePicker extends React.Component<CarAvailableProps, CarAvailable
                 requester: this.state.user.email,
                 vehicle: this.state.chosenCar
             })
-            .then(this.successCallback)
+            .then(this.carBookedSuccess)
             .catch(response => {
                 console.log(response);
             });
-        if (x.results[0] != null) {
-            this.resetPicker();
-            this.setState({bookingComplete: true});
-        }
-        console.log(x);
-        this.setState({chosenCar: "", cars: [], carsListed: false});
-        return x;
     }
 
     render() {
