@@ -139,8 +139,6 @@ class AvailableCars extends React.Component<AvailableCarsProps, {}> {
 interface BookingStatusProps {
     reserveCar: () => void;
     getChosenCar: () => Car | null;
-    startTime: string;
-    endTime: string;
     startDisplayTime: string;
     endDisplayTime: string;
     booking: Booking | null;
@@ -161,13 +159,20 @@ class BookingStatus extends React.Component<BookingStatusProps, {}> {
 
     render() {
         if (this.props.booking) {
-            return (
-                <div>
-                    Check your email for a confirmation of your booking!
-                </div>
-            );
-        } else if (this.props.getChosenCar() !== null) {
-            console.log(this.props.getChosenCar());
+            if (this.props.booking.confirmed) {
+                return (
+                    <div>
+                        <p>Check your email for a confirmation of your booking!</p>
+                    </div>
+                );
+            } else {
+                return (
+                    <div>
+                        <p>The car's owner has been notified. You will receive an email if they have approved your request.</p>
+                    </div>
+                );
+            }
+       } else if (this.props.getChosenCar() !== null) {
             let chosenCar = this.props.getChosenCar();
             let carDescription = "";
             if (chosenCar != null) {
@@ -175,13 +180,15 @@ class BookingStatus extends React.Component<BookingStatusProps, {}> {
             }
             return (
                 <div>
-                    You're about to book {carDescription} from {this.props.startDisplayTime} to {this.props.endDisplayTime}...
+                    <p>You're about to book {carDescription} from {this.props.startDisplayTime} to {this.props.endDisplayTime}...</p>
                     <Button onClick={this.handleSubmit}>Book it!</Button>
                 </div>
             );
         } else {
             return (
-                <div></div>
+                <div>
+                    <p>There has been an error booking your car. Contact Daisie if the problem persists.</p>
+                </div>
             );
         }
     }
@@ -338,7 +345,8 @@ class CarshareBooker extends React.Component<CarshareBookerProps, CarshareBooker
     }
 
     render() {
-        console.log(`Update CarAvailablePicker render for ${this.state.chosenCar}`);
+        let startDisplayTime = moment(this.state.startTime).format("YYYY-MM-DD HH:mm ZZ");
+        let endDisplayTime = moment(this.state.endTime).format("YYYY-MM-DD HH:mm ZZ");
         return (
             <div>
                 <h2 className="greeting">Hello, {this.props.user.name}</h2>
@@ -347,8 +355,7 @@ class CarshareBooker extends React.Component<CarshareBookerProps, CarshareBooker
                                         carsListed={this.state.carsListed} booking={this.state.booking}/>
                 <AvailableCars cars={this.state.cars} passToParent={this.chooseCar} getChosenCar={this.getChosenCar} carsListed={this.state.carsListed}/>
                 <BookingStatus reserveCar={this.bookCar} getChosenCar={this.getChosenCar} booking={this.state.booking}
-                               startTime={this.state.startTime} endTime={this.state.endTime}
-                               startDisplayTime={this.state.startTime} endDisplayTime={this.state.endTime}
+                               startDisplayTime={startDisplayTime} endDisplayTime={endDisplayTime}
                 />
                 <Button onClick={this.resetPicker}>Reset</Button>
             </div>
