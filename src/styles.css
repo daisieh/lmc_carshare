@@ -81,20 +81,20 @@ ul {
 
 @media (max-width: 720px) {
   .hero {
-    padding: 16px;
+    padding: 8px;
   }
 
   .hero-text {
-    font-size: 32px;
+    font-size: 16px;
   }
 }
 
 .main {
-  padding: 32px 0;
+  padding: 8px 0;
 }
 
 .greeting {
-  margin-bottom: 12px;
+  margin-bottom: 6px;
 }
 
 .calendar {

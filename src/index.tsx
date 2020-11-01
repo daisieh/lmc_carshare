@@ -463,6 +463,7 @@ function Index() {
         <>
             <nav className="nav">
                 <div className="nav-float-right">
+                    <h2>{user.name}</h2>
                     <a
                         className="nav-item"
                         href="#top"
@@ -476,9 +477,9 @@ function Index() {
                 </div>
             </nav>
             <header className="hero">
-                <div className="container center">
-                    <h2 className="greeting">Hello, {user.name}</h2>
-                </div>
+                {/*<div className="container center">*/}
+                {/*    <h2 className="greeting">Hello, {user.name}</h2>*/}
+                {/*</div>*/}
             </header>
             <main className="container main">
                 <CarshareBooker user={user} startTime={""} endTime={""} cars={[]} chosenCar={""}/>
