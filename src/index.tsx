@@ -80,7 +80,7 @@ class SearchAvailabilityForm extends React.Component<SearchAvailabilityProps, Se
                 <Button onClick={this.handleSubmit} disabled={disabled}>
                     Submit
                 </Button>
-                <p>{inThePast}</p>
+                <div className="error">{inThePast}</div>
             </div>
         );
     }
