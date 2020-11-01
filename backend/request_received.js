@@ -2,7 +2,7 @@
   const base64 = require('base64.js').Base64;
   let body = http_event.parsed_body;
   let data = JSON.parse(base64.decode(body.message.data));
-  const parameters = {};
+  let parameters = {};
   parameters.userId = 'me';
   parameters.startHistoryId = parseInt(stash.get("historyId"));
   parameters.historyTypes = 'messageAdded';
@@ -40,11 +40,25 @@
           message = api.run('google_mail.send_message', request_params)[0];
           
           // also add the attendee to the calendar event
-          
+          parameters = {};
+          let calendar_id = api.run("this.list_car_calendarlist")[0][car.Licence].id;
+
+          parameters.calendarId = calendar_id;
+          parameters.eventId = request.eventId;
+          parameters.sendUpdates = 'all';
+          parameters.$body = {
+            attendees : []
+          };
+
+          if (request.confirmed) {
+            parameters.$body.attendees.push({'email': request.requester, responseStatus: "accepted"});
+          }  
+          let event = api.run('google_calendar.update_calendar_event', parameters)[0];
+
           return {
             status_code: 200,
             headers: { "Content-Type": "application/json" },
-            body: { message }
+            body: { event }
           };
         }
       }
