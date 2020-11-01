@@ -51,11 +51,20 @@
   let requests = api.run("this.update_append_request", request);
   if (requests.length > 0) {
     let last_request = requests.pop();
-    if (last_request.)
+    if (last_request.event.id) {
+      return last_request;
+    } else {
+      return null;
+    }
   }
 }
 
-/*
- * For sample code and reference material, visit
- * https://www.transposit.com/docs/references/js-operations
- */
+  // {
+  //   "threadId": "1757c4d50ce23512",
+  //   "requester": "daisieh@gmail.com",
+  //   "eventId": "g04ud9m1p400dkebj92sk9nva4",
+  //   "start": "2020-10-30T20:00:00-07:00",
+  //   "end": "2020-10-30T21:00:00-07:00",
+  //   "confirmed": true,
+  //   "vehicle": "AL675T"
+  // }
