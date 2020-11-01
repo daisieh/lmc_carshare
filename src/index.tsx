@@ -120,7 +120,7 @@ class AvailableCars extends React.Component<AvailableCarsProps, {}> {
             }
             let rows = this.props.cars.map((car) => {
                 let isChosenCar = (email === car.Email);
-                let needsConfirm = car.Confirm ? "" : "(requires approval)";
+                let needsConfirm = car.Confirm ? "(requires approval)" : "";
                 return (
                         <Radio checked={isChosenCar} onChange={this.onClick} value={car.Email}>
                             {car.Description} {needsConfirm}
