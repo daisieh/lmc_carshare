@@ -18,15 +18,6 @@
         "alias": "google_calendar"
       }],
       "operations": [{
-        "id": "get_calendarlist",
-        "tql": {
-          "parameters": [{
-            "name": "vehicle",
-            "type": "STRING"
-          }],
-          "tql": "SELECT * FROM google_calendar.get_calendarlist where summary in (@vehicle)"
-        }
-      }, {
         "id": "list_cars",
         "function": {
           "js": "get_all_cars.js",
@@ -75,16 +66,6 @@
           "requireUser": true
         }
       }, {
-        "id": "get_features_list",
-        "function": {
-          "parameters": [{
-            "name": "cars",
-            "type": "ARRAY"
-          }],
-          "js": "get_features_list.js",
-          "lang": "js"
-        }
-      }, {
         "id": "create_reservation",
         "function": {
           "parameters": [{
@@ -118,24 +99,6 @@
             "type": "STRING"
           }],
           "js": "get_car.js",
-          "lang": "js"
-        }
-      }, {
-        "id": "normalize_times",
-        "function": {
-          "parameters": [{
-            "name": "start_datetime",
-            "default": {
-              "text": "2020/02/03 15:00"
-            },
-            "type": "STRING",
-            "required": true
-          }, {
-            "name": "end_datetime",
-            "type": "STRING",
-            "required": true
-          }],
-          "js": "normalize_range.js",
           "lang": "js"
         }
       }, {
