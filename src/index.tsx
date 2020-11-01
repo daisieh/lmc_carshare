@@ -347,8 +347,8 @@ class CarshareBooker extends React.Component<CarshareBookerProps, CarshareBooker
     }
 
     render() {
-        let startDisplayTime = moment(this.state.startTime).format("YYYY-MM-DD HH:mm Z");
-        let endDisplayTime = moment(this.state.endTime).format("YYYY-MM-DD HH:mm Z");
+        let startDisplayTime = moment(this.state.startTime).format("YYYY-MM-DD HH:mm");
+        let endDisplayTime = moment(this.state.endTime).format("YYYY-MM-DD HH:mm");
         return (
             <div>
                 <h2 className="greeting">Hello, {this.props.user.name}</h2>
