@@ -18,6 +18,7 @@
     stash.put("historyId", last_hist.id);
     let messageId = last_hist.messages.pop().id;
     let message = api.run("google_mail.get_message", { id: messageId, userId: "me", format: "minimal"})[0];
+    console.log(message);
     if (message.labelIds.includes(env.get("request_label"))) {
       // find request by message.threadId in the sheet
       let requests = api.run("this.list_requests");
