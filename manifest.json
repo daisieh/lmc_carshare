@@ -18,23 +18,6 @@
         "alias": "google_calendar"
       }],
       "operations": [{
-        "id": "webhook",
-        "function": {
-          "parameters": [{
-            "name": "http_event",
-            "default": {
-              "text": "{   \"query_parameters\": {     \"api_key\": \"XXX\"   },   \"http_method\": \"POST\",   \"parsed_body\": {     \"channel_name\": \"XXX\",     \"user_id\": \"UXXX\",     \"user_name\": \"iggy\",     \"trigger_id\": \"XXX\",     \"team_domain\": \"my_domain\",     \"team_id\": \"TXXX\",     \"text\": \"\",     \"channel_id\": \"DXXX\",     \"command\": \"/test\",     \"token\": \"XXX\",     \"response_url\": \"https://hooks.slack.com/commands/TXXX/XXX/XXX\"   },   \"body\": \"token=XXX&team_id=TXXX&team_domain=my_domain&channel_id=DXXX&channel_name=XXX&user_id=UXXX&user_name=iggy&command=%2Ftest&text=&response_url=https%3A%2F%2Fhooks.slack.com%2Fcommands%2FTXXX%2FXXX%2FXXX&trigger_id=XXX\" }"
-            },
-            "type": "OBJECT"
-          }],
-          "js": "webhook.js",
-          "lang": "js"
-        },
-        "access": {
-          "requireApiKey": true,
-          "webhook": true
-        }
-      }, {
         "id": "get_calendarlist",
         "tql": {
           "parameters": [{
@@ -64,7 +47,7 @@
           "parameters": [{
             "name": "http_event",
             "default": {
-              "text": "{\n    \"query_parameters\": {\n      \"api_key\": \"mk7270q14evr0qs9rsmbe4i4ml\"\n    },\n    \"headers\": {\n      \"Cookie\": \"transposit-ut=kmkp37mdom641ifc2igarh4i9o\",\n      \"Accept\": \"application/json\",\n      \"User-Agent\": \"APIs-Google; (+https://developers.google.com/webmasters/APIs-Google.html)\",\n      \"Host\": \"carshare-calendar-n82q0.transposit.io\",\n      \"From\": \"noreply@google.com\",\n      \"Accept-Encoding\": \"gzip,deflate,br\",\n      \"X-Forwarded-Port\": \"443\",\n      \"Content-Length\": \"312\",\n      \"Content-Type\": \"application/json\"\n    },\n    \"http_method\": \"POST\",\n    \"parsed_body\": {\n      \"message\": {\n        \"data\": \"eyJlbWFpbEFkZHJlc3MiOiJsbWMuY2Fyc2hhcmVAZ21haWwuY29tIiwiaGlzdG9yeUlkIjoyMDcyfQ==\",\n        \"messageId\": \"945115373745022\",\n        \"message_id\": \"945115373745022\",\n        \"publishTime\": \"2020-01-21T01:44:31.412Z\",\n        \"publish_time\": \"2020-01-21T01:44:31.412Z\"\n      },\n      \"subscription\": \"projects/carshare-265707/subscriptions/request\"\n    },\n    \"body\": \"{\\\"message\\\":{\\\"data\\\":\\\"eyJlbWFpbEFkZHJlc3MiOiJsbWMuY2Fyc2hhcmVAZ21haWwuY29tIiwiaGlzdG9yeUlkIjoyMDcyfQ==\\\",\\\"messageId\\\":\\\"945115373745022\\\",\\\"message_id\\\":\\\"945115373745022\\\",\\\"publishTime\\\":\\\"2020-01-21T01:44:31.412Z\\\",\\\"publish_time\\\":\\\"2020-01-21T01:44:31.412Z\\\"},\\\"subscription\\\":\\\"projects/carshare-265707/subscriptions/request\\\"}\\n\"\n  }\n"
+              "text": "{\n    \"query_parameters\": {\n      \"api_key\": \"mk7270q14evr0qs9rsmbe4i4ml\"\n    },\n    \"headers\": {\n      \"Cookie\": \"transposit-ut\u003dkmkp37mdom641ifc2igarh4i9o\",\n      \"Accept\": \"application/json\",\n      \"User-Agent\": \"APIs-Google; (+https://developers.google.com/webmasters/APIs-Google.html)\",\n      \"Host\": \"carshare-calendar-n82q0.transposit.io\",\n      \"From\": \"noreply@google.com\",\n      \"Accept-Encoding\": \"gzip,deflate,br\",\n      \"X-Forwarded-Port\": \"443\",\n      \"Content-Length\": \"312\",\n      \"Content-Type\": \"application/json\"\n    },\n    \"http_method\": \"POST\",\n    \"parsed_body\": {\n      \"message\": {\n        \"data\": \"eyJlbWFpbEFkZHJlc3MiOiJsbWMuY2Fyc2hhcmVAZ21haWwuY29tIiwiaGlzdG9yeUlkIjoyMDcyfQ\u003d\u003d\",\n        \"messageId\": \"945115373745022\",\n        \"message_id\": \"945115373745022\",\n        \"publishTime\": \"2020-01-21T01:44:31.412Z\",\n        \"publish_time\": \"2020-01-21T01:44:31.412Z\"\n      },\n      \"subscription\": \"projects/carshare-265707/subscriptions/request\"\n    },\n    \"body\": \"{\\\"message\\\":{\\\"data\\\":\\\"eyJlbWFpbEFkZHJlc3MiOiJsbWMuY2Fyc2hhcmVAZ21haWwuY29tIiwiaGlzdG9yeUlkIjoyMDcyfQ\u003d\u003d\\\",\\\"messageId\\\":\\\"945115373745022\\\",\\\"message_id\\\":\\\"945115373745022\\\",\\\"publishTime\\\":\\\"2020-01-21T01:44:31.412Z\\\",\\\"publish_time\\\":\\\"2020-01-21T01:44:31.412Z\\\"},\\\"subscription\\\":\\\"projects/carshare-265707/subscriptions/request\\\"}\\n\"\n  }\n"
             },
             "type": "OBJECT"
           }],
@@ -125,7 +108,7 @@
         }
       }, {
         "id": "get_car",
-        "description": "Use either licence plate or owner's email to get a car",
+        "description": "Use either licence plate or owner\u0027s email to get a car",
         "function": {
           "parameters": [{
             "name": "owner",
@@ -238,7 +221,7 @@
           }
         },
         "title": "Google Calendar",
-        "description": "Link your Google Calendar so we can read today's events."
+        "description": "Link your Google Calendar so we can read today\u0027s events."
       }],
       "javascriptAPIVersion": "3",
       "source": "backend",
@@ -246,8 +229,7 @@
         "name": "request_label",
         "type": "STRING",
         "default": "Label_3087422522999134978"
-      }],
-      "exposeAppDataEndpoints": false
+      }]
     }
   }
 }
