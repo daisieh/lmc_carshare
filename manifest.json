@@ -179,6 +179,11 @@
           "js": "update_append_request.js",
           "lang": "js"
         }
+      }, {
+        "id": "stop_push_notifications",
+        "tql": {
+          "tql": "SELECT * FROM google_mail.stop_push_notifications\n  WHERE userId\u003d\u0027me\u0027\n\n/*\n * For sample code and reference material, visit\n * https://www.transposit.com/docs/get-started/sql-quickstart\n */"
+        }
       }],
       "dataConnections": [{
         "ref": "slack_identify.raw",
