@@ -58,24 +58,29 @@ class SearchAvailabilityForm extends React.Component<SearchAvailabilityProps, Se
     }
 
     render() {
-        let disabled = (this.props.booking !== null);
+        let disabled = this.props.carsListed || (this.props.booking !== null);
+        let inThePast = "";
+        if (moment(this.props.startTimeValue).isBefore(moment())) {
+            inThePast = "WARNING! The selected time slot is in the past.";
+        }
         return (
             <div>
                 <DatePicker
                     format="YYYY-MM-DD HH:mm"
                     onChange={this.handleStartChange}
                     value={new Date(this.props.startTimeValue)}
-                    disabled={this.props.carsListed || disabled}
+                    disabled={disabled}
                 />
                 <DatePicker
                     format="YYYY-MM-DD HH:mm"
                     onChange={this.handleEndChange}
                     value={new Date(this.props.endTimeValue)}
-                    disabled={this.props.carsListed || disabled}
+                    disabled={disabled}
                 />
-                <Button onClick={this.handleSubmit}
-                        disabled={this.props.carsListed || disabled}
-                >Submit</Button>
+                <Button onClick={this.handleSubmit} disabled={disabled}>
+                    Submit
+                </Button>
+                <p>{inThePast}</p>
             </div>
         );
     }
