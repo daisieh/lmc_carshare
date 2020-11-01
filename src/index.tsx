@@ -482,10 +482,6 @@ function Index() {
             </header>
             <main className="container main">
                 <CarshareBooker user={user} startTime={""} endTime={""} cars={[]} chosenCar={""}/>
-                <iframe
-                    src="https://docs.google.com/forms/d/e/1FAIpQLSfXJ97VtAQg_fW9ce4tcqYYyTS1mVfcqZVp0_Jp-jgfVjvXrQ/viewform?embedded=true"
-                    width="640" height="1777" frameBorder="0" >Loading…
-                </iframe>
             </main>
         </>
     );
