@@ -187,7 +187,6 @@ class BookingStatus extends React.Component<BookingStatusProps, {}> {
         } else {
             return (
                 <div>
-                    <p>There has been an error booking your car. Contact Daisie if the problem persists.</p>
                 </div>
             );
         }
