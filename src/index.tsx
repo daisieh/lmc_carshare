@@ -6,7 +6,6 @@ import {Transposit, User} from "transposit";
 // import { Formik, Form, useField } from "formik";
 // import * as Yup from "yup";
 import "./styles.css";
-import 'rsuite/dist/styles/rsuite-default.css';
 import moment from "moment";
 
 const transposit = new Transposit(
@@ -66,18 +65,20 @@ class SearchAvailabilityForm extends React.Component<SearchAvailabilityProps, Se
         return (
             <div>
                 <DatePicker
+                    size="sm"
                     format="YYYY-MM-DD HH:mm"
                     onChange={this.handleStartChange}
                     value={new Date(this.props.startTimeValue)}
                     disabled={disabled}
                 />
                 <DatePicker
+                    size="sm"
                     format="YYYY-MM-DD HH:mm"
                     onChange={this.handleEndChange}
                     value={new Date(this.props.endTimeValue)}
                     disabled={disabled}
                 />
-                <Button onClick={this.handleSubmit} disabled={disabled}>
+                <Button size="sm" onClick={this.handleSubmit} disabled={disabled}>
                     Submit
                 </Button>
                 <div className="error">{inThePast}</div>
@@ -185,7 +186,7 @@ class BookingStatus extends React.Component<BookingStatusProps, {}> {
             return (
                 <div>
                     <p>Would you like to book {carDescription} from {this.props.startDisplayTime} to {this.props.endDisplayTime}?</p>
-                    <Button onClick={this.handleSubmit}>Book it!</Button>
+                    <Button size="sm" onClick={this.handleSubmit}>Book it!</Button>
                 </div>
             );
         } else {
@@ -357,7 +358,7 @@ class CarshareBooker extends React.Component<CarshareBookerProps, CarshareBooker
                                startDisplayTime={startDisplayTime} endDisplayTime={endDisplayTime}
                 />
                 <div className="error">{this.state.errorMessage}</div>
-                <Button onClick={this.resetPicker}>Reset</Button>
+                <Button size="sm" onClick={this.resetPicker}>Reset</Button>
             </div>
         );
     };
@@ -408,8 +409,7 @@ function SignIn() {
                 </div>
             </header>
             <main className="container center sign-in">
-                <button
-                    className="sign-in-button"
+                <Button
                     onClick={async e => {
                         e.preventDefault();
                         await transposit.signIn(
@@ -418,7 +418,7 @@ function SignIn() {
                     }}
                 >
                     Sign In
-                </button>
+                </Button>
             </main>
         </>
     );
@@ -463,6 +463,7 @@ function Index() {
         <>
             <nav className="nav">
                 <div className="nav-float-right">
+                    <p className="nav-item">{user.name}</p>
                     <a
                         className="nav-item"
                         href="#top"
@@ -475,11 +476,6 @@ function Index() {
                     </a>
                 </div>
             </nav>
-            <header className="hero">
-                <div className="container center">
-                    <h2 className="greeting">Hello, {user.name}</h2>
-                </div>
-            </header>
             <main className="container main">
                 <CarshareBooker user={user} startTime={""} endTime={""} cars={[]} chosenCar={""}/>
             </main>
