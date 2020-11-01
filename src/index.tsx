@@ -363,8 +363,8 @@ class CarshareBooker extends React.Component<CarshareBookerProps, CarshareBooker
                 <BookingStatus reserveCar={this.bookCar} getChosenCar={this.getChosenCar} booking={this.state.booking}
                                startDisplayTime={startDisplayTime} endDisplayTime={endDisplayTime}
                 />
-                <Button onClick={this.resetPicker}>Reset</Button>
                 <div className="error">{this.state.errorMessage}</div>
+                <Button onClick={this.resetPicker}>Reset</Button>
             </div>
         );
     };
