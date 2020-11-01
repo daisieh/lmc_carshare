@@ -20,7 +20,7 @@ interface SearchAvailabilityProps {
     startTimeValue: string;
     endTimeValue: string;
     carsListed: boolean;
-    bookingComplete: boolean;
+    booking: Booking | null;
 }
 
 interface SearchAvailabilityState {
@@ -58,22 +58,23 @@ class SearchAvailabilityForm extends React.Component<SearchAvailabilityProps, Se
     }
 
     render() {
+        let disabled = (this.props.booking !== null);
         return (
             <div>
                 <DatePicker
                     format="YYYY-MM-DD HH:mm"
                     onChange={this.handleStartChange}
                     value={new Date(this.props.startTimeValue)}
-                    disabled={this.props.carsListed || this.props.bookingComplete}
+                    disabled={this.props.carsListed || disabled}
                 />
                 <DatePicker
                     format="YYYY-MM-DD HH:mm"
                     onChange={this.handleEndChange}
                     value={new Date(this.props.endTimeValue)}
-                    disabled={this.props.carsListed || this.props.bookingComplete}
+                    disabled={this.props.carsListed || disabled}
                 />
                 <Button onClick={this.handleSubmit}
-                        disabled={this.props.carsListed || this.props.bookingComplete}
+                        disabled={this.props.carsListed || disabled}
                 >Submit</Button>
             </div>
         );
@@ -119,8 +120,11 @@ class AvailableCars extends React.Component<AvailableCarsProps, {}> {
             }
             let rows = this.props.cars.map((car) => {
                 let isChosenCar = (email === car.Email);
+                let needsConfirm = car.Confirm ? "(requires approval)" : "";
                 return (
-                        <Radio checked={isChosenCar} onChange={this.onClick} value={car.Email}>{car.Description}</Radio>
+                        <Radio checked={isChosenCar} onChange={this.onClick} value={car.Email}>
+                            {car.Description} {needsConfirm}
+                        </Radio>
                 )
             });
 
@@ -138,11 +142,9 @@ class AvailableCars extends React.Component<AvailableCarsProps, {}> {
 interface BookingStatusProps {
     reserveCar: () => void;
     getChosenCar: () => Car | null;
-    startTime: string;
-    endTime: string;
     startDisplayTime: string;
     endDisplayTime: string;
-    bookingComplete: boolean;
+    booking: Booking | null;
 }
 
 class BookingStatus extends React.Component<BookingStatusProps, {}> {
@@ -159,42 +161,42 @@ class BookingStatus extends React.Component<BookingStatusProps, {}> {
     }
 
     render() {
-        if (this.props.bookingComplete) {
-            return (
-                <div>
-                    Check your email for a confirmation of your booking!
-                </div>
-            );
-        } else if (this.props.getChosenCar() !== null) {
-            console.log(this.props.getChosenCar());
+        if (this.props.booking) {
+            if (this.props.booking.confirmed) {
+                return (
+                    <div>
+                        <p>Check your email for a confirmation of your booking!</p>
+                    </div>
+                );
+            } else {
+                return (
+                    <div>
+                        <p>The car's owner has been notified. You will receive an email if they have approved your request.</p>
+                    </div>
+                );
+            }
+       } else if (this.props.getChosenCar() !== null) {
             let chosenCar = this.props.getChosenCar();
             let carDescription = "";
             if (chosenCar != null) {
                 carDescription = chosenCar.Description;
             }
-            // let now = moment();
-            // if (moment(this.props.endTime).isBefore(now) || moment(this.props.startTime).isBefore(now)) {
-            //     return (
-            //         <div>
-            //             Either {this.props.startDisplayTime} or {this.props.endDisplayTime} is in the past.
-            //         </div>
-            //     )
-            // }
             return (
                 <div>
-                    You're about to book {carDescription} from {this.props.startDisplayTime} to {this.props.endDisplayTime}...
+                    <p>Would you like to book {carDescription} from {this.props.startDisplayTime} to {this.props.endDisplayTime}?</p>
                     <Button onClick={this.handleSubmit}>Book it!</Button>
                 </div>
             );
         } else {
             return (
-                <div></div>
+                <div>
+                </div>
             );
         }
     }
 }
 
-interface CarAvailableProps {
+interface CarshareBookerProps {
     startTime: string;
     endTime: string;
     user: { name: string; email: string; };
@@ -202,17 +204,17 @@ interface CarAvailableProps {
     chosenCar: string;
 }
 
-interface CarAvailableState {
+interface CarshareBookerState {
     startTime: string;
     endTime: string;
     user: { name: string; email: string; };
     cars: Car[];
     chosenCar: string;
-    bookingComplete: boolean;
+    booking: Booking | null;
     carsListed: boolean;
 }
 
-class CarAvailablePicker extends React.Component<CarAvailableProps, CarAvailableState> {
+class CarshareBooker extends React.Component<CarshareBookerProps, CarshareBookerState> {
     constructor(props) {
         super(props);
         this.state = {
@@ -221,7 +223,7 @@ class CarAvailablePicker extends React.Component<CarAvailableProps, CarAvailable
             cars: this.props.cars,
             chosenCar: this.props.chosenCar,
             user: this.props.user,
-            bookingComplete: false,
+            booking: null,
             carsListed: false
         };
         this.updateAvailableCars = this.updateAvailableCars.bind(this);
@@ -245,7 +247,7 @@ class CarAvailablePicker extends React.Component<CarAvailableProps, CarAvailable
                 endTime: end.format(),
                 cars: [],
                 chosenCar: "",
-                bookingComplete: false,
+                booking: null,
                 carsListed: false
             });
             return;
@@ -295,7 +297,7 @@ class CarAvailablePicker extends React.Component<CarAvailableProps, CarAvailable
     }
 
     carBookedSuccess(results) {
-        this.setState({chosenCar: "", cars: [], carsListed: false, bookingComplete: true});
+        this.setState({chosenCar: "", cars: [], carsListed: false, booking: results.results[0] as Booking});
         console.log(results);
         return results;
     }
@@ -322,7 +324,7 @@ class CarAvailablePicker extends React.Component<CarAvailableProps, CarAvailable
         this.setState({
                 cars: [],
                 chosenCar: "",
-                bookingComplete: false,
+                booking: null,
                 carsListed: false
             }
         );
@@ -345,17 +347,17 @@ class CarAvailablePicker extends React.Component<CarAvailableProps, CarAvailable
     }
 
     render() {
-        console.log(`Update CarAvailablePicker render for ${this.state.chosenCar}`);
+        let startDisplayTime = moment(this.state.startTime).format("YYYY-MM-DD HH:mm");
+        let endDisplayTime = moment(this.state.endTime).format("YYYY-MM-DD HH:mm");
         return (
             <div>
                 <h2 className="greeting">Hello, {this.props.user.name}</h2>
                 <SearchAvailabilityForm updateTime={this.updateTimes} submitTimes={this.updateAvailableCars}
                                         startTimeValue={this.state.startTime} endTimeValue={this.state.endTime}
-                                        carsListed={this.state.carsListed} bookingComplete={this.state.bookingComplete}/>
+                                        carsListed={this.state.carsListed} booking={this.state.booking}/>
                 <AvailableCars cars={this.state.cars} passToParent={this.chooseCar} getChosenCar={this.getChosenCar} carsListed={this.state.carsListed}/>
-                <BookingStatus reserveCar={this.bookCar} getChosenCar={this.getChosenCar} bookingComplete={this.state.bookingComplete}
-                               startTime={this.state.startTime} endTime={this.state.endTime}
-                               startDisplayTime={this.state.startTime} endDisplayTime={this.state.endTime}
+                <BookingStatus reserveCar={this.bookCar} getChosenCar={this.getChosenCar} booking={this.state.booking}
+                               startDisplayTime={startDisplayTime} endDisplayTime={endDisplayTime}
                 />
                 <Button onClick={this.resetPicker}>Reset</Button>
             </div>
@@ -481,7 +483,7 @@ function Index() {
                 </div>
             </header>
             <main className="container main">
-                <CarAvailablePicker user={user} startTime={""} endTime={""} cars={[]} chosenCar={""}/>
+                <CarshareBooker user={user} startTime={""} endTime={""} cars={[]} chosenCar={""}/>
             </main>
         </>
     );
@@ -515,4 +517,14 @@ interface Car {
     "AlwaysAvailable": boolean;
     "Confirm": boolean;
     "Description": string;
+}
+
+interface Booking {
+    "threadId": string,
+    "requester": string,
+    "eventId": string,
+    "start": string,
+    "end": string,
+    "confirmed": boolean,
+    "vehicle": string
 }
