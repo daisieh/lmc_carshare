@@ -4,7 +4,7 @@
   parameters.userId = 'me';
   parameters.$body = {
     labelIds : [ env.get("request_label") ],
-    //labelFilterAction : 'include',
+    labelFilterAction : 'INCLUDE',
     topicName : 'projects/carshare-265707/topics/requests'
   };
   let result = api.run('google_mail.set_push_notification', parameters);
