@@ -120,8 +120,11 @@ class AvailableCars extends React.Component<AvailableCarsProps, {}> {
             }
             let rows = this.props.cars.map((car) => {
                 let isChosenCar = (email === car.Email);
+                let needsConfirm = car.Confirm ? "" : "(requires approval)";
                 return (
-                        <Radio checked={isChosenCar} onChange={this.onClick} value={car.Email}>{car.Description}</Radio>
+                        <Radio checked={isChosenCar} onChange={this.onClick} value={car.Email}>
+                            {car.Description} {needsConfirm}
+                        </Radio>
                 )
             });
 
@@ -180,7 +183,7 @@ class BookingStatus extends React.Component<BookingStatusProps, {}> {
             }
             return (
                 <div>
-                    <p>You're about to book {carDescription} from {this.props.startDisplayTime} to {this.props.endDisplayTime}...</p>
+                    <p>Would you like to book {carDescription} from {this.props.startDisplayTime} to {this.props.endDisplayTime}?</p>
                     <Button onClick={this.handleSubmit}>Book it!</Button>
                 </div>
             );
@@ -344,8 +347,8 @@ class CarshareBooker extends React.Component<CarshareBookerProps, CarshareBooker
     }
 
     render() {
-        let startDisplayTime = moment(this.state.startTime).format("YYYY-MM-DD HH:mm ZZ");
-        let endDisplayTime = moment(this.state.endTime).format("YYYY-MM-DD HH:mm ZZ");
+        let startDisplayTime = moment(this.state.startTime).format("YYYY-MM-DD HH:mm Z");
+        let endDisplayTime = moment(this.state.endTime).format("YYYY-MM-DD HH:mm Z");
         return (
             <div>
                 <h2 className="greeting">Hello, {this.props.user.name}</h2>
