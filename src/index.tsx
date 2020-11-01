@@ -217,6 +217,7 @@ interface CarshareBookerState {
     chosenCar: string;
     booking: Booking | null;
     carsListed: boolean;
+    errorMessage: string;
 }
 
 class CarshareBooker extends React.Component<CarshareBookerProps, CarshareBookerState> {
@@ -229,7 +230,8 @@ class CarshareBooker extends React.Component<CarshareBookerProps, CarshareBooker
             chosenCar: this.props.chosenCar,
             user: this.props.user,
             booking: null,
-            carsListed: false
+            carsListed: false,
+            errorMessage: ""
         };
         this.updateAvailableCars = this.updateAvailableCars.bind(this);
         this.updateTimes = this.updateTimes.bind(this);
@@ -250,10 +252,6 @@ class CarshareBooker extends React.Component<CarshareBookerProps, CarshareBooker
             this.setState({
                 startTime: start.format(),
                 endTime: end.format(),
-                cars: [],
-                chosenCar: "",
-                booking: null,
-                carsListed: false
             });
             return;
         } else if (endTime !== "") {
@@ -286,7 +284,7 @@ class CarshareBooker extends React.Component<CarshareBookerProps, CarshareBooker
             .run("get_cars_available_for_time", {start: startTime, end: endTime})
             .then(this.carsAvailableSuccess)
             .catch(response => {
-                console.log(response);
+                this.setState( {errorMessage: response.toString()});
             });
     }
 
@@ -330,7 +328,8 @@ class CarshareBooker extends React.Component<CarshareBookerProps, CarshareBooker
                 cars: [],
                 chosenCar: "",
                 booking: null,
-                carsListed: false
+                carsListed: false,
+                errorMessage: ""
             }
         );
         this.updateTimes("","");
@@ -347,7 +346,7 @@ class CarshareBooker extends React.Component<CarshareBookerProps, CarshareBooker
             })
             .then(this.carBookedSuccess)
             .catch(response => {
-                console.log(response);
+                this.setState( {errorMessage: response.toString()});
             });
     }
 
@@ -365,6 +364,7 @@ class CarshareBooker extends React.Component<CarshareBookerProps, CarshareBooker
                                startDisplayTime={startDisplayTime} endDisplayTime={endDisplayTime}
                 />
                 <Button onClick={this.resetPicker}>Reset</Button>
+                <div className="error">{this.state.errorMessage}</div>
             </div>
         );
     };
