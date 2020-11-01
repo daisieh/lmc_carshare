@@ -51,7 +51,7 @@
   let requests = api.run("this.update_append_request", request);
   if (requests.length > 0) {
     let last_request = requests.pop();
-    if (last_request.event.id) {
+    if (last_request.eventId == request.eventId) {
       return last_request;
     } else {
       return null;
