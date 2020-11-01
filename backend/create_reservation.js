@@ -42,9 +42,12 @@
     end : {
       dateTime : moment(request.end).format()
     },
-    attendees : [{'email': request.requester, responseStatus: "accepted"}]
+    attendees : []
   };
   
+  if (request.confirmed) {
+    parameters.$body.attendees.push({'email': request.requester, responseStatus: "accepted"});
+  }  
   let event = api.run('google_calendar.create_calendar_event', parameters)[0];
   request.eventId = event.id;
   

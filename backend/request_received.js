@@ -38,7 +38,9 @@
           };
 
           message = api.run('google_mail.send_message', request_params)[0];
-
+          
+          // also add the attendee to the calendar event
+          
           return {
             status_code: 200,
             headers: { "Content-Type": "application/json" },
