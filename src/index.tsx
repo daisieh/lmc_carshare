@@ -102,16 +102,13 @@ class AvailableCars extends React.Component<AvailableCarsProps, {}> {
     }
 
     onClick(value, checked, event) {
-        console.log(value);
         let chosenCar = value;
-        console.log(`chosenCar = ${chosenCar}`);
         this.setState(() => {
             this.props.passToParent(chosenCar);
         });
     }
 
     render() {
-        console.log("carsListed = " + this.props.carsListed);
         if (this.props.carsListed) {
             let chosenCar = this.props.getChosenCar();
             let email = "";
@@ -120,7 +117,6 @@ class AvailableCars extends React.Component<AvailableCarsProps, {}> {
             }
             console.log(`there are ${this.props.cars.length} cars, chosen car is ${email}`);
             if (this.props.cars.length === 0) {
-                console.log("AvailableCars has no cars");
                 return (<div>No cars available at this time</div>);
             }
             let rows = this.props.cars.map((car) => {
@@ -260,14 +256,12 @@ class CarshareBooker extends React.Component<CarshareBookerProps, CarshareBooker
             if (start.add(1, "hour").isAfter(end)) {
                 start = end.clone().subtract(1, "hour");
             }
-            console.log("endtime " + start.format() + " " + end.format());
         } else if (startTime !== "") {
             start = moment(startTime);
             // set end to at least an hour after
             if (end.subtract(1,"hour").isBefore(start)) {
                 end = start.clone().add(1, "hour");
             }
-            console.log("starttime " + start.format() + " " + end.format());
         }
         this.setState({
             startTime: start.format(),
@@ -279,7 +273,7 @@ class CarshareBooker extends React.Component<CarshareBookerProps, CarshareBooker
     async updateAvailableCars() {
         let startTime = this.state.startTime;
         let endTime = this.state.endTime;
-        console.log(`looking for cars between ${startTime} ${endTime}`);
+        console.log(`looking for cars between ${startTime} and ${endTime}`);
         await transposit
             .run("get_cars_available_for_time", {start: startTime, end: endTime})
             .then(this.carsAvailableSuccess)
@@ -355,7 +349,6 @@ class CarshareBooker extends React.Component<CarshareBookerProps, CarshareBooker
         let endDisplayTime = moment(this.state.endTime).format("YYYY-MM-DD HH:mm");
         return (
             <div>
-                <h2 className="greeting">Hello, {this.props.user.name}</h2>
                 <SearchAvailabilityForm updateTime={this.updateTimes} submitTimes={this.updateAvailableCars}
                                         startTimeValue={this.state.startTime} endTimeValue={this.state.endTime}
                                         carsListed={this.state.carsListed} booking={this.state.booking}/>
@@ -484,7 +477,7 @@ function Index() {
             </nav>
             <header className="hero">
                 <div className="container center">
-                    <h1 className="hero-text">Request a car</h1>
+                    <h2 className="greeting">Hello, {user.name}</h2>
                 </div>
             </header>
             <main className="container main">
