@@ -20,6 +20,7 @@ interface SearchAvailabilityProps {
     startTimeValue: string;
     endTimeValue: string;
     carsListed: boolean;
+    bookingComplete: boolean;
 }
 
 interface SearchAvailabilityState {
@@ -63,16 +64,16 @@ class SearchAvailabilityForm extends React.Component<SearchAvailabilityProps, Se
                     format="YYYY-MM-DD HH:mm"
                     onChange={this.handleStartChange}
                     value={new Date(this.props.startTimeValue)}
-                    disabled={this.props.carsListed}
+                    disabled={this.props.carsListed || this.props.bookingComplete}
                 />
                 <DatePicker
                     format="YYYY-MM-DD HH:mm"
                     onChange={this.handleEndChange}
                     value={new Date(this.props.endTimeValue)}
-                    disabled={this.props.carsListed}
+                    disabled={this.props.carsListed || this.props.bookingComplete}
                 />
                 <Button onClick={this.handleSubmit}
-                        disabled={this.props.carsListed}
+                        disabled={this.props.carsListed || this.props.bookingComplete}
                 >Submit</Button>
             </div>
         );
@@ -350,7 +351,7 @@ class CarAvailablePicker extends React.Component<CarAvailableProps, CarAvailable
                 <h2 className="greeting">Hello, {this.props.user.name}</h2>
                 <SearchAvailabilityForm updateTime={this.updateTimes} submitTimes={this.updateAvailableCars}
                                         startTimeValue={this.state.startTime} endTimeValue={this.state.endTime}
-                                        carsListed={this.state.carsListed}/>
+                                        carsListed={this.state.carsListed} bookingComplete={this.state.bookingComplete}/>
                 <AvailableCars cars={this.state.cars} passToParent={this.chooseCar} getChosenCar={this.getChosenCar} carsListed={this.state.carsListed}/>
                 <BookingStatus reserveCar={this.bookCar} getChosenCar={this.getChosenCar} bookingComplete={this.state.bookingComplete}
                                startTime={this.state.startTime} endTime={this.state.endTime}
