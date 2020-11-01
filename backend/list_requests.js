@@ -1,4 +1,5 @@
 (params) => {
+  const moment = require('moment.js');
   let parameters = {};
   parameters.range = 'Requests!A:G';
   parameters.spreadsheetId = '1kyd3g0xuPYoyDuT6joT0gkl29YCFE56E2ktv6haRong';
@@ -13,6 +14,9 @@
     for (var j in row) {
       entry[names[j]] = row[j];
     }
+    entry.start = moment(entry.start).format("YYYY-MM-DD HH:mm");
+    entry.end = moment(entry.end).format("YYYY-MM-DD HH:mm");
+
     results.push(entry);
   }
   return results;
