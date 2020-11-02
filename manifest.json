@@ -150,6 +150,16 @@
           "js": "list_members.js",
           "lang": "js"
         }
+      }, {
+        "id": "is_valid_signin",
+        "function": {
+          "parameters": [{
+            "name": "email",
+            "type": "STRING"
+          }],
+          "js": "is_valid_signin.js",
+          "lang": "js"
+        }
       }],
       "dataConnections": [{
         "ref": "slack_identify.raw",
