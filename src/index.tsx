@@ -5,7 +5,7 @@ import {DatePicker, Button, Radio} from 'rsuite';
 import {Transposit, User} from "transposit";
 // import { Formik, Form, useField } from "formik";
 // import * as Yup from "yup";
-import "./styles.css";
+// import "./styles.css";
 import "./styles.less";
 // import 'rsuite/dist/styles/rsuite-default.css';
 // import 'rsuite/lib/styles/index.less';
