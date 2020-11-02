@@ -62,7 +62,7 @@ class SearchAvailabilityForm extends React.Component<SearchAvailabilityProps, Se
             inThePast = "WARNING! The selected time slot is in the past.";
         }
         return (
-            <div>
+            <div className="search-form">
                 <DatePicker
                     size="sm"
                     format="YYYY-MM-DD HH:mm"
@@ -349,6 +349,7 @@ class CarshareBooker extends React.Component<CarshareBookerProps, CarshareBooker
         let endDisplayTime = moment(this.state.endTime).format("YYYY-MM-DD HH:mm");
         return (
             <div>
+                <div className="title">Book a car</div>
                 <SearchAvailabilityForm updateTime={this.updateTimes} submitTimes={this.updateAvailableCars}
                                         startTimeValue={this.state.startTime} endTimeValue={this.state.endTime}
                                         carsListed={this.state.carsListed} booking={this.state.booking}/>
@@ -372,6 +373,7 @@ enum MODE {
 
 interface NavigationProps {
     user: { name: string; email: string; };
+    isValid: number;
 }
 
 interface NavigationState {
@@ -393,8 +395,23 @@ class Navigation extends React.Component<NavigationProps, NavigationState> {
     render() {
         let main =
             <main className="container main">
-                <CarshareBooker user={this.props.user} startTime={""} endTime={""} cars={[]} chosenCar={""}/>
             </main>
+        if (this.props.user) {
+            if (this.props.isValid === -1) {
+                main = <main className="container main">
+                    <div>
+                        {this.props.user.name}, your address {this.props.user.email} is
+                        not registered as a carshare member.
+                        Please contact the LMC Carshare team to register your account.
+                    </div>
+                </main>
+            } else if (this.props.isValid === 1) {
+                main =
+                    <main className="container main">
+                        <CarshareBooker user={this.props.user} startTime={""} endTime={""} cars={[]} chosenCar={""}/>
+                    </main>
+            }
+        }
 
         return (
             <>
@@ -449,6 +466,28 @@ function useUser(isSignedIn: boolean): User | null {
             .catch(response => console.log(response));
     }, [isSignedIn]);
     return user;
+}
+
+function useIsValidMember(user: User | null): number {
+    const [isValid, setValid] = React.useState<number>(0);
+    React.useEffect(() => {
+        if (user) {
+            transposit
+                .run("is_valid_member", {email: user.email})
+                .then(x => {
+                    if (x.results[0]) {
+                        setValid(1);
+                    } else {
+                        setValid(-1);
+                    }
+                })
+                .catch(response => {
+                    setValid(-1);
+                });
+        }
+    }, [user, isValid]);
+
+    return isValid;
 }
 
 /**
@@ -506,15 +545,15 @@ function Index() {
     // Check if signed-in
     const isSignedIn = useSignedIn();
     const user = useUser(isSignedIn);
+    const isValid = useIsValidMember(user);
 
     // If not signed-in, wait while rendering nothing
     if (!isSignedIn || !user) {
         return null;
     }
-
     // If signed-in, display the app
     return (
-            <Navigation user={user}/>
+            <Navigation user={user} isValid={isValid}/>
     );
 }
 
