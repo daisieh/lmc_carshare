@@ -457,9 +457,11 @@ function useUser(isSignedIn: boolean): User | null {
                 .run("is_valid_member", {email: user.email})
                 .then(x => {
                     if (x[0]) {
+                        console.log(x);
                         setUser(user);
+                    } else {
+                        setUser(null);
                     }
-                    setUser(null);
                 })
                 .catch(response => {
                     console.log(response);
