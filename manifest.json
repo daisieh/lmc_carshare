@@ -164,7 +164,7 @@
           "lang": "js"
         },
         "access": {
-          "requireApiKey": true
+          "requireUser": true
         }
       }],
       "dataConnections": [{
