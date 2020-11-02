@@ -452,6 +452,7 @@ function useUser(isSignedIn: boolean): User | null {
     }, [isSignedIn]);
     React.useEffect(() => {
         if (user) {
+            console.log("checking user " + user.email);
             transposit
                 .run("is_valid_member", {email: user.email})
                 .then(x => {
@@ -466,6 +467,7 @@ function useUser(isSignedIn: boolean): User | null {
                 });
         }
     });
+    console.log("user is " + user);
     return user;
 }
 
