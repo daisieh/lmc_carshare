@@ -467,7 +467,7 @@ function useUser(isSignedIn: boolean): User | null {
                     setUser(null);
                 });
         }
-    }, [isSignedIn]);
+    }, [isSignedIn, user]);
     return user;
 }
 
