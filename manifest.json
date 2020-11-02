@@ -154,7 +154,7 @@
           "lang": "js"
         }
       }, {
-        "id": "is_valid_signin",
+        "id": "is_valid_member",
         "function": {
           "parameters": [{
             "name": "email",
