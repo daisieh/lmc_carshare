@@ -538,7 +538,6 @@ function Index() {
                 <a href="/signin">Sign in again</a>
             </div>
         )
-        return null;
     }
     console.log("signed in");
     // If signed-in, display the app
