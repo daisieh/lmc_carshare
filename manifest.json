@@ -159,6 +159,10 @@
           }],
           "js": "is_valid_signin.js",
           "lang": "js"
+        },
+        "access": {
+          "requireApiKey": true,
+          "webhook": true
         }
       }],
       "dataConnections": [{
