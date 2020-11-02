@@ -12,7 +12,6 @@ const transposit = new Transposit(
     "https://lmc-carshare-89gbj.transposit.io"
 );
 
-
 interface SearchAvailabilityProps {
     updateTime: (startTime: string, endTime: string) => void;
     submitTimes: () => void;
@@ -365,6 +364,12 @@ class CarshareBooker extends React.Component<CarshareBookerProps, CarshareBooker
 
 }
 
+enum MODE {
+    "BOOKING",
+    "CAR",
+    "SIGNIN"
+}
+
 interface NavigationProps {
     user: { name: string; email: string; };
 }
@@ -548,10 +553,4 @@ interface Booking {
     "end": string,
     "confirmed": boolean,
     "vehicle": string
-}
-
-enum MODE {
-    "BOOKING",
-    "CAR",
-    "SIGNIN"
 }
