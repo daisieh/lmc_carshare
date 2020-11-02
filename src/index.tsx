@@ -372,6 +372,7 @@ enum MODE {
 
 interface NavigationProps {
     user: { name: string; email: string; };
+    isValid: boolean;
 }
 
 interface NavigationState {
@@ -450,25 +451,33 @@ function useUser(isSignedIn: boolean): User | null {
             .loadUser()
             .then(u => setUser(u))
             .catch(response => console.log(response));
-        // if (user) {
-        //     console.log("checking user " + user.email);
-        //     transposit
-        //         .run("is_valid_member", {email: user.email})
-        //         .then(x => {
-        //             console.log("is_valid is " + x.results.toString());
-        //             if (x.results[0]) {
-        //                 setUser(user);
-        //             } else {
-        //                 setUser(null);
-        //             }
-        //         })
-        //         .catch(response => {
-        //             console.log(response);
-        //             setUser(null);
-        //         });
-        // }
     }, [isSignedIn]);
     return user;
+}
+
+function isValidMember(): boolean {
+    const [user, setUser] = React.useState<User | null>(null);
+    const [isValid, setValid] = React.useState<boolean>(false);
+    React.useEffect(() => {
+        if (user) {
+            transposit
+                .run("is_valid_member", {email: user.email})
+                .then(x => {
+                    console.log("is_valid is " + x.results.toString());
+                    if (x.results[0]) {
+                        setValid(true);
+                    } else {
+                        setValid(false);
+                    }
+                })
+                .catch(response => {
+                    console.log(response);
+                    setValid(false);
+                });
+        }
+    }, [user]);
+
+    return isValid;
 }
 
 /**
@@ -538,9 +547,10 @@ function Index() {
         )
     }
     console.log("signed in");
+    let isValid = isValidMember();
     // If signed-in, display the app
     return (
-            <Navigation user={user}/>
+            <Navigation user={user} isValid={isValid}/>
     );
 }
 
