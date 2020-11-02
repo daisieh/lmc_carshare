@@ -1,1 +1,88 @@
-@import '~rsuite/lib/styles/themes/default/index.less';
+@import '../node_modules/rsuite/lib/styles/themes/default/index.less';
+
+body {
+  margin: 0;
+  background-color: #1a2439;
+  color: #f6f3f0;
+  font-family: "Istok Web", sans-serif;
+}
+
+h1,
+h2,
+h3 {
+  margin: 0;
+}
+.error {
+  background-color: darkred;
+  color: white;
+  font-weight: bold;
+}
+.container {
+  width: 720px;
+  margin: 0 auto;
+}
+
+@media (max-width: 720px) {
+  .container {
+    width: auto;
+    margin: 0 16px;
+  }
+}
+
+.container.center {
+  display: flex;
+  justify-content: left;
+}
+
+.nav {
+  background-color: #2698ef;
+}
+
+.nav-float-right {
+  display: flex;
+  justify-content: flex-end;
+  padding: 8px 16px;
+}
+
+.nav-item {
+  font-size: 14px;
+  padding-right: 8px;
+  text-decoration: underline;
+}
+
+.nav-item:last-child {
+  padding-right: 0px;
+}
+
+.hero {
+  padding: 8px;
+  background-color: #2698ef;
+}
+
+@media (max-width: 720px) {
+  .hero {
+    padding: 2px;
+  }
+}
+
+/* sign-in page */
+
+.sign-in {
+  padding: 64px 0;
+}
+
+.sign-in-button {
+  padding: 8px 24px;
+  background-color: #7380b6;
+  color: #f6f3f0;
+  font-size: 16px;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  transition-duration: 0.4s;
+}
+
+.sign-in-button:hover {
+  color: #7380b6;
+  background-color: #f6f3f0;
+}
