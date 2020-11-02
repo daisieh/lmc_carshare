@@ -450,24 +450,24 @@ function useUser(isSignedIn: boolean): User | null {
             .loadUser()
             .then(u => setUser(u))
             .catch(response => console.log(response));
-        if (user) {
-            console.log("checking user " + user.email);
-            transposit
-                .run("is_valid_member", {email: user.email})
-                .then(x => {
-                    console.log("is_valid is " + x.results.toString());
-                    if (x.results[0]) {
-                        setUser(user);
-                    } else {
-                        setUser(null);
-                    }
-                })
-                .catch(response => {
-                    console.log(response);
-                    setUser(null);
-                });
-        }
-    }, [isSignedIn, user]);
+        // if (user) {
+        //     console.log("checking user " + user.email);
+        //     transposit
+        //         .run("is_valid_member", {email: user.email})
+        //         .then(x => {
+        //             console.log("is_valid is " + x.results.toString());
+        //             if (x.results[0]) {
+        //                 setUser(user);
+        //             } else {
+        //                 setUser(null);
+        //             }
+        //         })
+        //         .catch(response => {
+        //             console.log(response);
+        //             setUser(null);
+        //         });
+        // }
+    }, [isSignedIn]);
     return user;
 }
 
