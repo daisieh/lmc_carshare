@@ -7,7 +7,6 @@ import {Transposit, User} from "transposit";
 // import * as Yup from "yup";
 import "./styles.css";
 import moment from "moment";
-import set = Reflect.set;
 
 const transposit = new Transposit(
     "https://lmc-carshare-89gbj.transposit.io"
