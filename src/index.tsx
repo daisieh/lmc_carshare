@@ -462,7 +462,7 @@ function Index() {
         <>
             <nav className="nav">
                 <div className="nav-float-right">
-                    <p>{user.name}</p>
+                    <p className="nav-item">{user.name}</p>
                     <a
                         className="nav-item"
                         href="#top"
