@@ -161,8 +161,7 @@
           "lang": "js"
         },
         "access": {
-          "requireApiKey": true,
-          "webhook": true
+          "requireApiKey": true
         }
       }],
       "dataConnections": [{
