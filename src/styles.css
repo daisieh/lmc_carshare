@@ -891,7 +891,7 @@ dd {
 .rs-picker-subtle .picker-subtle-toggle {
   position: relative;
   z-index: 5;
-  padding-right: 32px;
+  padding-right: 22px;
   display: inline-block;
   outline: none;
   cursor: pointer;
@@ -1123,7 +1123,7 @@ dd {
   border: none;
   user-select: none;
   /* stylelint-disable */
-  padding: 8px 12px;
+  padding: 8px 2px;
   font-size: 14px;
   line-height: 1.42857143;
   border-radius: 6px;
@@ -1134,18 +1134,18 @@ dd {
   padding-bottom: 7px;
 }
 .rs-btn.rs-btn-icon {
-  padding-left: 24px;
+  padding-left: 34px;
   height: 36px;
   position: relative;
 }
 .rs-btn-ghost.rs-btn.rs-btn-icon {
-  padding-left: 22px;
+  padding-left: 32px;
 }
 .rs-btn.rs-btn-icon.rs-btn-icon-with-text.rs-btn-icon-placement-left {
   padding-left: 44px;
 }
 .rs-btn.rs-btn-icon.rs-btn-icon-with-text.rs-btn-icon-placement-right {
-  padding-left: 12px;
+  padding-left: 2px;
   padding-right: 44px;
 }
 .rs-btn.rs-btn-icon.rs-btn-icon-with-text.rs-btn-icon-placement-right > .rs-icon {
@@ -3758,7 +3758,7 @@ a.rs-btn {
   padding-left: 52px;
 }
 .rs-btn-lg.rs-btn-icon.rs-btn-icon-with-text.rs-btn-icon-placement-right {
-  padding-left: 12px;
+  padding-left: 2px;
   padding-right: 52px;
 }
 .rs-btn-lg.rs-btn-icon.rs-btn-icon-with-text.rs-btn-icon-placement-right > .rs-icon {
@@ -3813,7 +3813,7 @@ a.rs-btn {
   padding-left: 35px;
 }
 .rs-btn-sm.rs-btn-icon.rs-btn-icon-with-text.rs-btn-icon-placement-right {
-  padding-left: 12px;
+  padding-left: 2px;
   padding-right: 35px;
 }
 .rs-btn-sm.rs-btn-icon.rs-btn-icon-with-text.rs-btn-icon-placement-right > .rs-icon {
@@ -3868,7 +3868,7 @@ a.rs-btn {
   padding-left: 26px;
 }
 .rs-btn-xs.rs-btn-icon.rs-btn-icon-with-text.rs-btn-icon-placement-right {
-  padding-left: 12px;
+  padding-left: 2px;
   padding-right: 26px;
 }
 .rs-btn-xs.rs-btn-icon.rs-btn-icon-with-text.rs-btn-icon-placement-right > .rs-icon {
@@ -3949,7 +3949,7 @@ a.rs-btn {
   padding-left: 52px;
 }
 .rs-btn-group-lg .rs-btn.rs-btn-icon.rs-btn-icon-with-text.rs-btn-icon-placement-right {
-  padding-left: 12px;
+  padding-left: 2px;
   padding-right: 52px;
 }
 .rs-btn-group-lg .rs-btn.rs-btn-icon.rs-btn-icon-with-text.rs-btn-icon-placement-right > .rs-icon {
@@ -4004,7 +4004,7 @@ a.rs-btn {
   padding-left: 35px;
 }
 .rs-btn-group-sm .rs-btn.rs-btn-icon.rs-btn-icon-with-text.rs-btn-icon-placement-right {
-  padding-left: 12px;
+  padding-left: 2px;
   padding-right: 35px;
 }
 .rs-btn-group-sm .rs-btn.rs-btn-icon.rs-btn-icon-with-text.rs-btn-icon-placement-right > .rs-icon {
@@ -4059,7 +4059,7 @@ a.rs-btn {
   padding-left: 26px;
 }
 .rs-btn-group-xs .rs-btn.rs-btn-icon.rs-btn-icon-with-text.rs-btn-icon-placement-right {
-  padding-left: 12px;
+  padding-left: 2px;
   padding-right: 26px;
 }
 .rs-btn-group-xs .rs-btn.rs-btn-icon.rs-btn-icon-with-text.rs-btn-icon-placement-right > .rs-icon {
@@ -4445,7 +4445,7 @@ a.rs-btn {
 .rs-calendar-panel .rs-calendar-header-title,
 .rs-calendar-panel .rs-calendar-header-backward {
   /* stylelint-disable */
-  padding: 8px 12px;
+  padding: 8px 2px;
   font-size: 14px;
   line-height: 1.42857143;
   border-radius: 6px;
@@ -4460,14 +4460,14 @@ a.rs-btn {
 .rs-calendar-panel .rs-calendar-header-forward.rs-btn-icon,
 .rs-calendar-panel .rs-calendar-header-title.rs-btn-icon,
 .rs-calendar-panel .rs-calendar-header-backward.rs-btn-icon {
-  padding-left: 24px;
+  padding-left: 34px;
   height: 36px;
   position: relative;
 }
 .rs-btn-ghost.rs-calendar-panel .rs-calendar-header-forward.rs-btn-icon,
 .rs-btn-ghost.rs-calendar-panel .rs-calendar-header-title.rs-btn-icon,
 .rs-btn-ghost.rs-calendar-panel .rs-calendar-header-backward.rs-btn-icon {
-  padding-left: 22px;
+  padding-left: 32px;
 }
 .rs-calendar-panel .rs-calendar-header-forward.rs-btn-icon.rs-btn-icon-with-text.rs-btn-icon-placement-left,
 .rs-calendar-panel .rs-calendar-header-title.rs-btn-icon.rs-btn-icon-with-text.rs-btn-icon-placement-left,
@@ -4477,7 +4477,7 @@ a.rs-btn {
 .rs-calendar-panel .rs-calendar-header-forward.rs-btn-icon.rs-btn-icon-with-text.rs-btn-icon-placement-right,
 .rs-calendar-panel .rs-calendar-header-title.rs-btn-icon.rs-btn-icon-with-text.rs-btn-icon-placement-right,
 .rs-calendar-panel .rs-calendar-header-backward.rs-btn-icon.rs-btn-icon-with-text.rs-btn-icon-placement-right {
-  padding-left: 12px;
+  padding-left: 2px;
   padding-right: 44px;
 }
 .rs-calendar-panel .rs-calendar-header-forward.rs-btn-icon.rs-btn-icon-with-text.rs-btn-icon-placement-right > .rs-icon,
@@ -4705,7 +4705,7 @@ a.rs-btn {
   border: none;
   user-select: none;
   /* stylelint-disable */
-  padding: 8px 12px;
+  padding: 8px 2px;
   /* stylelint-enable */
   transition: color 0.2s linear, background-color 0.3s linear;
   color: #8e8e93;
@@ -4731,7 +4731,7 @@ a.rs-btn {
 .rs-calendar-header-meridian.rs-btn-icon,
 .rs-calendar-header-backward.rs-btn-icon,
 .rs-calendar-header-forward.rs-btn-icon {
-  padding-left: 24px;
+  padding-left: 34px;
   height: 36px;
   position: relative;
 }
@@ -4739,7 +4739,7 @@ a.rs-btn {
 .rs-btn-ghost.rs-calendar-header-meridian.rs-btn-icon,
 .rs-btn-ghost.rs-calendar-header-backward.rs-btn-icon,
 .rs-btn-ghost.rs-calendar-header-forward.rs-btn-icon {
-  padding-left: 22px;
+  padding-left: 32px;
 }
 .rs-calendar-header-title.rs-btn-icon.rs-btn-icon-with-text.rs-btn-icon-placement-left,
 .rs-calendar-header-meridian.rs-btn-icon.rs-btn-icon-with-text.rs-btn-icon-placement-left,
@@ -4751,7 +4751,7 @@ a.rs-btn {
 .rs-calendar-header-meridian.rs-btn-icon.rs-btn-icon-with-text.rs-btn-icon-placement-right,
 .rs-calendar-header-backward.rs-btn-icon.rs-btn-icon-with-text.rs-btn-icon-placement-right,
 .rs-calendar-header-forward.rs-btn-icon.rs-btn-icon-with-text.rs-btn-icon-placement-right {
-  padding-left: 12px;
+  padding-left: 2px;
   padding-right: 44px;
 }
 .rs-calendar-header-title.rs-btn-icon.rs-btn-icon-with-text.rs-btn-icon-placement-right > .rs-icon,
@@ -6569,7 +6569,7 @@ a.rs-btn {
   word-break: break-word;
 }
 .rs-picker-cascader-menu-items-has-children .rs-picker-cascader-menu-item {
-  padding-right: 32px;
+  padding-right: 22px;
 }
 .rs-picker-cascader-menu-item:not(.rs-picker-cascader-menu-item-disabled):hover,
 .rs-picker-cascader-menu-item:not(.rs-picker-cascader-menu-item-disabled):focus,
@@ -6616,7 +6616,7 @@ a.rs-btn {
   margin-left: 2px;
   position: absolute;
   top: 8px;
-  right: 12px;
+  right: 2px;
   font-weight: normal;
 }
 .rs-picker-cascader-menu-caret::before {
@@ -6791,7 +6791,7 @@ a.rs-btn {
 }
 .rs-picker-check-menu-items .rs-picker-check-menu-group-title {
   padding: 8px 12px;
-  padding-right: 32px;
+  padding-right: 22px;
   position: relative;
   cursor: default;
   transition: color 0.3s linear, background-color 0.3s linear;
@@ -6805,7 +6805,7 @@ a.rs-btn {
   margin-left: 2px;
   position: absolute;
   top: 8px;
-  right: 12px;
+  right: 2px;
   transition: transform 0.3s linear;
 }
 .rs-picker-check-menu-items .rs-picker-check-menu-group-title .rs-picker-check-menu-group-caret::before {
@@ -6850,7 +6850,7 @@ a.rs-btn {
   text-align: left;
   position: relative;
   margin: 0;
-  padding: 8px 12px;
+  padding: 8px 2px;
   padding-left: 58px;
 }
 .rs-check-tree-node > .rs-check-tree-node-label .rs-check-item .rs-checkbox-checker > label::before {
@@ -7021,7 +7021,7 @@ a.rs-btn {
   border: none;
   user-select: none;
   /* stylelint-disable */
-  padding: 8px 12px;
+  padding: 8px 2px;
   /* stylelint-enable */
   /* stylelint-disable */
   padding: 5px 10px;
@@ -7040,18 +7040,18 @@ a.rs-btn {
   padding-bottom: 7px;
 }
 .rs-picker-toolbar-option.rs-btn-icon {
-  padding-left: 24px;
+  padding-left: 34px;
   height: 36px;
   position: relative;
 }
 .rs-btn-ghost.rs-picker-toolbar-option.rs-btn-icon {
-  padding-left: 22px;
+  padding-left: 32px;
 }
 .rs-picker-toolbar-option.rs-btn-icon.rs-btn-icon-with-text.rs-btn-icon-placement-left {
   padding-left: 44px;
 }
 .rs-picker-toolbar-option.rs-btn-icon.rs-btn-icon-with-text.rs-btn-icon-placement-right {
-  padding-left: 12px;
+  padding-left: 2px;
   padding-right: 44px;
 }
 .rs-picker-toolbar-option.rs-btn-icon.rs-btn-icon-with-text.rs-btn-icon-placement-right > .rs-icon {
@@ -7168,7 +7168,7 @@ a.rs-btn {
   border: none;
   user-select: none;
   /* stylelint-disable */
-  padding: 8px 12px;
+  padding: 8px 2px;
   /* stylelint-enable */
   /* stylelint-disable */
   padding: 5px 10px;
@@ -7185,18 +7185,18 @@ a.rs-btn {
   padding-bottom: 7px;
 }
 .rs-picker-toolbar-right-btn-ok.rs-btn-icon {
-  padding-left: 24px;
+  padding-left: 34px;
   height: 36px;
   position: relative;
 }
 .rs-btn-ghost.rs-picker-toolbar-right-btn-ok.rs-btn-icon {
-  padding-left: 22px;
+  padding-left: 32px;
 }
 .rs-picker-toolbar-right-btn-ok.rs-btn-icon.rs-btn-icon-with-text.rs-btn-icon-placement-left {
   padding-left: 44px;
 }
 .rs-picker-toolbar-right-btn-ok.rs-btn-icon.rs-btn-icon-with-text.rs-btn-icon-placement-right {
-  padding-left: 12px;
+  padding-left: 2px;
   padding-right: 44px;
 }
 .rs-picker-toolbar-right-btn-ok.rs-btn-icon.rs-btn-icon-with-text.rs-btn-icon-placement-right > .rs-icon {
@@ -7696,7 +7696,7 @@ a.rs-btn {
   margin-left: 2px;
   position: absolute;
   top: 8px;
-  right: 12px;
+  right: 2px;
   font-weight: normal;
 }
 .rs-dropdown-toggle-caret::before {
@@ -7794,7 +7794,7 @@ a.rs-btn {
 .rs-dropdown-toggle.rs-btn {
   position: relative;
   z-index: 5;
-  padding-right: 32px;
+  padding-right: 22px;
   display: inline-block;
   outline: none;
   cursor: pointer;
@@ -7804,7 +7804,7 @@ a.rs-btn {
   padding: 0 !important;
 }
 .rs-dropdown-no-caret .rs-dropdown-toggle {
-  padding-right: 12px;
+  padding-right: 2px;
 }
 .rs-dropdown-menu {
   margin: 0;
@@ -8578,7 +8578,7 @@ a.rs-btn {
 }
 .rs-form-control-wrapper.plaintext > .rs-picker-input .rs-picker-toggle {
   padding-left: 0;
-  padding-right: 12px;
+  padding-right: 2px;
 }
 .rs-form-control-wrapper.plaintext > .rs-picker-input .rs-picker-toggle .rs-picker-toggle-value {
   color: #575757;
@@ -12766,7 +12766,7 @@ a.rs-btn {
   transition: border-color ease-in-out 0.3s;
   border-radius: 6px;
   /* stylelint-disable */
-  padding: 7px 11px;
+  padding: 7px 1px;
   font-size: 14px;
   line-height: 1.42857143;
   height: 36px\9;
@@ -12805,7 +12805,7 @@ textarea.rs-input {
 }
 .rs-input-xs {
   /* stylelint-disable */
-  padding: 1px 11px;
+  padding: 1px 1px;
   font-size: 12px;
   line-height: 1.66666667;
   height: 24px\9;
@@ -12821,7 +12821,7 @@ textarea.rs-input-xs {
 }
 .rs-input-lg {
   /* stylelint-disable */
-  padding: 9px 11px;
+  padding: 9px 1px;
   font-size: 16px;
   line-height: 1.375;
   height: 42px\9;
@@ -12837,7 +12837,7 @@ textarea.rs-input-lg {
 }
 .rs-input-sm {
   /* stylelint-disable */
-  padding: 4px 11px;
+  padding: 4px 1px;
   font-size: 14px;
   line-height: 1.42857143;
   height: 30px\9;
@@ -12957,7 +12957,7 @@ textarea.rs-input-sm {
   left: 1px;
   top: 1px;
   height: 34px;
-  padding: 7px 11px;
+  padding: 7px 1px;
   border-radius: 0 6px 6px 0;
 }
 .rs-input-group.rs-input-group-inside .rs-input-group-btn.rs-btn-loading:hover,
@@ -13404,7 +13404,7 @@ textarea.rs-input-sm {
 }
 .rs-input-group-lg > .rs-input {
   /* stylelint-disable */
-  padding: 9px 11px;
+  padding: 9px 1px;
   font-size: 16px;
   line-height: 1.375;
   height: 42px\9;
@@ -13436,7 +13436,7 @@ textarea.rs-input-group-lg > .rs-input {
 }
 .rs-input-group-md > .rs-input {
   /* stylelint-disable */
-  padding: 7px 11px;
+  padding: 7px 1px;
   font-size: 14px;
   line-height: 1.42857143;
   height: 36px\9;
@@ -13468,7 +13468,7 @@ textarea.rs-input-group-md > .rs-input {
 }
 .rs-input-group-sm > .rs-input {
   /* stylelint-disable */
-  padding: 4px 11px;
+  padding: 4px 1px;
   font-size: 14px;
   line-height: 1.42857143;
   height: 30px\9;
@@ -13500,7 +13500,7 @@ textarea.rs-input-group-sm > .rs-input {
 }
 .rs-input-group-xs > .rs-input {
   /* stylelint-disable */
-  padding: 1px 11px;
+  padding: 1px 1px;
   font-size: 12px;
   line-height: 1.66666667;
   height: 24px\9;
@@ -13528,7 +13528,7 @@ textarea.rs-input-group-xs > .rs-input {
 }
 .rs-input-group.rs-input-group-lg > .rs-input-group-addon {
   /* stylelint-disable */
-  padding: 9px 11px;
+  padding: 9px 1px;
   font-size: 16px;
   line-height: 1.375;
   height: 42px\9;
@@ -13547,14 +13547,14 @@ textarea.rs-input-group.rs-input-group-lg > .rs-input-group-addon {
 }
 .rs-input-group.rs-input-group-md > .rs-input-group-addon {
   /* stylelint-disable */
-  padding: 7px 11px;
+  padding: 7px 1px;
   font-size: 14px;
   line-height: 1.42857143;
   height: 36px\9;
   /* stylelint-enable */
-  width: 36px;
-  padding-left: 11px;
-  padding-right: 11px;
+  width: 16px;
+  padding-left: 1px;
+  padding-right: 1px;
 }
 @media screen and (-ms-high-contrast: active), (-ms-high-contrast: none) {
   .rs-input-group.rs-input-group-md > .rs-input-group-addon {
@@ -13566,7 +13566,7 @@ textarea.rs-input-group.rs-input-group-md > .rs-input-group-addon {
 }
 .rs-input-group.rs-input-group-sm > .rs-input-group-addon {
   /* stylelint-disable */
-  padding: 4px 11px;
+  padding: 4px 1px;
   font-size: 14px;
   line-height: 1.42857143;
   height: 30px\9;
@@ -13585,7 +13585,7 @@ textarea.rs-input-group.rs-input-group-sm > .rs-input-group-addon {
 }
 .rs-input-group.rs-input-group-xs > .rs-input-group-addon {
   /* stylelint-disable */
-  padding: 1px 11px;
+  padding: 1px 1px;
   font-size: 12px;
   line-height: 1.66666667;
   height: 24px\9;
@@ -13604,7 +13604,7 @@ textarea.rs-input-group.rs-input-group-xs > .rs-input-group-addon {
 }
 .rs-input-group-inside.rs-input-group-lg > .rs-input-group-btn {
   /* stylelint-disable */
-  padding: 9px 11px;
+  padding: 9px 1px;
   font-size: 16px;
   line-height: 1.375;
   height: 42px\9;
@@ -13632,7 +13632,7 @@ textarea.rs-input-group-inside.rs-input-group-lg > .rs-input-group-btn {
   height: 36px\9;
   /* stylelint-enable */
   height: 34px;
-  padding: 7px 11px;
+  padding: 7px 1px;
   border-radius: 0 6px 6px 0;
 }
 @media screen and (-ms-high-contrast: active), (-ms-high-contrast: none) {
@@ -13649,7 +13649,7 @@ textarea.rs-input-group-inside.rs-input-group-md > .rs-input-group-btn {
 }
 .rs-input-group-inside.rs-input-group-sm > .rs-input-group-btn {
   /* stylelint-disable */
-  padding: 4px 11px;
+  padding: 4px 1px;
   font-size: 14px;
   line-height: 1.42857143;
   height: 30px\9;
@@ -13672,7 +13672,7 @@ textarea.rs-input-group-inside.rs-input-group-sm > .rs-input-group-btn {
 }
 .rs-input-group-inside.rs-input-group-xs > .rs-input-group-btn {
   /* stylelint-disable */
-  padding: 1px 11px;
+  padding: 1px 1px;
   font-size: 12px;
   line-height: 1.66666667;
   height: 24px\9;
@@ -13708,7 +13708,7 @@ textarea.rs-input-group-inside.rs-input-group-xs > .rs-input-group-btn {
   color: #575757;
 }
 .rs-input-group-addon {
-  padding: 8px 12px;
+  padding: 8px 2px;
   font-size: 14px;
   font-weight: normal;
   line-height: 1;
@@ -13890,10 +13890,10 @@ textarea.rs-input-group-inside.rs-input-group-xs > .rs-input-group-btn {
   border-color: #1675e0;
 }
 .rs-picker-tag-wrapper {
-  padding-right: 32px;
+  padding-right: 22px;
 }
 .rs-picker-cleanable .rs-picker-tag-wrapper {
-  padding-right: 44px;
+  padding-right: 34px;
 }
 .rs-picker-search {
   border: none;
@@ -13901,7 +13901,7 @@ textarea.rs-input-group-inside.rs-input-group-xs > .rs-input-group-btn {
 }
 .rs-picker-search-input {
   /* stylelint-disable */
-  padding: 7px 11px;
+  padding: 7px 1px;
   font-size: 14px;
   line-height: 1.42857143;
   height: 36px\9;
@@ -13924,7 +13924,7 @@ textarea.rs-picker-search-input {
 .rs-picker-tag .rs-picker-search-input {
   font-size: 14px;
   line-height: 1.42857143;
-  padding: 2px 12px 2px 11px;
+  padding: 2px 2px 2px 1px;
 }
 .rs-picker-tag .rs-picker-search-input > input {
   background: none;
@@ -15316,7 +15316,7 @@ textarea.rs-picker-search-input {
 }
 .rs-pagination-md > li > a {
   /* stylelint-disable */
-  padding: 8px 12px;
+  padding: 8px 2px;
   font-size: 14px;
   line-height: 1.42857143;
   border-radius: 6px;
@@ -15482,7 +15482,7 @@ textarea.rs-picker-search-input {
   border: none;
   user-select: none;
   /* stylelint-disable */
-  padding: 8px 12px;
+  padding: 8px 2px;
   font-size: 14px;
   line-height: 1.42857143;
   border-radius: 6px;
@@ -15493,18 +15493,18 @@ textarea.rs-picker-search-input {
   padding-bottom: 7px;
 }
 .rs-picker-toggle.rs-btn-icon {
-  padding-left: 24px;
+  padding-left: 34px;
   height: 36px;
   position: relative;
 }
 .rs-btn-ghost.rs-picker-toggle.rs-btn-icon {
-  padding-left: 22px;
+  padding-left: 32px;
 }
 .rs-picker-toggle.rs-btn-icon.rs-btn-icon-with-text.rs-btn-icon-placement-left {
   padding-left: 44px;
 }
 .rs-picker-toggle.rs-btn-icon.rs-btn-icon-with-text.rs-btn-icon-placement-right {
-  padding-left: 12px;
+  padding-left: 2px;
   padding-right: 44px;
 }
 .rs-picker-toggle.rs-btn-icon.rs-btn-icon-with-text.rs-btn-icon-placement-right > .rs-icon {
@@ -15546,7 +15546,7 @@ textarea.rs-picker-search-input {
   background-image: none;
 }
 .rs-picker-default .rs-picker-toggle {
-  padding: 7px 11px;
+  padding: 7px 1px;
 }
 .rs-picker-default .rs-btn,
 .rs-picker-default .rs-picker-toggle {
@@ -16213,10 +16213,10 @@ textarea.rs-picker-search-input {
 }
 /* stylelint-disable-next-line */
 .rs-picker-toggle-wrapper .rs-picker-toggle.rs-btn {
-  padding-right: 32px;
+  padding-right: 22px;
 }
 .rs-picker-cleanable .rs-picker-toggle.rs-btn {
-  padding-right: 44px;
+  padding-right: 34px;
 }
 .rs-picker-toggle.rs-btn .rs-picker-toggle-caret,
 .rs-picker-toggle.rs-btn .rs-picker-toggle-clean {
@@ -16227,13 +16227,13 @@ textarea.rs-picker-search-input {
   top: 7px;
 }
 .rs-picker-toggle.rs-btn .rs-picker-toggle-caret {
-  right: 12px;
+  right: 2px;
 }
 .rs-picker-toggle.rs-btn .rs-picker-toggle-clean {
-  right: 30px;
+  right: 20px;
 }
 .rs-picker-input:not(.rs-picker-tag) .rs-picker-toggle.rs-btn ~ .rs-picker-tag-wrapper .rs-picker-search-input {
-  padding: 7px 12px;
+  padding: 7px 2px;
   font-size: 14px;
   line-height: 1.42857143;
 }
@@ -16244,7 +16244,7 @@ textarea.rs-picker-search-input {
   margin-top: 5px;
 }
 .rs-picker-input.rs-picker-tag .rs-picker-toggle.rs-btn ~ .rs-picker-tag-wrapper .rs-picker-search-input {
-  padding-left: 12px;
+  padding-left: 2px;
   margin-top: 5px;
   font-size: 14px;
 }
@@ -16257,11 +16257,11 @@ textarea.rs-picker-search-input {
 }
 .rs-picker-date .rs-picker-toggle.rs-btn,
 .rs-picker-daterange .rs-picker-toggle.rs-btn {
-  padding-right: 36px;
+  padding-right: 26px;
 }
 .rs-picker-cleanable.rs-picker-date .rs-picker-toggle.rs-btn,
 .rs-picker-cleanable.rs-picker-daterange .rs-picker-toggle.rs-btn {
-  padding-right: 42px;
+  padding-right: 32px;
 }
 .rs-picker-date .rs-picker-toggle.rs-btn .rs-picker-toggle-clean,
 .rs-picker-daterange .rs-picker-toggle.rs-btn .rs-picker-toggle-clean,
@@ -16277,11 +16277,11 @@ textarea.rs-picker-search-input {
 }
 .rs-picker-date .rs-picker-toggle.rs-btn .rs-picker-toggle-caret,
 .rs-picker-daterange .rs-picker-toggle.rs-btn .rs-picker-toggle-caret {
-  right: 12px;
+  right: 2px;
 }
 .rs-picker-date .rs-picker-toggle.rs-btn .rs-picker-toggle-clean,
 .rs-picker-daterange .rs-picker-toggle.rs-btn .rs-picker-toggle-clean {
-  right: 30px;
+  right: 20px;
 }
 .rs-picker-default .rs-picker-toggle.rs-btn {
   padding-top: 7px;
@@ -16377,10 +16377,10 @@ textarea.rs-picker-search-input {
   line-height: 22px;
 }
 .rs-picker-toggle-wrapper .rs-picker-toggle.rs-btn-md {
-  padding-right: 32px;
+  padding-right: 22px;
 }
 .rs-picker-cleanable .rs-picker-toggle.rs-btn-md {
-  padding-right: 44px;
+  padding-right: 34px;
 }
 .rs-picker-toggle.rs-btn-md .rs-picker-toggle-caret,
 .rs-picker-toggle.rs-btn-md .rs-picker-toggle-clean {
@@ -16391,16 +16391,16 @@ textarea.rs-picker-search-input {
   top: 7px;
 }
 .rs-picker-toggle.rs-btn-md .rs-picker-toggle-caret {
-  right: 12px;
+  right: 2px;
 }
 .rs-picker-toggle.rs-btn-md .rs-picker-toggle-clean {
-  right: 30px;
+  right: 20px;
 }
 .rs-picker-default .rs-picker-toggle.rs-btn-md {
-  padding-left: 11px;
+  padding-left: 1px;
 }
 .rs-picker-input:not(.rs-picker-tag) .rs-picker-toggle.rs-btn-md ~ .rs-picker-tag-wrapper .rs-picker-search-input {
-  padding: 7px 12px;
+  padding: 7px 2px;
   font-size: 14px;
   line-height: 1.42857143;
 }
@@ -16411,7 +16411,7 @@ textarea.rs-picker-search-input {
   margin-top: 5px;
 }
 .rs-picker-input.rs-picker-tag .rs-picker-toggle.rs-btn-md ~ .rs-picker-tag-wrapper .rs-picker-search-input {
-  padding-left: 12px;
+  padding-left: 2px;
   margin-top: 5px;
   font-size: 14px;
 }
@@ -16424,11 +16424,11 @@ textarea.rs-picker-search-input {
 }
 .rs-picker-date .rs-picker-toggle.rs-btn-md,
 .rs-picker-daterange .rs-picker-toggle.rs-btn-md {
-  padding-right: 36px;
+  padding-right: 26px;
 }
 .rs-picker-cleanable.rs-picker-date .rs-picker-toggle.rs-btn-md,
 .rs-picker-cleanable.rs-picker-daterange .rs-picker-toggle.rs-btn-md {
-  padding-right: 42px;
+  padding-right: 32px;
 }
 .rs-picker-date .rs-picker-toggle.rs-btn-md .rs-picker-toggle-clean,
 .rs-picker-daterange .rs-picker-toggle.rs-btn-md .rs-picker-toggle-clean,
@@ -16444,11 +16444,11 @@ textarea.rs-picker-search-input {
 }
 .rs-picker-date .rs-picker-toggle.rs-btn-md .rs-picker-toggle-caret,
 .rs-picker-daterange .rs-picker-toggle.rs-btn-md .rs-picker-toggle-caret {
-  right: 12px;
+  right: 2px;
 }
 .rs-picker-date .rs-picker-toggle.rs-btn-md .rs-picker-toggle-clean,
 .rs-picker-daterange .rs-picker-toggle.rs-btn-md .rs-picker-toggle-clean {
-  right: 30px;
+  right: 20px;
 }
 .rs-picker-default .rs-picker-toggle.rs-btn-md {
   padding-top: 7px;
@@ -16649,7 +16649,7 @@ textarea.rs-picker-search-input {
 .rs-picker-default .rs-picker-toggle {
   position: relative;
   z-index: 5;
-  padding-right: 32px;
+  padding-right: 22px;
   display: inline-block;
   outline: none;
   cursor: pointer;
@@ -16669,7 +16669,7 @@ textarea.rs-picker-search-input {
 .rs-picker-subtle .rs-picker-toggle {
   position: relative;
   z-index: 5;
-  padding-right: 32px;
+  padding-right: 22px;
   display: inline-block;
   outline: none;
   cursor: pointer;
@@ -16698,11 +16698,11 @@ textarea.rs-picker-search-input {
   width: 100%;
 }
 .rs-picker-cleanable .rs-picker-toggle {
-  padding-right: 44px;
+  padding-right: 34px;
 }
 .rs-picker-date.rs-picker-cleanable .rs-picker-toggle,
 .rs-picker-daterange.rs-picker-cleanable .rs-picker-toggle {
-  padding-right: 52px;
+  padding-right: 42px;
 }
 .rs-picker-toggle-clean {
   display: inline-block;
@@ -16753,7 +16753,7 @@ textarea.rs-picker-search-input {
   margin-left: 2px;
   position: absolute;
   top: 8px;
-  right: 12px;
+  right: 2px;
   font-weight: normal;
   color: #8e8e93;
 }
@@ -16814,13 +16814,13 @@ textarea.rs-picker-search-input {
   transition: border-color ease-in-out 0.3s;
   border-radius: 6px;
   /* stylelint-disable */
-  padding: 7px 11px;
+  padding: 7px 1px;
   font-size: 14px;
   line-height: 1.42857143;
   height: 36px\9;
   /* stylelint-enable */
   min-width: 200px;
-  padding-right: 36px;
+  padding-right: 16px;
 }
 @media screen and (-ms-high-contrast: active), (-ms-high-contrast: none) {
   .rs-picker-menu .rs-picker-search-bar .rs-picker-search-bar-input {
@@ -16856,7 +16856,7 @@ textarea.rs-picker-menu .rs-picker-search-bar .rs-picker-search-bar-input {
   font-size: 14px;
   line-height: 1.42857143;
   top: 14px;
-  right: 24px;
+  right: 14px;
 }
 .rs-tree-menu.rs-picker-menu .rs-picker-search-bar::after,
 .rs-check-tree-menu.rs-picker-menu .rs-picker-search-bar::after {
@@ -17373,7 +17373,7 @@ textarea.rs-picker-menu .rs-picker-search-bar .rs-picker-search-bar-input {
   border: none;
   user-select: none;
   /* stylelint-disable */
-  padding: 8px 12px;
+  padding: 8px 2px;
   font-size: 14px;
   line-height: 1.42857143;
   border-radius: 6px;
@@ -17387,18 +17387,18 @@ textarea.rs-picker-menu .rs-picker-search-bar .rs-picker-search-bar-input {
   padding-bottom: 7px;
 }
 .rs-radio-group-picker .rs-radio-checker > label.rs-btn-icon {
-  padding-left: 24px;
+  padding-left: 34px;
   height: 36px;
   position: relative;
 }
 .rs-btn-ghost.rs-radio-group-picker .rs-radio-checker > label.rs-btn-icon {
-  padding-left: 22px;
+  padding-left: 32px;
 }
 .rs-radio-group-picker .rs-radio-checker > label.rs-btn-icon.rs-btn-icon-with-text.rs-btn-icon-placement-left {
   padding-left: 44px;
 }
 .rs-radio-group-picker .rs-radio-checker > label.rs-btn-icon.rs-btn-icon-with-text.rs-btn-icon-placement-right {
-  padding-left: 12px;
+  padding-left: 2px;
   padding-right: 44px;
 }
 .rs-radio-group-picker .rs-radio-checker > label.rs-btn-icon.rs-btn-icon-with-text.rs-btn-icon-placement-right > .rs-icon {
@@ -17588,7 +17588,7 @@ textarea.rs-picker-menu .rs-picker-search-bar .rs-picker-search-bar-input {
 }
 .rs-picker-select-menu-items .rs-picker-select-menu-group-title {
   padding: 8px 12px;
-  padding-right: 32px;
+  padding-right: 22px;
   position: relative;
   cursor: default;
   transition: color 0.3s linear, background-color 0.3s linear;
@@ -17602,7 +17602,7 @@ textarea.rs-picker-menu .rs-picker-search-bar .rs-picker-search-bar-input {
   margin-left: 2px;
   position: absolute;
   top: 8px;
-  right: 12px;
+  right: 2px;
   transition: transform 0.3s linear;
 }
 .rs-picker-select-menu-items .rs-picker-select-menu-group-title .rs-picker-select-menu-group-caret::before {
@@ -19594,7 +19594,7 @@ textarea.rs-picker-menu .rs-picker-search-bar .rs-picker-search-bar-input {
   background: #fff;
   display: inline-block;
   margin: 0;
-  padding: 8px 12px;
+  padding: 8px 2px;
   border-radius: 6px;
   box-shadow: 0 1px 8px #00000012;
   z-index: 1060;
@@ -19621,7 +19621,7 @@ textarea.rs-picker-menu .rs-picker-search-bar .rs-picker-search-bar-input {
   line-height: 1.42857143;
 }
 .rs-tree-node > .rs-tree-node-label > .rs-tree-node-label-content {
-  padding: 6px 12px 6px 8px;
+  padding: 6px 2px 6px 8px;
   display: inline-block;
   border-top: 2px solid transparent;
   border-bottom: 2px solid transparent;
@@ -19814,7 +19814,7 @@ textarea.rs-picker-menu .rs-picker-search-bar .rs-picker-search-bar-input {
   position: absolute;
   display: inline-block;
   top: 8px;
-  left: 12px;
+  left: 2px;
   width: 20px;
   text-align: center;
 }
@@ -19893,7 +19893,7 @@ textarea.rs-picker-menu .rs-picker-search-bar .rs-picker-search-bar-input {
   position: absolute;
   font-size: 12px;
   top: 12px;
-  right: 12px;
+  right: 2px;
   color: #8e8e93;
   cursor: pointer;
   font-family: 'rsuite-icon-font';
@@ -19962,7 +19962,7 @@ textarea.rs-picker-menu .rs-picker-search-bar .rs-picker-search-bar-input {
   border: none;
   user-select: none;
   /* stylelint-disable */
-  padding: 8px 12px;
+  padding: 8px 2px;
   font-size: 14px;
   line-height: 1.42857143;
   /* stylelint-enable */
@@ -19984,18 +19984,18 @@ textarea.rs-picker-menu .rs-picker-search-bar .rs-picker-search-bar-input {
   padding-bottom: 7px;
 }
 .rs-uploader-picture .rs-uploader-trigger-btn.rs-btn-icon {
-  padding-left: 24px;
+  padding-left: 34px;
   height: 36px;
   position: relative;
 }
 .rs-btn-ghost.rs-uploader-picture .rs-uploader-trigger-btn.rs-btn-icon {
-  padding-left: 22px;
+  padding-left: 32px;
 }
 .rs-uploader-picture .rs-uploader-trigger-btn.rs-btn-icon.rs-btn-icon-with-text.rs-btn-icon-placement-left {
   padding-left: 44px;
 }
 .rs-uploader-picture .rs-uploader-trigger-btn.rs-btn-icon.rs-btn-icon-with-text.rs-btn-icon-placement-right {
-  padding-left: 12px;
+  padding-left: 2px;
   padding-right: 44px;
 }
 .rs-uploader-picture .rs-uploader-trigger-btn.rs-btn-icon.rs-btn-icon-with-text.rs-btn-icon-placement-right > .rs-icon {
@@ -20622,7 +20622,7 @@ textarea.rs-picker-menu .rs-picker-search-bar .rs-picker-search-bar-input {
   border: none;
   user-select: none;
   /* stylelint-disable */
-  padding: 8px 12px;
+  padding: 8px 2px;
   font-size: 14px;
   line-height: 1.42857143;
   border-radius: 6px;
@@ -20637,13 +20637,13 @@ textarea.rs-picker-menu .rs-picker-search-bar .rs-picker-search-bar-input {
 }
 .rs-uploader-text .rs-uploader-trigger-btn.rs-btn-icon,
 .rs-uploader-picture-text .rs-uploader-trigger-btn.rs-btn-icon {
-  padding-left: 24px;
+  padding-left: 34px;
   height: 36px;
   position: relative;
 }
 .rs-btn-ghost.rs-uploader-text .rs-uploader-trigger-btn.rs-btn-icon,
 .rs-btn-ghost.rs-uploader-picture-text .rs-uploader-trigger-btn.rs-btn-icon {
-  padding-left: 22px;
+  padding-left: 32px;
 }
 .rs-uploader-text .rs-uploader-trigger-btn.rs-btn-icon.rs-btn-icon-with-text.rs-btn-icon-placement-left,
 .rs-uploader-picture-text .rs-uploader-trigger-btn.rs-btn-icon.rs-btn-icon-with-text.rs-btn-icon-placement-left {
@@ -20651,7 +20651,7 @@ textarea.rs-picker-menu .rs-picker-search-bar .rs-picker-search-bar-input {
 }
 .rs-uploader-text .rs-uploader-trigger-btn.rs-btn-icon.rs-btn-icon-with-text.rs-btn-icon-placement-right,
 .rs-uploader-picture-text .rs-uploader-trigger-btn.rs-btn-icon.rs-btn-icon-with-text.rs-btn-icon-placement-right {
-  padding-left: 12px;
+  padding-left: 2px;
   padding-right: 44px;
 }
 .rs-uploader-text .rs-uploader-trigger-btn.rs-btn-icon.rs-btn-icon-with-text.rs-btn-icon-placement-right > .rs-icon,
@@ -20842,7 +20842,7 @@ textarea.rs-picker-menu .rs-picker-search-bar .rs-picker-search-bar-input {
 .rs-uploader-picture-text .rs-uploader-file-item-btn-remove {
   position: absolute;
   top: 0;
-  right: 12px;
+  right: 2px;
   color: #8e8e93;
   cursor: pointer;
   height: 50px;
