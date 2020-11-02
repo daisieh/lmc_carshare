@@ -12,7 +12,6 @@ const transposit = new Transposit(
     "https://lmc-carshare-89gbj.transposit.io"
 );
 
-
 interface SearchAvailabilityProps {
     updateTime: (startTime: string, endTime: string) => void;
     submitTimes: () => void;
@@ -365,6 +364,61 @@ class CarshareBooker extends React.Component<CarshareBookerProps, CarshareBooker
 
 }
 
+enum MODE {
+    "BOOKING",
+    "CAR",
+    "SIGNIN"
+}
+
+interface NavigationProps {
+    user: { name: string; email: string; };
+}
+
+interface NavigationState {
+    user: { name: string; email: string; };
+    car: Car | null;
+    mode: MODE;
+}
+
+class Navigation extends React.Component<NavigationProps, NavigationState> {
+    constructor(props) {
+        super(props);
+        this.state = {
+            user: this.props.user,
+            car: null,
+            mode: MODE.BOOKING
+        };
+    };
+
+    render() {
+        let main =
+            <main className="container main">
+                <CarshareBooker user={this.props.user} startTime={""} endTime={""} cars={[]} chosenCar={""}/>
+            </main>
+
+        return (
+            <>
+                <nav className="nav">
+                    <div className="nav-float-right">
+                        <p className="nav-item">{this.props.user.name}</p>
+                        <a
+                            className="nav-item"
+                            href="#top"
+                            onClick={event => {
+                                event.preventDefault();
+                                transposit.signOut(`${window.location.origin}/signin`);
+                            }}
+                        >
+                            Sign out
+                        </a>
+                    </div>
+                </nav>
+                {main}
+            </>
+        );
+    };
+}
+
 /**
  * Hook to check that user is signed-in. Return true if they are.
  */
@@ -460,26 +514,7 @@ function Index() {
 
     // If signed-in, display the app
     return (
-        <>
-            <nav className="nav">
-                <div className="nav-float-right">
-                    <p className="nav-item">{user.name}</p>
-                    <a
-                        className="nav-item"
-                        href="#top"
-                        onClick={event => {
-                            event.preventDefault();
-                            transposit.signOut(`${window.location.origin}/signin`);
-                        }}
-                    >
-                        Sign out
-                    </a>
-                </div>
-            </nav>
-            <main className="container main">
-                <CarshareBooker user={user} startTime={""} endTime={""} cars={[]} chosenCar={""}/>
-            </main>
-        </>
+            <Navigation user={user}/>
     );
 }
 
