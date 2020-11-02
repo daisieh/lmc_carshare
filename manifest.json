@@ -144,6 +144,12 @@
         "tql": {
           "tql": "SELECT * FROM google_mail.stop_push_notifications\n  WHERE userId\u003d\u0027me\u0027\n\n/*\n * For sample code and reference material, visit\n * https://www.transposit.com/docs/get-started/sql-quickstart\n */"
         }
+      }, {
+        "id": "list_members",
+        "function": {
+          "js": "list_members.js",
+          "lang": "js"
+        }
       }],
       "dataConnections": [{
         "ref": "slack_identify.raw",
