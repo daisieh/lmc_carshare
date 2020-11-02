@@ -7,6 +7,7 @@ import {Transposit, User} from "transposit";
 // import * as Yup from "yup";
 import "./styles.css";
 import moment from "moment";
+import set = Reflect.set;
 
 const transposit = new Transposit(
     "https://lmc-carshare-89gbj.transposit.io"
@@ -435,28 +436,6 @@ function useSignedIn(): boolean {
 }
 
 /**
- * Hook to verify if user is a member
- */
-function isMember(user: User | null): boolean {
-    if (user) {
-        let result = React.useEffect(() => {
-            transposit
-                .run("is_valid_member", {email: user.email})
-                .then(x => {
-                    return x[0];
-                })
-                .catch(response => {
-                    console.log(response);
-                    return false;
-                });
-        });
-        console.log(result);
-        return true;
-    }
-    return false;
-}
-
-/**
  * Hook to load the signed-in user.
  */
 function useUser(isSignedIn: boolean): User | null {
@@ -470,6 +449,22 @@ function useUser(isSignedIn: boolean): User | null {
             .then(u => setUser(u))
             .catch(response => console.log(response));
     }, [isSignedIn]);
+    React.useEffect(() => {
+        if (user) {
+            transposit
+                .run("is_valid_member", {email: user.email})
+                .then(x => {
+                    if (x[0]) {
+                        setUser(user);
+                    }
+                    setUser(null);
+                })
+                .catch(response => {
+                    console.log(response);
+                    setUser(null);
+                });
+        }
+    });
     return user;
 }
 
@@ -528,10 +523,9 @@ function Index() {
     // Check if signed-in
     const isSignedIn = useSignedIn();
     const user = useUser(isSignedIn);
-    const x = isMember(user);
 
     // If not signed-in, wait while rendering nothing
-    if (!isSignedIn || !user || !x) {
+    if (!isSignedIn || !user) {
         return null;
     }
 
