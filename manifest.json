@@ -97,6 +97,9 @@
           }],
           "js": "get_car.js",
           "lang": "js"
+        },
+        "access": {
+          "requireApiKey": true
         }
       }, {
         "id": "watch_mailbox",
