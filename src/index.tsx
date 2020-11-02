@@ -76,7 +76,7 @@ class SearchAvailabilityForm extends React.Component<SearchAvailabilityProps, Se
                     value={new Date(this.props.endTimeValue)}
                     disabled={disabled}
                 />
-                <Button onClick={this.handleSubmit} disabled={disabled}>
+                <Button size="sm" onClick={this.handleSubmit} disabled={disabled}>
                     Submit
                 </Button>
                 <div className="error">{inThePast}</div>
@@ -184,7 +184,7 @@ class BookingStatus extends React.Component<BookingStatusProps, {}> {
             return (
                 <div>
                     <p>Would you like to book {carDescription} from {this.props.startDisplayTime} to {this.props.endDisplayTime}?</p>
-                    <Button onClick={this.handleSubmit}>Book it!</Button>
+                    <Button size="sm" onClick={this.handleSubmit}>Book it!</Button>
                 </div>
             );
         } else {
@@ -356,7 +356,7 @@ class CarshareBooker extends React.Component<CarshareBookerProps, CarshareBooker
                                startDisplayTime={startDisplayTime} endDisplayTime={endDisplayTime}
                 />
                 <div className="error">{this.state.errorMessage}</div>
-                <Button onClick={this.resetPicker}>Reset</Button>
+                <Button size="sm" onClick={this.resetPicker}>Reset</Button>
             </div>
         );
     };
@@ -407,8 +407,7 @@ function SignIn() {
                 </div>
             </header>
             <main className="container center sign-in">
-                <button
-                    className="sign-in-button"
+                <Button
                     onClick={async e => {
                         e.preventDefault();
                         await transposit.signIn(
@@ -417,7 +416,7 @@ function SignIn() {
                     }}
                 >
                     Sign In
-                </button>
+                </Button>
             </main>
         </>
     );
