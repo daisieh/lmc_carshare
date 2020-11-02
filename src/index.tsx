@@ -456,8 +456,8 @@ function useUser(isSignedIn: boolean): User | null {
             transposit
                 .run("is_valid_member", {email: user.email})
                 .then(x => {
-                    console.log("is_valid is " + x.toString());
-                    if (x[0]) {
+                    console.log("is_valid is " + x.results.toString());
+                    if (x.results[0]) {
                         setUser(user);
                     } else {
                         setUser(null);
