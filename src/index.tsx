@@ -435,6 +435,28 @@ function useSignedIn(): boolean {
 }
 
 /**
+ * Hook to verify if user is a member
+ */
+function isMember(user: User | null): boolean {
+    if (user) {
+        let result = React.useEffect(() => {
+            transposit
+                .run("is_valid_member", {email: user.email})
+                .then(x => {
+                    return x[0];
+                })
+                .catch(response => {
+                    console.log(response);
+                    return false;
+                });
+        });
+        console.log(result);
+        return true;
+    }
+    return false;
+}
+
+/**
  * Hook to load the signed-in user.
  */
 function useUser(isSignedIn: boolean): User | null {
@@ -506,9 +528,10 @@ function Index() {
     // Check if signed-in
     const isSignedIn = useSignedIn();
     const user = useUser(isSignedIn);
+    const x = isMember(user);
 
     // If not signed-in, wait while rendering nothing
-    if (!isSignedIn || !user) {
+    if (!isSignedIn || !user || !x) {
         return null;
     }
 
