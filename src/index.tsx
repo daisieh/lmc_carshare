@@ -391,10 +391,10 @@ class Navigation extends React.Component<NavigationProps, NavigationState> {
     };
 
     render() {
-        let main =
-            <main className="container main">
-                <CarshareBooker user={this.props.user} startTime={""} endTime={""} cars={[]} chosenCar={""}/>
-            </main>
+        // let main =
+        //     <main className="container main">
+        //         <CarshareBooker user={this.props.user} startTime={""} endTime={""} cars={[]} chosenCar={""}/>
+        //     </main>
 
         return (
             <>
@@ -413,7 +413,9 @@ class Navigation extends React.Component<NavigationProps, NavigationState> {
                         </a>
                     </div>
                 </nav>
-                {main}
+                <main className="container main">
+                    <CarshareBooker user={this.props.user} startTime={""} endTime={""} cars={[]} chosenCar={""}/>
+                </main>
             </>
         );
     };
