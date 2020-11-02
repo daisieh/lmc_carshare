@@ -527,9 +527,10 @@ function Index() {
 
     // If not signed-in, wait while rendering nothing
     if (!isSignedIn || !user) {
+        console.log("not signed in");
         return null;
     }
-
+    console.log("signed in");
     // If signed-in, display the app
     return (
             <Navigation user={user}/>
