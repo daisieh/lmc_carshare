@@ -443,14 +443,13 @@ function useUser(isSignedIn: boolean): User | null {
     const [user, setUser] = React.useState<User | null>(null);
     React.useEffect(() => {
         if (!isSignedIn) {
+            console.log("!isSignedIn");
             return;
         }
         transposit
             .loadUser()
             .then(u => setUser(u))
             .catch(response => console.log(response));
-    }, [isSignedIn]);
-    React.useEffect(() => {
         if (user) {
             console.log("checking user " + user.email);
             transposit
@@ -468,8 +467,7 @@ function useUser(isSignedIn: boolean): User | null {
                     setUser(null);
                 });
         }
-    });
-    console.log("user is " + user);
+    }, [isSignedIn]);
     return user;
 }
 
