@@ -65,12 +65,14 @@ class SearchAvailabilityForm extends React.Component<SearchAvailabilityProps, Se
         return (
             <div>
                 <DatePicker
+                    size="sm"
                     format="YYYY-MM-DD HH:mm"
                     onChange={this.handleStartChange}
                     value={new Date(this.props.startTimeValue)}
                     disabled={disabled}
                 />
                 <DatePicker
+                    size="sm"
                     format="YYYY-MM-DD HH:mm"
                     onChange={this.handleEndChange}
                     value={new Date(this.props.endTimeValue)}
