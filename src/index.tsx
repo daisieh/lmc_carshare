@@ -396,13 +396,16 @@ class Navigation extends React.Component<NavigationProps, NavigationState> {
             <main className="container main">
             </main>
         if (this.props.user) {
+            console.log("user is " + this.props.user.email);
             if (!this.props.isValid) {
+                console.log("not valid");
                 main = <main className="container main">
                     <div>
                         Not a member. Please <a href="/signin">sign in again</a>.
                     </div>
                 </main>
             } else {
+                console.log("valid!!!");
                 main =
                     <main className="container main">
                         <CarshareBooker user={this.props.user} startTime={""} endTime={""} cars={[]} chosenCar={""}/>
