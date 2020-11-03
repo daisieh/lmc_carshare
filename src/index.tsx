@@ -392,10 +392,18 @@ class Navigation extends React.Component<NavigationProps, NavigationState> {
     };
 
     render() {
-        // let main =
-        //     <main className="container main">
-        //         <CarshareBooker user={this.props.user} startTime={""} endTime={""} cars={[]} chosenCar={""}/>
-        //     </main>
+        let main =
+            <main className="container main">
+                <CarshareBooker user={this.props.user} startTime={""} endTime={""} cars={[]} chosenCar={""}/>
+            </main>
+
+        if (!this.props.isValid) {
+            main = <main className="container main">
+                <div>
+                    Not a member. Please <a href="/signin">sign in again</a>.
+                </div>
+            </main>
+        }
 
         return (
             <>
@@ -414,9 +422,7 @@ class Navigation extends React.Component<NavigationProps, NavigationState> {
                         </a>
                     </div>
                 </nav>
-                <main className="container main">
-                    <CarshareBooker user={this.props.user} startTime={""} endTime={""} cars={[]} chosenCar={""}/>
-                </main>
+                {main}
             </>
         );
     };
