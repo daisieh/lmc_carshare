@@ -21,6 +21,7 @@ interface SearchAvailabilityProps {
     carsListed: boolean;
     booking: Booking | null;
     availableFeatures: string[];
+    selectedFeatures: string[];
 }
 
 interface SearchAvailabilityState {
@@ -37,9 +38,6 @@ class SearchAvailabilityForm extends React.Component<SearchAvailabilityProps, Se
         this.props.submitTimes.bind(this);
         this.props.selectFeatures.bind(this);
         this.props.updateTime("", "");
-        this.state = {
-            selectedFeatures: []
-        };
     }
 
     handleStartChange(event) {
@@ -76,7 +74,7 @@ class SearchAvailabilityForm extends React.Component<SearchAvailabilityProps, Se
 
         return (
             <div className="search-form">
-                <p className="caption">Select the date and time you'd like to book.</p>
+                <p className={disabled?"caption-disabled":"caption"}>Select the date and time you'd like to book.</p>
                 <DatePicker
                     className="date-select"
                     size="sm"
@@ -93,12 +91,13 @@ class SearchAvailabilityForm extends React.Component<SearchAvailabilityProps, Se
                     value={new Date(this.props.endTimeValue)}
                     disabled={disabled}
                 />
-                <p className="caption">Only select cars with all of these features:</p>
+                <p className={disabled?"caption-disabled":"caption"}>Only select cars with all of these features:</p>
                 <TagPicker
                     className="date-select"
                     size="sm"
                     style={{width: 300}}
                     data={feat_array}
+                    value={this.props.selectedFeatures}
                     onChange={this.handleTagPick}
                     disabled={disabled}
                 />
@@ -354,6 +353,7 @@ class CarshareBooker extends React.Component<CarshareBookerProps, CarshareBooker
             console.log("selecting features " + features.toString());
             this.setState({selectedFeatures: features});
         } else {
+            console.log("no features");
             this.setState({selectedFeatures: []});
         }
     }
@@ -407,7 +407,7 @@ class CarshareBooker extends React.Component<CarshareBookerProps, CarshareBooker
             <div>
                 <h2 className="title">Book a car</h2>
                 <SearchAvailabilityForm updateTime={this.updateTimes} submitTimes={this.updateAvailableCars} selectFeatures={this.selectFeatures}
-                                        startTimeValue={this.state.startTime} endTimeValue={this.state.endTime}
+                                        startTimeValue={this.state.startTime} endTimeValue={this.state.endTime} selectedFeatures={this.state.selectedFeatures}
                                         carsListed={this.state.carsListed} booking={this.state.booking} availableFeatures={this.props.availableFeatures}/>
                 <AvailableCars cars={this.state.cars} chooseCar={this.chooseCar} getChosenCar={this.getChosenCar} carsListed={this.state.carsListed}/>
                 <BookingStatus reserveCar={this.bookCar} getChosenCar={this.getChosenCar} booking={this.state.booking}

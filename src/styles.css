@@ -21217,6 +21217,10 @@ p {
 .caption {
   padding-top: 8px;
 }
+.caption-disabled {
+  padding-top: 8px;
+  opacity: 50%;
+}
 .reset-button {
   margin-top: 16px;
 }
