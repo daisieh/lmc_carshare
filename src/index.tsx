@@ -62,7 +62,7 @@ class SearchAvailabilityForm extends React.Component<SearchAvailabilityProps, Se
             inThePast = "WARNING! The selected time slot is in the past.";
         }
         return (
-            <div>
+            <div className="search-form">
                 <DatePicker
                     size="sm"
                     format="YYYY-MM-DD HH:mm"
@@ -349,6 +349,7 @@ class CarshareBooker extends React.Component<CarshareBookerProps, CarshareBooker
         let endDisplayTime = moment(this.state.endTime).format("YYYY-MM-DD HH:mm");
         return (
             <div>
+                <div className="title">Book a car</div>
                 <SearchAvailabilityForm updateTime={this.updateTimes} submitTimes={this.updateAvailableCars}
                                         startTimeValue={this.state.startTime} endTimeValue={this.state.endTime}
                                         carsListed={this.state.carsListed} booking={this.state.booking}/>
