@@ -171,6 +171,9 @@
         "function": {
           "js": "list_features.js",
           "lang": "js"
+        },
+        "access": {
+          "requireUser": true
         }
       }],
       "dataConnections": [{
