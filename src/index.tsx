@@ -498,11 +498,11 @@ function useListFeatures(): string[] {
     const [features, setFeatures] = React.useState<string[]>([]);
     React.useEffect(() => {
             transposit
-                .run("is_valid_member", {})
+                .run("list_features", {})
                 .then(x => {
                     if (x.results) {
                         console.log(x.results);
-                        // setFeatures(x.results);
+                        setFeatures(x.results as string[]);
                     }
                 })
                 .catch(response => {
