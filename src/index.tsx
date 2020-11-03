@@ -474,6 +474,7 @@ function useIsValidMember(user: User | null): boolean {
     const [isValid, setValid] = React.useState<boolean>(false);
     React.useEffect(() => {
         if (user) {
+            console.log("initial isValid " + isValid);
             transposit
                 .run("is_valid_member", {email: user.email})
                 .then(x => {
