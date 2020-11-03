@@ -487,6 +487,8 @@ function useIsValidMember(user: User | null): boolean {
                     console.log(response);
                     setValid(false);
                 });
+        } else {
+            console.log("no user");
         }
     }, [user]);
 
