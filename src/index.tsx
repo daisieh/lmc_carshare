@@ -372,7 +372,7 @@ enum MODE {
 
 interface NavigationProps {
     user: { name: string; email: string; };
-    isValid: boolean;
+    isValid: number;
 }
 
 interface NavigationState {
@@ -398,14 +398,14 @@ class Navigation extends React.Component<NavigationProps, NavigationState> {
             </main>
         if (this.props.user) {
             console.log("user is " + this.props.user.email);
-            if (!this.props.isValid) {
+            if (this.props.isValid == -1) {
                 console.log("not valid");
                 main = <main className="container main">
                     <div>
                         Not a member. Please <a href="/signin">sign in again</a>.
                     </div>
                 </main>
-            } else {
+            } else if (this.props.isValid == 1) {
                 console.log("valid!!!");
                 main =
                     <main className="container main">
@@ -470,8 +470,8 @@ function useUser(isSignedIn: boolean): User | null {
     return user;
 }
 
-function useIsValidMember(user: User | null): boolean {
-    const [isValid, setValid] = React.useState<boolean>(false);
+function useIsValidMember(user: User | null): number {
+    const [isValid, setValid] = React.useState<number>(0);
     React.useEffect(() => {
         if (user) {
             console.log("initial isValid " + isValid);
@@ -480,14 +480,14 @@ function useIsValidMember(user: User | null): boolean {
                 .then(x => {
                     console.log("is_valid is " + x.results.toString());
                     if (x.results[0]) {
-                        setValid(true);
+                        setValid(1);
                     } else {
-                        setValid(false);
+                        setValid(-1);
                     }
                 })
                 .catch(response => {
                     console.log(response);
-                    setValid(false);
+                    setValid(-1);
                 });
         } else {
             console.log("no user");
