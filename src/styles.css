@@ -21089,6 +21089,9 @@ h2,
 h3 {
   margin: 0;
 }
+p {
+  margin: 2px;
+}
 .container {
   width: 720px;
   margin: 0 auto;
@@ -21116,7 +21119,7 @@ h3 {
   padding-right: 8px;
 }
 .nav-item:last-child {
-  padding-right: 0px;
+  padding-right: 0;
 }
 .hero {
   padding: 8px;
@@ -21126,10 +21129,6 @@ h3 {
   .hero {
     padding: 2px;
   }
-}
-/* sign-in page */
-.sign-in {
-  padding: 64px 0;
 }
 .title {
   font-weight: bold;
