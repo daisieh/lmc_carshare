@@ -78,6 +78,7 @@ class SearchAvailabilityForm extends React.Component<SearchAvailabilityProps, Se
                     value={new Date(this.props.endTimeValue)}
                     disabled={disabled}
                 />
+                <br/>
                 <Button size="sm" onClick={this.handleSubmit} disabled={disabled}>
                     Look for cars
                 </Button>

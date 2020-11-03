@@ -21121,6 +21121,9 @@ p {
 .nav-item:last-child {
   padding-right: 0;
 }
+DatePicker {
+  margin-right: 8px;
+}
 .hero {
   padding: 8px;
   background-color: #2698ef;
@@ -21136,11 +21139,8 @@ p {
   padding-top: 8px;
   padding-bottom: 8px;
 }
-.search-form {
-  padding: 4px;
-}
 .reset-button {
-  padding: 4px;
+  padding: 16px;
 }
 .error {
   background-color: darkred;
