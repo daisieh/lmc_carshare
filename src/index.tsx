@@ -1,7 +1,7 @@
 import * as React from "react";
 import {render} from "react-dom";
 import {BrowserRouter as Router, Route} from "react-router-dom";
-import {DatePicker, Button, Radio} from 'rsuite';
+import {DatePicker, Button, Radio, TagPicker} from 'rsuite';
 import {Transposit, User} from "transposit";
 // import { Formik, Form, useField } from "formik";
 // import * as Yup from "yup";
@@ -19,9 +19,11 @@ interface SearchAvailabilityProps {
     endTimeValue: string;
     carsListed: boolean;
     booking: Booking | null;
+    features: string[];
 }
 
 interface SearchAvailabilityState {
+    selectedFeatures: string[];
 }
 
 class SearchAvailabilityForm extends React.Component<SearchAvailabilityProps, SearchAvailabilityState> {
@@ -30,9 +32,13 @@ class SearchAvailabilityForm extends React.Component<SearchAvailabilityProps, Se
         this.handleStartChange = this.handleStartChange.bind(this);
         this.handleEndChange = this.handleEndChange.bind(this);
         this.handleSubmit = this.handleSubmit.bind(this);
+        this.handleTagPick = this.handleTagPick.bind(this);
         this.props.updateTime.bind(this);
         this.props.submitTimes.bind(this);
         this.props.updateTime("", "");
+        this.state = {
+            selectedFeatures: []
+        };
     }
 
     handleStartChange(event) {
@@ -52,7 +58,13 @@ class SearchAvailabilityForm extends React.Component<SearchAvailabilityProps, Se
     }
 
     handleSubmit(event) {
+        console.log("now tags are " + this.state.selectedFeatures.toString());
         this.props.submitTimes();
+    }
+
+    handleTagPick(event) {
+        console.log("tags are " + event.toString());
+        this.setState({selectedFeatures: event});
     }
 
     render() {
@@ -61,6 +73,9 @@ class SearchAvailabilityForm extends React.Component<SearchAvailabilityProps, Se
         if (moment(this.props.startTimeValue).isBefore(moment())) {
             inThePast = "WARNING! The selected time slot is in the past.";
         }
+        let feat_array:{label: string, value: string}[] = this.props.features.map(x => { return {"value": x, "label": x}; });
+        console.log(feat_array.toString());
+
         return (
             <div className="search-form">
                 <p>Select the date and time you'd like to book.</p>
@@ -81,6 +96,8 @@ class SearchAvailabilityForm extends React.Component<SearchAvailabilityProps, Se
                     disabled={disabled}
                 />
                 <br/>
+                <TagPicker data={feat_array} onChange={this.handleTagPick}/>
+
                 <Button appearance="ghost" className="date-select" size="sm" onClick={this.handleSubmit} disabled={disabled}>
                     Look for cars
                 </Button>
@@ -207,6 +224,7 @@ interface CarshareBookerProps {
     user: { name: string; email: string; };
     cars: Car[];
     chosenCar: string;
+    features: string[];
 }
 
 interface CarshareBookerState {
@@ -218,6 +236,7 @@ interface CarshareBookerState {
     booking: Booking | null;
     carsListed: boolean;
     errorMessage: string;
+    selectedFeatures: string[];
 }
 
 class CarshareBooker extends React.Component<CarshareBookerProps, CarshareBookerState> {
@@ -231,7 +250,8 @@ class CarshareBooker extends React.Component<CarshareBookerProps, CarshareBooker
             user: this.props.user,
             booking: null,
             carsListed: false,
-            errorMessage: ""
+            errorMessage: "",
+            selectedFeatures: []
         };
         this.updateAvailableCars = this.updateAvailableCars.bind(this);
         this.updateTimes = this.updateTimes.bind(this);
@@ -287,14 +307,26 @@ class CarshareBooker extends React.Component<CarshareBookerProps, CarshareBooker
     }
 
     carsAvailableSuccess(results) {
+        let filtered_cars = [];
         console.log(results.results[0]);
+        console.log("features are " + this.state.selectedFeatures.toString());
+        this.chooseCar("");
+        filtered_cars = results.results[0].cars.filter(x => {
+            let res = false;
+            for (let i in this.state.selectedFeatures) {
+                console.log("comparing " + this.state.selectedFeatures[i] + " to " + x.Features.toString() + ": " + x.Features.indexOf(this.state.selectedFeatures[i]));
+                if (x.Features.indexOf(this.state.selectedFeatures[i]) >= 0) {
+                    res = true;
+                }
+            }
+            return res;
+        });
         this.setState({
-            cars: results.results[0].cars as Car[],
+            cars: filtered_cars as Car[],
             chosenCar: "",
             carsListed: true
         });
-        this.chooseCar("");
-        return results;
+        return filtered_cars;
     }
 
     carBookedSuccess(results) {
@@ -356,7 +388,7 @@ class CarshareBooker extends React.Component<CarshareBookerProps, CarshareBooker
                 <h2 className="title">Book a car</h2>
                 <SearchAvailabilityForm updateTime={this.updateTimes} submitTimes={this.updateAvailableCars}
                                         startTimeValue={this.state.startTime} endTimeValue={this.state.endTime}
-                                        carsListed={this.state.carsListed} booking={this.state.booking}/>
+                                        carsListed={this.state.carsListed} booking={this.state.booking} features={this.props.features}/>
                 <AvailableCars cars={this.state.cars} passToParent={this.chooseCar} getChosenCar={this.getChosenCar} carsListed={this.state.carsListed}/>
                 <BookingStatus reserveCar={this.bookCar} getChosenCar={this.getChosenCar} booking={this.state.booking}
                                startDisplayTime={startDisplayTime} endDisplayTime={endDisplayTime}
@@ -378,6 +410,7 @@ enum MODE {
 interface NavigationProps {
     user: { name: string; email: string; };
     isValid: number;
+    features: string[];
 }
 
 interface NavigationState {
@@ -412,7 +445,7 @@ class Navigation extends React.Component<NavigationProps, NavigationState> {
             } else if (this.props.isValid === 1) {
                 main =
                     <main className="container main">
-                        <CarshareBooker user={this.props.user} startTime={""} endTime={""} cars={[]} chosenCar={""}/>
+                        <CarshareBooker user={this.props.user} startTime={""} endTime={""} cars={[]} chosenCar={""} features={this.props.features}/>
                     </main>
             }
         }
@@ -494,7 +527,7 @@ function useIsValidMember(user: User | null): number {
     return isValid;
 }
 
-function useListFeatures(): string[] {
+function useListFeatures(user: User | null): string[] {
     const [features, setFeatures] = React.useState<string[]>([]);
     React.useEffect(() => {
             transposit
@@ -507,7 +540,7 @@ function useListFeatures(): string[] {
                 })
                 .catch(response => {
                 });
-    });
+    }, [user]);
 
     return features;
 }
@@ -568,8 +601,7 @@ function Index() {
     const isSignedIn = useSignedIn();
     const user = useUser(isSignedIn);
     const isValid = useIsValidMember(user);
-    const features = useListFeatures();
-    console.log(features);
+    const features = useListFeatures(user);
 
     // If not signed-in, wait while rendering nothing
     if (!isSignedIn || !user) {
@@ -577,7 +609,7 @@ function Index() {
     }
     // If signed-in, display the app
     return (
-            <Navigation user={user} isValid={isValid}/>
+            <Navigation user={user} isValid={isValid} features={features}/>
     );
 }
 
