@@ -19,7 +19,7 @@ interface SearchAvailabilityProps {
     endTimeValue: string;
     carsListed: boolean;
     booking: Booking | null;
-    features: string[];
+    availableFeatures: string[];
 }
 
 interface SearchAvailabilityState {
@@ -73,7 +73,7 @@ class SearchAvailabilityForm extends React.Component<SearchAvailabilityProps, Se
         if (moment(this.props.startTimeValue).isBefore(moment())) {
             inThePast = "WARNING! The selected time slot is in the past.";
         }
-        let feat_array:{label: string, value: string}[] = this.props.features.map(x => { return {"value": x, "label": x}; });
+        let feat_array:{label: string, value: string}[] = this.props.availableFeatures.map(x => { return {"value": x, "label": x}; });
         console.log(feat_array.toString());
 
         return (
@@ -109,7 +109,7 @@ class SearchAvailabilityForm extends React.Component<SearchAvailabilityProps, Se
 
 interface AvailableCarsProps {
     cars: Car[];
-    passToParent: (chosenCar: string) => void;
+    chooseCar: (chosenCar: string) => void;
     getChosenCar: () => Car | null;
     carsListed: boolean;
 }
@@ -118,14 +118,13 @@ class AvailableCars extends React.Component<AvailableCarsProps, {}> {
     constructor(props) {
         super(props);
         this.onClick = this.onClick.bind(this);
-        this.props.passToParent.bind(this);
+        this.props.chooseCar.bind(this);
         this.props.getChosenCar.bind(this);
     }
 
     onClick(value, checked, event) {
-        let chosenCar = value;
         this.setState(() => {
-            this.props.passToParent(chosenCar);
+            this.props.chooseCar(value);
         });
     }
 
@@ -224,7 +223,7 @@ interface CarshareBookerProps {
     user: { name: string; email: string; };
     cars: Car[];
     chosenCar: string;
-    features: string[];
+    availableFeatures: string[];
 }
 
 interface CarshareBookerState {
@@ -388,8 +387,8 @@ class CarshareBooker extends React.Component<CarshareBookerProps, CarshareBooker
                 <h2 className="title">Book a car</h2>
                 <SearchAvailabilityForm updateTime={this.updateTimes} submitTimes={this.updateAvailableCars}
                                         startTimeValue={this.state.startTime} endTimeValue={this.state.endTime}
-                                        carsListed={this.state.carsListed} booking={this.state.booking} features={this.props.features}/>
-                <AvailableCars cars={this.state.cars} passToParent={this.chooseCar} getChosenCar={this.getChosenCar} carsListed={this.state.carsListed}/>
+                                        carsListed={this.state.carsListed} booking={this.state.booking} availableFeatures={this.props.availableFeatures}/>
+                <AvailableCars cars={this.state.cars} chooseCar={this.chooseCar} getChosenCar={this.getChosenCar} carsListed={this.state.carsListed}/>
                 <BookingStatus reserveCar={this.bookCar} getChosenCar={this.getChosenCar} booking={this.state.booking}
                                startDisplayTime={startDisplayTime} endDisplayTime={endDisplayTime}
                 />
@@ -445,7 +444,7 @@ class Navigation extends React.Component<NavigationProps, NavigationState> {
             } else if (this.props.isValid === 1) {
                 main =
                     <main className="container main">
-                        <CarshareBooker user={this.props.user} startTime={""} endTime={""} cars={[]} chosenCar={""} features={this.props.features}/>
+                        <CarshareBooker user={this.props.user} startTime={""} endTime={""} cars={[]} chosenCar={""} availableFeatures={this.props.features}/>
                     </main>
             }
         }
