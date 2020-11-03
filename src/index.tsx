@@ -63,6 +63,7 @@ class SearchAvailabilityForm extends React.Component<SearchAvailabilityProps, Se
         }
         return (
             <div className="search-form">
+                <p>Select the date and time you'd like to book.</p>
                 <DatePicker
                     size="sm"
                     format="YYYY-MM-DD HH:mm"
@@ -350,7 +351,6 @@ class CarshareBooker extends React.Component<CarshareBookerProps, CarshareBooker
         return (
             <div>
                 <h2 className="title">Book a car</h2>
-                <p>Select the date and time you'd like to book.</p>
                 <SearchAvailabilityForm updateTime={this.updateTimes} submitTimes={this.updateAvailableCars}
                                         startTimeValue={this.state.startTime} endTimeValue={this.state.endTime}
                                         carsListed={this.state.carsListed} booking={this.state.booking}/>
@@ -359,7 +359,7 @@ class CarshareBooker extends React.Component<CarshareBookerProps, CarshareBooker
                                startDisplayTime={startDisplayTime} endDisplayTime={endDisplayTime}
                 />
                 <div className="error">{this.state.errorMessage}</div>
-                <Button size="sm" onClick={this.resetPicker}>Reset</Button>
+                <Button size="sm" onClick={this.resetPicker}>Reset booking</Button>
             </div>
         );
     };
