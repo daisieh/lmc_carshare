@@ -166,6 +166,12 @@
         "access": {
           "requireUser": true
         }
+      }, {
+        "id": "list_features",
+        "function": {
+          "js": "list_features.js",
+          "lang": "js"
+        }
       }],
       "dataConnections": [{
         "ref": "slack_identify.raw",
