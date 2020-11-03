@@ -1,7 +1,7 @@
 import * as React from "react";
 import {render} from "react-dom";
 import {BrowserRouter as Router, Route} from "react-router-dom";
-import {DatePicker, Button, Radio, TagPicker} from 'rsuite';
+import {DatePicker, Button, Radio, TagPicker, Loader} from 'rsuite';
 import {Transposit, User} from "transposit";
 // import { Formik, Form, useField } from "formik";
 // import * as Yup from "yup";
@@ -75,36 +75,39 @@ class SearchAvailabilityForm extends React.Component<SearchAvailabilityProps, Se
         return (
             <div className="search-form">
                 <p className={disabled?"caption-disabled":"caption"}>Select the date and time you'd like to book.</p>
-                <DatePicker
-                    className="date-select"
-                    size="sm"
-                    format="YYYY-MM-DD HH:mm"
-                    onChange={this.handleStartChange}
-                    value={new Date(this.props.startTimeValue)}
-                    disabled={disabled}
-                />
-                <DatePicker
-                    className="date-select"
-                    size="sm"
-                    format="YYYY-MM-DD HH:mm"
-                    onChange={this.handleEndChange}
-                    value={new Date(this.props.endTimeValue)}
-                    disabled={disabled}
-                />
+                <div className="date-select">
+                    <DatePicker
+                        className="selector"
+                        size="sm"
+                        format="YYYY-MM-DD HH:mm"
+                        onChange={this.handleStartChange}
+                        value={new Date(this.props.startTimeValue)}
+                        disabled={disabled}
+                    />
+                    <DatePicker
+                        className="selector"
+                        size="sm"
+                        format="YYYY-MM-DD HH:mm"
+                        onChange={this.handleEndChange}
+                        value={new Date(this.props.endTimeValue)}
+                        disabled={disabled}
+                    />
+                </div>
                 <p className={disabled?"caption-disabled":"caption"}>Only select cars with all of these features:</p>
-                <TagPicker
-                    className="date-select"
-                    size="sm"
-                    style={{width: 300}}
-                    data={feat_array}
-                    value={this.props.selectedFeatures}
-                    onChange={this.handleTagPick}
-                    disabled={disabled}
-                />
-                <br/>
+                <div className="feature-select">
+                    <TagPicker
+                        className="selector"
+                        size="sm"
+                        style={{width: 300}}
+                        data={feat_array}
+                        value={this.props.selectedFeatures}
+                        onChange={this.handleTagPick}
+                        disabled={disabled}
+                    />
+                </div>
                 <Button
                     appearance="ghost"
-                    className="date-select"
+                    className="selector"
                     size="sm"
                     onClick={this.handleSubmit}
                     disabled={disabled}
@@ -452,6 +455,7 @@ class Navigation extends React.Component<NavigationProps, NavigationState> {
     render() {
         let main =
             <main className="container main">
+                <Loader size="lg" center content="Loading" vertical/>
             </main>
         if (this.props.user) {
             if (this.props.isValid === -1) {

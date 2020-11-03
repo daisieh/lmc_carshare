@@ -21196,7 +21196,7 @@ p {
 .nav-item:last-child {
   padding-right: 0;
 }
-.date-select {
+.selector {
   margin: 2px;
 }
 .hero {
@@ -21219,7 +21219,15 @@ p {
 }
 .caption-disabled {
   padding-top: 8px;
-  opacity: 50%;
+  opacity: 0.3;
+}
+.date-select {
+  height: 40px;
+  width: 500px;
+}
+.feature-select {
+  height: 40px;
+  width: 500px;
 }
 .reset-button {
   margin-top: 16px;
