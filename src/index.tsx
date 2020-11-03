@@ -394,8 +394,6 @@ class Navigation extends React.Component<NavigationProps, NavigationState> {
             car: null,
             mode: MODE.BOOKING
         };
-        let features = useListFeatures();
-        console.log(features);
     };
 
     render() {
@@ -570,6 +568,8 @@ function Index() {
     const isSignedIn = useSignedIn();
     const user = useUser(isSignedIn);
     const isValid = useIsValidMember(user);
+    const features = useListFeatures();
+    console.log(features);
 
     // If not signed-in, wait while rendering nothing
     if (!isSignedIn || !user) {
