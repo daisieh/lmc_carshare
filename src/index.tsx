@@ -544,13 +544,7 @@ function Index() {
 
     // If not signed-in, wait while rendering nothing
     if (!isSignedIn || !user) {
-        console.log("not signed in");
-        return (
-            <div>
-                <p>This Google account is not affiliated with any known carshare accounts.</p>
-                <a href="/signin">Sign in again</a>
-            </div>
-        )
+        return null;
     }
     console.log("signed in");
     // If signed-in, display the app
