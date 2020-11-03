@@ -81,7 +81,7 @@ class SearchAvailabilityForm extends React.Component<SearchAvailabilityProps, Se
                     disabled={disabled}
                 />
                 <br/>
-                <Button size="sm" onClick={this.handleSubmit} disabled={disabled}>
+                <Button className="date-select" size="sm" onClick={this.handleSubmit} disabled={disabled}>
                     Look for cars
                 </Button>
                 <div className="error">{inThePast}</div>
