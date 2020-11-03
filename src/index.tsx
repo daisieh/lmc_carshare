@@ -349,7 +349,7 @@ class CarshareBooker extends React.Component<CarshareBookerProps, CarshareBooker
         let endDisplayTime = moment(this.state.endTime).format("YYYY-MM-DD HH:mm");
         return (
             <div>
-                <div className="title">Book a car</div>
+                <h1 className="title">Book a car</h1>
                 <SearchAvailabilityForm updateTime={this.updateTimes} submitTimes={this.updateAvailableCars}
                                         startTimeValue={this.state.startTime} endTimeValue={this.state.endTime}
                                         carsListed={this.state.carsListed} booking={this.state.booking}/>
