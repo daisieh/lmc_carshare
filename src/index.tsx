@@ -557,7 +557,7 @@ function Index() {
     if (!isSignedIn || !user) {
         return null;
     }
-    console.log("signed in");
+    console.log("signed in: " + user.email + " isValid? " + isValid);
     // If signed-in, display the app
     return (
             <Navigation user={user} isValid={isValid}/>
