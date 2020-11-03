@@ -384,6 +384,7 @@ interface NavigationState {
 class Navigation extends React.Component<NavigationProps, NavigationState> {
     constructor(props) {
         super(props);
+        console.log("create navigation");
         this.state = {
             user: this.props.user,
             car: null,
