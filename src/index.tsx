@@ -400,7 +400,7 @@ class Navigation extends React.Component<NavigationProps, NavigationState> {
                 main = <main className="container main">
                     <div>
                         {this.props.user.name}, your address {this.props.user.email}
-                        is not a registered carshare member.
+                        is not registered as a carshare member.
                         Please contact the LMC Carshare team to register your account.
                     </div>
                 </main>
