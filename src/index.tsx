@@ -399,8 +399,8 @@ class Navigation extends React.Component<NavigationProps, NavigationState> {
             if (this.props.isValid === -1) {
                 main = <main className="container main">
                     <div>
-                        {this.props.user.name}, your address {this.props.user.email}
-                        is not registered as a carshare member.
+                        {this.props.user.name}, your address {this.props.user.email} is
+                        not registered as a carshare member.
                         Please contact the LMC Carshare team to register your account.
                     </div>
                 </main>
