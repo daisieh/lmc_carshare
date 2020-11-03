@@ -63,7 +63,9 @@ class SearchAvailabilityForm extends React.Component<SearchAvailabilityProps, Se
         }
         return (
             <div className="search-form">
+                <p>Select the date and time you'd like to book.</p>
                 <DatePicker
+                    className="date-select"
                     size="sm"
                     format="YYYY-MM-DD HH:mm"
                     onChange={this.handleStartChange}
@@ -71,14 +73,16 @@ class SearchAvailabilityForm extends React.Component<SearchAvailabilityProps, Se
                     disabled={disabled}
                 />
                 <DatePicker
+                    className="date-select"
                     size="sm"
                     format="YYYY-MM-DD HH:mm"
                     onChange={this.handleEndChange}
                     value={new Date(this.props.endTimeValue)}
                     disabled={disabled}
                 />
-                <Button size="sm" onClick={this.handleSubmit} disabled={disabled}>
-                    Submit
+                <br/>
+                <Button className="date-select" size="sm" onClick={this.handleSubmit} disabled={disabled}>
+                    Look for cars
                 </Button>
                 <div className="error">{inThePast}</div>
             </div>
@@ -349,7 +353,7 @@ class CarshareBooker extends React.Component<CarshareBookerProps, CarshareBooker
         let endDisplayTime = moment(this.state.endTime).format("YYYY-MM-DD HH:mm");
         return (
             <div>
-                <div className="title">Book a car</div>
+                <h2 className="title">Book a car</h2>
                 <SearchAvailabilityForm updateTime={this.updateTimes} submitTimes={this.updateAvailableCars}
                                         startTimeValue={this.state.startTime} endTimeValue={this.state.endTime}
                                         carsListed={this.state.carsListed} booking={this.state.booking}/>
@@ -358,7 +362,7 @@ class CarshareBooker extends React.Component<CarshareBookerProps, CarshareBooker
                                startDisplayTime={startDisplayTime} endDisplayTime={endDisplayTime}
                 />
                 <div className="error">{this.state.errorMessage}</div>
-                <Button size="sm" onClick={this.resetPicker}>Reset</Button>
+                <Button className="reset-button" size="sm" onClick={this.resetPicker}>Reset booking</Button>
             </div>
         );
     };

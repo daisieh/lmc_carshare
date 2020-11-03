@@ -1,4 +1,4 @@
-@import '../node_modules/rsuite/lib/styles/themes/default/index.less';
+@import '../node_modules/rsuite/lib/styles/themes/dark/index.less';
 
 body {
   margin: 0;
@@ -11,6 +11,10 @@ h1,
 h2,
 h3 {
   margin: 0;
+}
+
+p {
+  margin: 2px;
 }
 .container {
   width: 720px;
@@ -45,7 +49,11 @@ h3 {
 }
 
 .nav-item:last-child {
-  padding-right: 0px;
+  padding-right: 0;
+}
+
+.date-select {
+  margin: 2px;
 }
 
 .hero {
@@ -59,28 +67,6 @@ h3 {
   }
 }
 
-/* sign-in page */
-
-.sign-in {
-  padding: 64px 0;
-}
-
-.sign-in-button {
-  padding: 8px 24px;
-  background-color: #7380b6;
-  color: #f6f3f0;
-  font-size: 16px;
-  border: none;
-  border-radius: 8px;
-  cursor: pointer;
-  transition-duration: 0.4s;
-}
-
-.sign-in-button:hover {
-  color: #7380b6;
-  background-color: #f6f3f0;
-}
-
 .title {
   font-weight: bold;
   color: #a6d7ff;
@@ -88,14 +74,16 @@ h3 {
   padding-bottom: 8px;
 }
 
-.search-form {
-  padding-top: 8px;
-  padding-bottom: 8px;
+//.search-form {
+//  padding: 4px;
+//}
+//
+.reset-button {
+  margin: 4px;
 }
 
 .error {
   background-color: darkred;
   color: white;
   font-weight: bold;
-  padding: 4px;
 }
