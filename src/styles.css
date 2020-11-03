@@ -21214,6 +21214,9 @@ p {
   padding-top: 8px;
   padding-bottom: 8px;
 }
+.caption {
+  padding-top: 8px;
+}
 .reset-button {
   margin: 4px;
 }

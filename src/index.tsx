@@ -15,7 +15,7 @@ const transposit = new Transposit(
 interface SearchAvailabilityProps {
     updateTime: (startTime: string, endTime: string) => void;
     submitTimes: () => void;
-    selectFeatures: (features: string[]) => void;
+    selectFeatures: (features: string[] | null) => void;
     startTimeValue: string;
     endTimeValue: string;
     carsListed: boolean;
@@ -63,7 +63,7 @@ class SearchAvailabilityForm extends React.Component<SearchAvailabilityProps, Se
     }
 
     handleTagPick(event) {
-        this.props.selectFeatures(event as string[]);
+        this.props.selectFeatures(event as string[] | null);
     }
 
     render() {
@@ -76,7 +76,7 @@ class SearchAvailabilityForm extends React.Component<SearchAvailabilityProps, Se
 
         return (
             <div className="search-form">
-                <p>Select the date and time you'd like to book.</p>
+                <p className="caption">Select the date and time you'd like to book.</p>
                 <DatePicker
                     className="date-select"
                     size="sm"
@@ -93,16 +93,16 @@ class SearchAvailabilityForm extends React.Component<SearchAvailabilityProps, Se
                     value={new Date(this.props.endTimeValue)}
                     disabled={disabled}
                 />
-                <br/>
+                <p className="caption">Only select cars with these features:</p>
                 <TagPicker
                     className="date-select"
                     size="sm"
-                    width={300}
+                    style={{width: 300}}
                     data={feat_array}
                     onChange={this.handleTagPick}
                     disabled={disabled}
                 />
-
+                <br/>
                 <Button
                     appearance="ghost"
                     className="date-select"
@@ -350,9 +350,13 @@ class CarshareBooker extends React.Component<CarshareBookerProps, CarshareBooker
         this.setState({chosenCar: car});
     }
 
-    selectFeatures(features: string[]) {
-        console.log("selecting features " + features.toString());
-        this.setState({selectedFeatures: features});
+    selectFeatures(features: string[] | null) {
+        if (features) {
+            console.log("selecting features " + features.toString());
+            this.setState({selectedFeatures: features});
+        } else {
+            this.setState({selectedFeatures: []});
+        }
     }
 
     getChosenCar() {
