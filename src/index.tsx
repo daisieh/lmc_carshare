@@ -384,7 +384,6 @@ interface NavigationState {
 class Navigation extends React.Component<NavigationProps, NavigationState> {
     constructor(props) {
         super(props);
-        console.log("create navigation");
         this.state = {
             user: this.props.user,
             car: null,
@@ -397,16 +396,15 @@ class Navigation extends React.Component<NavigationProps, NavigationState> {
             <main className="container main">
             </main>
         if (this.props.user) {
-            console.log("user is " + this.props.user.email);
             if (this.props.isValid === -1) {
-                console.log("not valid");
                 main = <main className="container main">
                     <div>
-                        Not a member. Please <a href="/signin">sign in again</a>.
+                        {this.props.user.name}, your address {this.props.user.email}
+                        is not a registered carshare member.
+                        Please contact the LMC Carshare team to register your account.
                     </div>
                 </main>
             } else if (this.props.isValid === 1) {
-                console.log("valid!!!");
                 main =
                     <main className="container main">
                         <CarshareBooker user={this.props.user} startTime={""} endTime={""} cars={[]} chosenCar={""}/>
@@ -459,7 +457,6 @@ function useUser(isSignedIn: boolean): User | null {
     const [user, setUser] = React.useState<User | null>(null);
     React.useEffect(() => {
         if (!isSignedIn) {
-            console.log("!isSignedIn");
             return;
         }
         transposit
@@ -474,11 +471,9 @@ function useIsValidMember(user: User | null): number {
     const [isValid, setValid] = React.useState<number>(0);
     React.useEffect(() => {
         if (user) {
-            console.log("initial isValid " + isValid);
             transposit
                 .run("is_valid_member", {email: user.email})
                 .then(x => {
-                    console.log("is_valid is " + x.results.toString());
                     if (x.results[0]) {
                         setValid(1);
                     } else {
@@ -486,11 +481,8 @@ function useIsValidMember(user: User | null): number {
                     }
                 })
                 .catch(response => {
-                    console.log(response);
                     setValid(-1);
                 });
-        } else {
-            console.log("no user");
         }
     }, [user, isValid]);
 
@@ -558,7 +550,6 @@ function Index() {
     if (!isSignedIn || !user) {
         return null;
     }
-    console.log("signed in: " + user.email + " isValid? " + isValid);
     // If signed-in, display the app
     return (
             <Navigation user={user} isValid={isValid}/>
