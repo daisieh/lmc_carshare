@@ -65,6 +65,7 @@ class SearchAvailabilityForm extends React.Component<SearchAvailabilityProps, Se
             <div className="search-form">
                 <p>Select the date and time you'd like to book.</p>
                 <DatePicker
+                    className="date-select"
                     size="sm"
                     format="YYYY-MM-DD HH:mm"
                     onChange={this.handleStartChange}
@@ -72,6 +73,7 @@ class SearchAvailabilityForm extends React.Component<SearchAvailabilityProps, Se
                     disabled={disabled}
                 />
                 <DatePicker
+                    className="date-select"
                     size="sm"
                     format="YYYY-MM-DD HH:mm"
                     onChange={this.handleEndChange}

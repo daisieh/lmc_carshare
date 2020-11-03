@@ -21121,7 +21121,7 @@ p {
 .nav-item:last-child {
   padding-right: 0;
 }
-DatePicker {
+.date-select {
   margin-right: 8px;
 }
 .hero {
@@ -21140,7 +21140,7 @@ DatePicker {
   padding-bottom: 8px;
 }
 .reset-button {
-  padding: 16px;
+  margin: 16px;
 }
 .error {
   background-color: darkred;
