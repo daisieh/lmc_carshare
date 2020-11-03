@@ -492,7 +492,7 @@ function useIsValidMember(user: User | null): boolean {
         } else {
             console.log("no user");
         }
-    }, [user]);
+    }, [user, isValid]);
 
     return isValid;
 }
