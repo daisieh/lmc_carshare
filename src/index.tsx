@@ -455,8 +455,7 @@ function useUser(isSignedIn: boolean): User | null {
     return user;
 }
 
-function isValidMember(): boolean {
-    const [user, setUser] = React.useState<User | null>(null);
+function isValidMember(user: User | null): boolean {
     const [isValid, setValid] = React.useState<boolean>(false);
     React.useEffect(() => {
         if (user) {
@@ -535,6 +534,7 @@ function Index() {
     // Check if signed-in
     const isSignedIn = useSignedIn();
     const user = useUser(isSignedIn);
+    const isValid = isValidMember(user);
 
     // If not signed-in, wait while rendering nothing
     if (!isSignedIn || !user) {
@@ -547,7 +547,6 @@ function Index() {
         )
     }
     console.log("signed in");
-    let isValid = isValidMember();
     // If signed-in, display the app
     return (
             <Navigation user={user} isValid={isValid}/>
