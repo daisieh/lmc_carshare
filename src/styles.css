@@ -21218,7 +21218,7 @@ p {
   padding-top: 8px;
 }
 .reset-button {
-  margin: 4px;
+  margin-top: 16px;
 }
 .error {
   background-color: darkred;

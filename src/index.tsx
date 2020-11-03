@@ -93,7 +93,7 @@ class SearchAvailabilityForm extends React.Component<SearchAvailabilityProps, Se
                     value={new Date(this.props.endTimeValue)}
                     disabled={disabled}
                 />
-                <p className="caption">Only select cars with these features:</p>
+                <p className="caption">Only select cars with all of these features:</p>
                 <TagPicker
                     className="date-select"
                     size="sm"
@@ -319,15 +319,14 @@ class CarshareBooker extends React.Component<CarshareBookerProps, CarshareBooker
 
     carsAvailableSuccess(results) {
         let filtered_cars = [];
-        console.log(results.results[0]);
         console.log("features are " + this.state.selectedFeatures.toString());
         this.chooseCar("");
         filtered_cars = results.results[0].cars.filter(x => {
-            let res = false;
+            let res = true;
             for (let i in this.state.selectedFeatures) {
                 console.log("comparing " + this.state.selectedFeatures[i] + " to " + x.Features.toString() + ": " + x.Features.indexOf(this.state.selectedFeatures[i]));
-                if (x.Features.indexOf(this.state.selectedFeatures[i]) >= 0) {
-                    res = true;
+                if (x.Features.indexOf(this.state.selectedFeatures[i]) < 0) {
+                    res = false;
                 }
             }
             return res;
