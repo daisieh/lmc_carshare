@@ -394,11 +394,11 @@ class Navigation extends React.Component<NavigationProps, NavigationState> {
             car: null,
             mode: MODE.BOOKING
         };
+        let features = useListFeatures();
+        console.log(features);
     };
 
     render() {
-        let features = useListFeatures();
-        console.log(features);
         let main =
             <main className="container main">
             </main>
