@@ -81,7 +81,7 @@ class SearchAvailabilityForm extends React.Component<SearchAvailabilityProps, Se
                     disabled={disabled}
                 />
                 <br/>
-                <Button className="date-select" size="sm" onClick={this.handleSubmit} disabled={disabled}>
+                <Button appearance="ghost" className="date-select" size="sm" onClick={this.handleSubmit} disabled={disabled}>
                     Look for cars
                 </Button>
                 <div className="error">{inThePast}</div>
@@ -189,7 +189,7 @@ class BookingStatus extends React.Component<BookingStatusProps, {}> {
             return (
                 <div>
                     <p>Would you like to book {carDescription} from {this.props.startDisplayTime} to {this.props.endDisplayTime}?</p>
-                    <Button size="sm" onClick={this.handleSubmit}>Book it!</Button>
+                    <Button appearance="ghost" size="sm" onClick={this.handleSubmit}>Book it!</Button>
                 </div>
             );
         } else {
@@ -362,7 +362,7 @@ class CarshareBooker extends React.Component<CarshareBookerProps, CarshareBooker
                                startDisplayTime={startDisplayTime} endDisplayTime={endDisplayTime}
                 />
                 <div className="error">{this.state.errorMessage}</div>
-                <Button className="reset-button" size="sm" onClick={this.resetPicker}>Reset booking</Button>
+                <Button appearance="ghost" className="reset-button" size="sm" onClick={this.resetPicker}>Reset booking</Button>
             </div>
         );
     };
@@ -506,7 +506,7 @@ function SignIn() {
                 </div>
             </header>
             <main className="container center sign-in">
-                <Button
+                <Button appearance="ghost"
                     onClick={async e => {
                         e.preventDefault();
                         await transposit.signIn(
