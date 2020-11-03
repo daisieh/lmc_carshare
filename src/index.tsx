@@ -397,6 +397,8 @@ class Navigation extends React.Component<NavigationProps, NavigationState> {
     };
 
     render() {
+        let features = useListFeatures();
+        console.log(features);
         let main =
             <main className="container main">
             </main>
