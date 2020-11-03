@@ -494,6 +494,24 @@ function useIsValidMember(user: User | null): number {
     return isValid;
 }
 
+function useListFeatures(): string[] {
+    const [features, setFeatures] = React.useState<string[]>([]);
+    React.useEffect(() => {
+            transposit
+                .run("is_valid_member", {})
+                .then(x => {
+                    if (x.results) {
+                        console.log(x.results);
+                        // setFeatures(x.results);
+                    }
+                })
+                .catch(response => {
+                });
+    });
+
+    return features;
+}
+
 /**
  * Sign-in page
  */
