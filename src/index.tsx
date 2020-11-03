@@ -494,6 +494,24 @@ function useIsValidMember(user: User | null): number {
     return isValid;
 }
 
+function useListFeatures(): string[] {
+    const [features, setFeatures] = React.useState<string[]>([]);
+    React.useEffect(() => {
+            transposit
+                .run("list_features", {})
+                .then(x => {
+                    if (x.results) {
+                        console.log(x.results);
+                        setFeatures(x.results as string[]);
+                    }
+                })
+                .catch(response => {
+                });
+    });
+
+    return features;
+}
+
 /**
  * Sign-in page
  */
@@ -550,6 +568,8 @@ function Index() {
     const isSignedIn = useSignedIn();
     const user = useUser(isSignedIn);
     const isValid = useIsValidMember(user);
+    const features = useListFeatures();
+    console.log(features);
 
     // If not signed-in, wait while rendering nothing
     if (!isSignedIn || !user) {
