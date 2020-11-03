@@ -359,7 +359,7 @@ class CarshareBooker extends React.Component<CarshareBookerProps, CarshareBooker
                                startDisplayTime={startDisplayTime} endDisplayTime={endDisplayTime}
                 />
                 <div className="error">{this.state.errorMessage}</div>
-                <Button size="sm" onClick={this.resetPicker}>Reset booking</Button>
+                <Button className="reset-button" size="sm" onClick={this.resetPicker}>Reset booking</Button>
             </div>
         );
     };
