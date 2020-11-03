@@ -15,6 +15,7 @@ const transposit = new Transposit(
 interface SearchAvailabilityProps {
     updateTime: (startTime: string, endTime: string) => void;
     submitTimes: () => void;
+    selectFeatures: (features: string[]) => void;
     startTimeValue: string;
     endTimeValue: string;
     carsListed: boolean;
@@ -23,7 +24,6 @@ interface SearchAvailabilityProps {
 }
 
 interface SearchAvailabilityState {
-    selectedFeatures: string[];
 }
 
 class SearchAvailabilityForm extends React.Component<SearchAvailabilityProps, SearchAvailabilityState> {
@@ -35,6 +35,7 @@ class SearchAvailabilityForm extends React.Component<SearchAvailabilityProps, Se
         this.handleTagPick = this.handleTagPick.bind(this);
         this.props.updateTime.bind(this);
         this.props.submitTimes.bind(this);
+        this.props.selectFeatures.bind(this);
         this.props.updateTime("", "");
         this.state = {
             selectedFeatures: []
@@ -58,13 +59,11 @@ class SearchAvailabilityForm extends React.Component<SearchAvailabilityProps, Se
     }
 
     handleSubmit(event) {
-        console.log("now tags are " + this.state.selectedFeatures.toString());
         this.props.submitTimes();
     }
 
     handleTagPick(event) {
-        console.log("tags are " + event.toString());
-        this.setState({selectedFeatures: event});
+        this.props.selectFeatures(event as string[]);
     }
 
     render() {
@@ -74,7 +73,6 @@ class SearchAvailabilityForm extends React.Component<SearchAvailabilityProps, Se
             inThePast = "WARNING! The selected time slot is in the past.";
         }
         let feat_array:{label: string, value: string}[] = this.props.availableFeatures.map(x => { return {"value": x, "label": x}; });
-        console.log(feat_array.toString());
 
         return (
             <div className="search-form">
@@ -96,9 +94,22 @@ class SearchAvailabilityForm extends React.Component<SearchAvailabilityProps, Se
                     disabled={disabled}
                 />
                 <br/>
-                <TagPicker data={feat_array} onChange={this.handleTagPick}/>
+                <TagPicker
+                    className="date-select"
+                    size="sm"
+                    width={300}
+                    data={feat_array}
+                    onChange={this.handleTagPick}
+                    disabled={disabled}
+                />
 
-                <Button appearance="ghost" className="date-select" size="sm" onClick={this.handleSubmit} disabled={disabled}>
+                <Button
+                    appearance="ghost"
+                    className="date-select"
+                    size="sm"
+                    onClick={this.handleSubmit}
+                    disabled={disabled}
+                >
                     Look for cars
                 </Button>
                 <div className="error">{inThePast}</div>
@@ -256,6 +267,7 @@ class CarshareBooker extends React.Component<CarshareBookerProps, CarshareBooker
         this.updateTimes = this.updateTimes.bind(this);
         this.bookCar = this.bookCar.bind(this);
         this.chooseCar = this.chooseCar.bind(this);
+        this.selectFeatures = this.selectFeatures.bind(this);
         this.carsAvailableSuccess = this.carsAvailableSuccess.bind(this);
         this.carBookedSuccess = this.carBookedSuccess.bind(this);
         this.getChosenCar = this.getChosenCar.bind(this);
@@ -338,6 +350,11 @@ class CarshareBooker extends React.Component<CarshareBookerProps, CarshareBooker
         this.setState({chosenCar: car});
     }
 
+    selectFeatures(features: string[]) {
+        console.log("selecting features " + features.toString());
+        this.setState({selectedFeatures: features});
+    }
+
     getChosenCar() {
         if (this.state.cars.length > 0) {
             let carEmails = this.state.cars.map((x) => {
@@ -358,7 +375,8 @@ class CarshareBooker extends React.Component<CarshareBookerProps, CarshareBooker
                 chosenCar: "",
                 booking: null,
                 carsListed: false,
-                errorMessage: ""
+                errorMessage: "",
+                selectedFeatures: []
             }
         );
         this.updateTimes("","");
@@ -385,7 +403,7 @@ class CarshareBooker extends React.Component<CarshareBookerProps, CarshareBooker
         return (
             <div>
                 <h2 className="title">Book a car</h2>
-                <SearchAvailabilityForm updateTime={this.updateTimes} submitTimes={this.updateAvailableCars}
+                <SearchAvailabilityForm updateTime={this.updateTimes} submitTimes={this.updateAvailableCars} selectFeatures={this.selectFeatures}
                                         startTimeValue={this.state.startTime} endTimeValue={this.state.endTime}
                                         carsListed={this.state.carsListed} booking={this.state.booking} availableFeatures={this.props.availableFeatures}/>
                 <AvailableCars cars={this.state.cars} chooseCar={this.chooseCar} getChosenCar={this.getChosenCar} carsListed={this.state.carsListed}/>
@@ -533,7 +551,6 @@ function useListFeatures(user: User | null): string[] {
                 .run("list_features", {})
                 .then(x => {
                     if (x.results) {
-                        console.log(x.results);
                         setFeatures(x.results as string[]);
                     }
                 })
