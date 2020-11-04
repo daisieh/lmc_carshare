@@ -21212,8 +21212,15 @@ p {
   height: 40px;
   width: 500px;
 }
+.request-table {
+  margin: 10px;
+}
 .reset-button {
   margin-top: 16px;
+}
+.request-table-caption {
+  display: flex;
+  align-items: stretch;
 }
 .error {
   background-color: darkred;
