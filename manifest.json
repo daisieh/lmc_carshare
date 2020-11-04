@@ -182,8 +182,11 @@
         "id": "delete_request",
         "function": {
           "parameters": [{
-            "name": "eventId",
-            "type": "STRING"
+            "name": "eventIds",
+            "default": {
+              "text": "[]"
+            },
+            "type": "ARRAY"
           }],
           "js": "delete_request.js",
           "lang": "js"
