@@ -1,7 +1,7 @@
 import * as React from "react";
 import {render} from "react-dom";
 import {BrowserRouter as Router, Route} from "react-router-dom";
-import {DatePicker, Button, Radio, TagPicker, Loader, Modal} from 'rsuite';
+import {DatePicker, Button, Radio, TagPicker, Loader, Modal, Nav, Navbar} from 'rsuite';
 import {Transposit, User} from "transposit";
 // import { Formik, Form, useField } from "formik";
 // import * as Yup from "yup";
@@ -429,7 +429,6 @@ class CarshareBooker extends React.Component<CarshareBookerProps, CarshareBooker
     render() {
         return (
             <div>
-                <h2 className="title">Book a car</h2>
                 <SearchAvailabilityForm
                     updateTime={this.updateTimes}
                     submitTimes={this.updateAvailableCars}
@@ -461,8 +460,9 @@ class CarshareBooker extends React.Component<CarshareBookerProps, CarshareBooker
 
 enum MODE {
     "BOOKING",
+    "REQUESTS",
     "CAR",
-    "SIGNIN"
+    "SIGNIN",
 }
 
 interface NavigationProps {
@@ -480,12 +480,18 @@ interface NavigationState {
 class Navigation extends React.Component<NavigationProps, NavigationState> {
     constructor(props) {
         super(props);
+        this.selectTab = this.selectTab.bind(this);
         this.state = {
             user: this.props.user,
             car: null,
             mode: MODE.BOOKING
         };
     };
+
+    selectTab(eventKey, event) {
+        this.setState({mode: eventKey});
+        console.log("switching to " + eventKey.toString());
+    }
 
     render() {
         let main =
@@ -502,30 +508,42 @@ class Navigation extends React.Component<NavigationProps, NavigationState> {
                     </div>
                 </main>
             } else if (this.props.isValid === 1) {
-                main =
-                    <main className="container main">
-                        <CarshareBooker user={this.props.user} startTime={""} endTime={""} cars={[]} chosenCar={""} availableFeatures={this.props.features}/>
-                    </main>
+                if (this.state.mode === MODE.BOOKING) {
+                    main =
+                        <main className="container main">
+                            <CarshareBooker user={this.props.user} startTime={""} endTime={""} cars={[]} chosenCar={""}
+                                            availableFeatures={this.props.features}/>
+                        </main>
+                } else if (this.state.mode === MODE.REQUESTS) {
+                    main = <main className="container main">requests</main>
+                } else if (this.state.mode === MODE.CAR) {
+                    main = <main className="container main">car</main>
+                }
             }
         }
 
         return (
             <>
-                <nav className="nav">
-                    <div className="nav-float-right">
-                        <p className="nav-item">{this.props.user.name}</p>
-                        <a
-                            className="nav-item"
-                            href="#top"
-                            onClick={event => {
-                                event.preventDefault();
-                                transposit.signOut(`${window.location.origin}/signin`);
-                            }}
-                        >
-                            Sign out
-                        </a>
-                    </div>
-                </nav>
+                {/*<nav>*/}
+                    <Navbar className="navbar">
+                        <Navbar.Header className="navbar-welcome">
+                            Welcome, {this.props.user.name}
+                        </Navbar.Header>
+                        <Navbar.Body>
+                            <Nav appearance="tabs" onSelect={this.selectTab}>
+                                <Nav.Item eventKey={MODE.BOOKING} active={this.state.mode === MODE.BOOKING}>Book Car</Nav.Item>
+                                <Nav.Item eventKey={MODE.REQUESTS} active={this.state.mode === MODE.REQUESTS}>Requests</Nav.Item>
+                                <Nav.Item eventKey={MODE.CAR} active={this.state.mode === MODE.CAR}>My Car</Nav.Item>
+                            </Nav>
+                            <Nav pullRight>
+                                <Nav.Item onClick={event => {
+                                    event.preventDefault();
+                                    transposit.signOut(`${window.location.origin}/signin`);
+                                }}>Sign Out</Nav.Item>
+                            </Nav>
+                        </Navbar.Body>
+                    </Navbar>
+                {/*</nav>*/}
                 {main}
             </>
         );
