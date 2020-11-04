@@ -73,7 +73,20 @@ class Navigation extends React.Component<NavigationProps, NavigationState> {
                             <RequestList user={this.props.user}/>
                         </main>
                 } else if (this.state.mode === MODE.MYCAR) {
-                    main = <main className="container main">car</main>
+                    main =
+                        <main className="container main">
+                            car
+                        </main>
+                } else if (this.state.mode === MODE.CALENDAR) {
+                    main =
+                        <main className="container main">
+                            calendar
+                        </main>
+                } else if (this.state.mode === MODE.CARS) {
+                    main =
+                        <main className="container main">
+                            cars
+                        </main>
                 }
             }
         }
@@ -89,6 +102,8 @@ class Navigation extends React.Component<NavigationProps, NavigationState> {
                             <Nav.Item eventKey={MODE.BOOKING} active={this.state.mode === MODE.BOOKING}>Book Car</Nav.Item>
                             <Nav.Item eventKey={MODE.REQUESTS} active={this.state.mode === MODE.REQUESTS}>Requests</Nav.Item>
                             <Nav.Item eventKey={MODE.MYCAR} active={this.state.mode === MODE.MYCAR}>My Car</Nav.Item>
+                            <Nav.Item eventKey={MODE.CALENDAR} active={this.state.mode === MODE.CALENDAR}>Calendar</Nav.Item>
+                            <Nav.Item eventKey={MODE.CARS} active={this.state.mode === MODE.CARS}>Cars</Nav.Item>
                         </Nav>
                         <Nav pullRight>
                             <Nav.Item onClick={event => {
