@@ -2,6 +2,7 @@ import * as React from "react";
 // import moment from "moment";
 import {Transposit} from "transposit";
 import {Checkbox} from "rsuite";
+import {Car} from "./carbooker";
 
 const transposit = new Transposit(
     "https://lmc-carshare-89gbj.transposit.io"
@@ -58,11 +59,16 @@ export class RequestList extends React.Component<RequestListProps, RequestListSt
 
     render() {
         let requests = this.state.requests.map(
-            x => { return (
-                <Checkbox value={x.eventId}>
-                    {x.eventId}
-                </Checkbox>
-            );
+            x => {
+                let approval = "";
+                if (!x.confirmed) {
+                    approval = " (awaiting approval)";
+                }
+                return (
+                    <Checkbox value={x.eventId}>
+                        {x.vehicle.Description} booked for {x.start} to {x.end}{approval}
+                    </Checkbox>
+                );
             });
         return (
             <div>
@@ -74,7 +80,7 @@ export class RequestList extends React.Component<RequestListProps, RequestListSt
 
 interface Request {
     "threadId": string;
-    "vehicle": string;
+    "vehicle": Car;
     "requester": string;
     "start": string;
     "end": string;
