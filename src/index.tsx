@@ -3,10 +3,9 @@ import {render} from "react-dom";
 import {BrowserRouter as Router, Route} from "react-router-dom";
 import {Button, Loader, Nav, Navbar} from 'rsuite';
 import {Transposit, User} from "transposit";
-// import { Formik, Form, useField } from "formik";
-// import * as Yup from "yup";
 import "./styles.css";
 import {CarshareBooker, Car} from "./carbooker"
+import {RequestList} from "./requests";
 
 const transposit = new Transposit(
     "https://lmc-carshare-89gbj.transposit.io"
@@ -15,7 +14,9 @@ const transposit = new Transposit(
 enum MODE {
     "BOOKING",
     "REQUESTS",
-    "CAR"
+    "MYCAR",
+    "CALENDAR",
+    "CARS"
 }
 
 interface NavigationProps {
@@ -67,8 +68,11 @@ class Navigation extends React.Component<NavigationProps, NavigationState> {
                                             availableFeatures={this.props.features}/>
                         </main>
                 } else if (this.state.mode === MODE.REQUESTS) {
-                    main = <main className="container main">requests</main>
-                } else if (this.state.mode === MODE.CAR) {
+                    main =
+                        <main className="container main">
+                            <RequestList user={this.props.user}/>
+                        </main>
+                } else if (this.state.mode === MODE.MYCAR) {
                     main = <main className="container main">car</main>
                 }
             }
@@ -76,26 +80,24 @@ class Navigation extends React.Component<NavigationProps, NavigationState> {
 
         return (
             <>
-                {/*<nav>*/}
-                    <Navbar className="navbar">
-                        <Navbar.Header className="navbar-welcome">
-                            Welcome, {this.props.user.name}
-                        </Navbar.Header>
-                        <Navbar.Body>
-                            <Nav appearance="tabs" onSelect={this.selectTab}>
-                                <Nav.Item eventKey={MODE.BOOKING} active={this.state.mode === MODE.BOOKING}>Book Car</Nav.Item>
-                                <Nav.Item eventKey={MODE.REQUESTS} active={this.state.mode === MODE.REQUESTS}>Requests</Nav.Item>
-                                <Nav.Item eventKey={MODE.CAR} active={this.state.mode === MODE.CAR}>My Car</Nav.Item>
-                            </Nav>
-                            <Nav pullRight>
-                                <Nav.Item onClick={event => {
-                                    event.preventDefault();
-                                    transposit.signOut(`${window.location.origin}/signin`);
-                                }}>Sign Out</Nav.Item>
-                            </Nav>
-                        </Navbar.Body>
-                    </Navbar>
-                {/*</nav>*/}
+                <Navbar className="navbar">
+                    <Navbar.Header className="navbar-welcome">
+                        Welcome, {this.props.user.name}
+                    </Navbar.Header>
+                    <Navbar.Body>
+                        <Nav appearance="tabs" onSelect={this.selectTab}>
+                            <Nav.Item eventKey={MODE.BOOKING} active={this.state.mode === MODE.BOOKING}>Book Car</Nav.Item>
+                            <Nav.Item eventKey={MODE.REQUESTS} active={this.state.mode === MODE.REQUESTS}>Requests</Nav.Item>
+                            <Nav.Item eventKey={MODE.MYCAR} active={this.state.mode === MODE.MYCAR}>My Car</Nav.Item>
+                        </Nav>
+                        <Nav pullRight>
+                            <Nav.Item onClick={event => {
+                                event.preventDefault();
+                                transposit.signOut(`${window.location.origin}/signin`);
+                            }}>Sign Out</Nav.Item>
+                        </Nav>
+                    </Navbar.Body>
+                </Navbar>
                 {main}
             </>
         );
