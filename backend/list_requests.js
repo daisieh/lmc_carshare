@@ -1,5 +1,6 @@
 (params) => {
   const moment = require('moment.js');
+  let cars = api.run("this.list_cars")[0];
   let parameters = {};
   parameters.range = 'Requests!A:G';
   parameters.spreadsheetId = '1kyd3g0xuPYoyDuT6joT0gkl29YCFE56E2ktv6haRong';
@@ -16,7 +17,7 @@
     }
     entry.start = moment(entry.start).format("YYYY-MM-DD HH:mm");
     entry.end = moment(entry.end).format("YYYY-MM-DD HH:mm");
-
+    entry.vehicle = cars[entry.vehicle];
     results.push(entry);
   }
   return results;
