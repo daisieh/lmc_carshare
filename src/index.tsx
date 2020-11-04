@@ -22,6 +22,7 @@ interface SearchAvailabilityProps {
     booking: Booking | null;
     availableFeatures: string[];
     selectedFeatures: string[];
+    isSearching: boolean;
 }
 
 interface SearchAvailabilityState {
@@ -108,6 +109,7 @@ class SearchAvailabilityForm extends React.Component<SearchAvailabilityProps, Se
                 <Button
                     appearance="ghost"
                     className="selector"
+                    loading={this.props.isSearching}
                     size="sm"
                     onClick={this.handleSubmit}
                     disabled={disabled}
@@ -126,6 +128,7 @@ interface AvailableCarsProps {
     getChosenCar: () => Car | null;
     reserveCar: () => void;
     carsListed: boolean;
+    isBooking: boolean;
 }
 
 class AvailableCars extends React.Component<AvailableCarsProps, {}> {
@@ -184,6 +187,7 @@ class AvailableCars extends React.Component<AvailableCarsProps, {}> {
                         size="sm"
                         onClick={this.handleSubmit}
                         disabled={chosenCar == null}
+                        loading={this.props.isBooking}
                     >
                         Book it!
                     </Button>
@@ -261,6 +265,8 @@ interface CarshareBookerState {
     carsListed: boolean;
     errorMessage: string;
     selectedFeatures: string[];
+    isSearching: boolean;
+    isBooking: boolean;
 }
 
 class CarshareBooker extends React.Component<CarshareBookerProps, CarshareBookerState> {
@@ -275,7 +281,9 @@ class CarshareBooker extends React.Component<CarshareBookerProps, CarshareBooker
             booking: null,
             carsListed: false,
             errorMessage: "",
-            selectedFeatures: []
+            selectedFeatures: [],
+            isSearching: false,
+            isBooking: false
         };
         this.updateAvailableCars = this.updateAvailableCars.bind(this);
         this.updateTimes = this.updateTimes.bind(this);
@@ -320,11 +328,12 @@ class CarshareBooker extends React.Component<CarshareBookerProps, CarshareBooker
     }
 
     async updateAvailableCars() {
+        this.setState({isSearching: true});
         await transposit
             .run("get_cars_available_for_time", {start: this.state.startTime, end: this.state.endTime})
             .then(this.carsAvailableSuccess)
             .catch(response => {
-                this.setState( {errorMessage: response.toString()});
+                this.setState( {errorMessage: response.toString(), isSearching: false});
             });
     }
 
@@ -343,13 +352,20 @@ class CarshareBooker extends React.Component<CarshareBookerProps, CarshareBooker
         this.setState({
             cars: filtered_cars as Car[],
             chosenCar: "",
-            carsListed: true
+            carsListed: true,
+            isSearching: false
         });
         return filtered_cars;
     }
 
     carBookedSuccess(results) {
-        this.setState({chosenCar: "", cars: [], carsListed: false, booking: results.results[0] as Booking});
+        this.setState({
+            chosenCar: "",
+            cars: [],
+            carsListed: false,
+            booking: results.results[0] as Booking,
+            isBooking: false
+        });
         console.log(results);
         return results;
     }
@@ -387,13 +403,16 @@ class CarshareBooker extends React.Component<CarshareBookerProps, CarshareBooker
                 booking: null,
                 carsListed: false,
                 errorMessage: "",
-                selectedFeatures: []
+                selectedFeatures: [],
+                isSearching: false,
+                isBooking: false
             }
         );
         this.updateTimes("","");
     }
 
     async bookCar() {
+        this.setState({isBooking: true});
         await transposit
             .run("create_reservation", {
                 start: this.state.startTime,
@@ -403,7 +422,7 @@ class CarshareBooker extends React.Component<CarshareBookerProps, CarshareBooker
             })
             .then(this.carBookedSuccess)
             .catch(response => {
-                this.setState( {errorMessage: response.toString()});
+                this.setState( {errorMessage: response.toString(), isBooking: false});
             });
     }
 
@@ -411,10 +430,26 @@ class CarshareBooker extends React.Component<CarshareBookerProps, CarshareBooker
         return (
             <div>
                 <h2 className="title">Book a car</h2>
-                <SearchAvailabilityForm updateTime={this.updateTimes} submitTimes={this.updateAvailableCars} selectFeatures={this.selectFeatures}
-                                        startTimeValue={this.state.startTime} endTimeValue={this.state.endTime} selectedFeatures={this.state.selectedFeatures}
-                                        carsListed={this.state.carsListed} booking={this.state.booking} availableFeatures={this.props.availableFeatures}/>
-                <AvailableCars cars={this.state.cars} chooseCar={this.chooseCar} getChosenCar={this.getChosenCar} reserveCar={this.bookCar} carsListed={this.state.carsListed}/>
+                <SearchAvailabilityForm
+                    updateTime={this.updateTimes}
+                    submitTimes={this.updateAvailableCars}
+                    selectFeatures={this.selectFeatures}
+                    startTimeValue={this.state.startTime}
+                    endTimeValue={this.state.endTime}
+                    selectedFeatures={this.state.selectedFeatures}
+                    carsListed={this.state.carsListed}
+                    booking={this.state.booking}
+                    availableFeatures={this.props.availableFeatures}
+                    isSearching={this.state.isSearching}
+                />
+                <AvailableCars
+                    cars={this.state.cars}
+                    chooseCar={this.chooseCar}
+                    getChosenCar={this.getChosenCar}
+                    reserveCar={this.bookCar}
+                    carsListed={this.state.carsListed}
+                    isBooking={this.state.isBooking}
+                />
                 <BookingStatus booking={this.state.booking} resetBooking={this.resetPicker}/>
                 <div className="error">{this.state.errorMessage}</div>
                 <Button appearance="ghost" className="reset-button" size="sm" onClick={this.resetPicker}>Reset booking</Button>
