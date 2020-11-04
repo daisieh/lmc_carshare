@@ -150,7 +150,11 @@ class AvailableCars extends React.Component<AvailableCarsProps, {}> {
             }
             console.log(`there are ${this.props.cars.length} cars, chosen car is ${email}`);
             if (this.props.cars.length === 0) {
-                return (<div>No cars available at this time</div>);
+                return (
+                    <div className="available-form">
+                        No cars available at this time
+                    </div>
+                );
             }
             let rows = this.props.cars.map((car) => {
                 let isChosenCar = (email === car.Email);
@@ -163,12 +167,16 @@ class AvailableCars extends React.Component<AvailableCarsProps, {}> {
             });
 
             return (
-                <div>
+                <div className="available-form">
+                    <p>Cars available for booking:</p>
                     {rows}
                 </div>
             );
         } else {
-            return ( <div></div>);
+            return (
+                <div className="available-form">
+                    <br/>
+                </div>);
         }
     }
 }
