@@ -1,7 +1,7 @@
 import * as React from "react";
 import {render} from "react-dom";
 import {BrowserRouter as Router, Route} from "react-router-dom";
-import {DatePicker, Button, Radio, TagPicker, Loader} from 'rsuite';
+import {DatePicker, Button, Radio, TagPicker, Loader, Modal} from 'rsuite';
 import {Transposit, User} from "transposit";
 // import { Formik, Form, useField } from "formik";
 // import * as Yup from "yup";
@@ -199,34 +199,53 @@ class AvailableCars extends React.Component<AvailableCarsProps, {}> {
 
 interface BookingStatusProps {
     booking: Booking | null;
+    resetBooking: () => void;
 }
 
-class BookingStatus extends React.Component<BookingStatusProps, {}> {
-    // constructor(props) {
-    //     super(props);
-    // }
-    //
+interface BookingStatusState {
+    show: boolean
+}
+
+class BookingStatus extends React.Component<BookingStatusProps, BookingStatusState> {
+    constructor(props) {
+        super(props);
+        this.state = {
+            show: false
+        };
+        this.props.resetBooking.bind(this);
+        this.close = this.close.bind(this);
+    }
+
+    close() {
+        this.props.resetBooking();
+    }
+
     render() {
+        let message = "";
         if (this.props.booking) {
             if (this.props.booking.confirmed) {
-                return (
-                    <div>
-                        <p>Check your email for a confirmation of your booking!</p>
-                    </div>
-                );
+                message = "Check your email for a confirmation of your booking!";
             } else {
-                return (
-                    <div>
-                        <p>The car's owner has been notified. You will receive an email if they have approved your request.</p>
-                    </div>
-                );
+                message = "The car's owner has been notified. You will receive an email if they have approved your request.";
             }
-        } else {
-            return (
-                <div>
-                </div>
-            );
         }
+        return (
+            <div className="modal-container">
+                <Modal show={message !== ""} onHide={this.close}>
+                    <Modal.Header>
+                        <Modal.Title>Booking request sent!</Modal.Title>
+                    </Modal.Header>
+                    <Modal.Body>
+                        <p>{message}</p>
+                    </Modal.Body>
+                    <Modal.Footer>
+                        <Button onClick={this.close} appearance="primary">
+                            Ok
+                        </Button>
+                    </Modal.Footer>
+                </Modal>
+            </div>
+        );
     }
 }
 
@@ -411,7 +430,7 @@ class CarshareBooker extends React.Component<CarshareBookerProps, CarshareBooker
                                         startTimeValue={this.state.startTime} endTimeValue={this.state.endTime} selectedFeatures={this.state.selectedFeatures}
                                         carsListed={this.state.carsListed} booking={this.state.booking} availableFeatures={this.props.availableFeatures}/>
                 <AvailableCars cars={this.state.cars} chooseCar={this.chooseCar} getChosenCar={this.getChosenCar} reserveCar={this.bookCar} carsListed={this.state.carsListed}/>
-                <BookingStatus booking={this.state.booking}/>
+                <BookingStatus booking={this.state.booking} resetBooking={this.resetPicker}/>
                 <div className="error">{this.state.errorMessage}</div>
                 <Button appearance="ghost" className="reset-button" size="sm" onClick={this.resetPicker}>Reset booking</Button>
             </div>
