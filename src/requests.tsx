@@ -1,7 +1,7 @@
 import * as React from "react";
 // import moment from "moment";
 import {Transposit} from "transposit";
-import {Checkbox} from "rsuite";
+import {Checkbox, Loader} from "rsuite";
 import {Car} from "./carbooker";
 
 const transposit = new Transposit(
@@ -23,7 +23,7 @@ export class RequestList extends React.Component<RequestListProps, RequestListSt
         super(props);
         this.state = {
             requests: [],
-            isLoading: false,
+            isLoading: true,
             errorMessage: ""
         };
         this.updateRequests = this.updateRequests.bind(this);
@@ -58,6 +58,11 @@ export class RequestList extends React.Component<RequestListProps, RequestListSt
     }
 
     render() {
+        if (this.state.isLoading) {
+            return (
+                <Loader size="lg" center content="Loading" vertical/>
+            );
+        }
         let requests = this.state.requests.map(
             x => {
                 let approval = "";
