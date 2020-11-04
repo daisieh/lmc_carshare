@@ -202,16 +202,9 @@ interface BookingStatusProps {
     resetBooking: () => void;
 }
 
-interface BookingStatusState {
-    show: boolean
-}
-
-class BookingStatus extends React.Component<BookingStatusProps, BookingStatusState> {
+class BookingStatus extends React.Component<BookingStatusProps, {}> {
     constructor(props) {
         super(props);
-        this.state = {
-            show: false
-        };
         this.props.resetBooking.bind(this);
         this.close = this.close.bind(this);
     }
@@ -274,8 +267,8 @@ class CarshareBooker extends React.Component<CarshareBookerProps, CarshareBooker
     constructor(props) {
         super(props);
         this.state = {
-            startTime: this.props.startTime,
-            endTime: this.props.endTime,
+            startTime: "",
+            endTime: "",
             cars: this.props.cars,
             chosenCar: this.props.chosenCar,
             user: this.props.user,
@@ -327,11 +320,8 @@ class CarshareBooker extends React.Component<CarshareBookerProps, CarshareBooker
     }
 
     async updateAvailableCars() {
-        let startTime = this.state.startTime;
-        let endTime = this.state.endTime;
-        console.log(`looking for cars between ${startTime} and ${endTime}`);
         await transposit
-            .run("get_cars_available_for_time", {start: startTime, end: endTime})
+            .run("get_cars_available_for_time", {start: this.state.startTime, end: this.state.endTime})
             .then(this.carsAvailableSuccess)
             .catch(response => {
                 this.setState( {errorMessage: response.toString()});
@@ -340,12 +330,10 @@ class CarshareBooker extends React.Component<CarshareBookerProps, CarshareBooker
 
     carsAvailableSuccess(results) {
         let filtered_cars = [];
-        console.log("features are " + this.state.selectedFeatures.toString());
         this.chooseCar("");
         filtered_cars = results.results[0].cars.filter(x => {
             let res = true;
             for (let i in this.state.selectedFeatures) {
-                console.log("comparing " + this.state.selectedFeatures[i] + " to " + x.Features.toString() + ": " + x.Features.indexOf(this.state.selectedFeatures[i]));
                 if (x.Features.indexOf(this.state.selectedFeatures[i]) < 0) {
                     res = false;
                 }
@@ -372,10 +360,8 @@ class CarshareBooker extends React.Component<CarshareBookerProps, CarshareBooker
 
     selectFeatures(features: string[] | null) {
         if (features) {
-            console.log("selecting features " + features.toString());
             this.setState({selectedFeatures: features});
         } else {
-            console.log("no features");
             this.setState({selectedFeatures: []});
         }
     }
@@ -408,7 +394,6 @@ class CarshareBooker extends React.Component<CarshareBookerProps, CarshareBooker
     }
 
     async bookCar() {
-        console.log("book car");
         await transposit
             .run("create_reservation", {
                 start: this.state.startTime,
