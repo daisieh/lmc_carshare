@@ -1,18 +1,19 @@
 (params) => {
+  const momenttz = require('moment-timezone-with-data.js');
   const moment = require('moment.js');
   let car = api.run("this.get_car", {owner: params.vehicle})[0];
   let calendar_id = api.run("this.list_car_calendarlist")[0][car.Licence].id;
   let request = { vehicle: car.Licence,
                   requester: params.requester,
-                  start: params.start,
-                  end: params.end
+                  start: momenttz(params.start).tz("America/Vancouver"),
+                  end: momenttz(params.end).tz("America/Vancouver")
                 };
   
   // send the request to the owner:
   let request_params = { 
     to: car.Email,
     subject: 'Your vehicle has been requested',
-    message: `Your vehicle ${car.Description} has been requested for ${request.start} to ${request.end}.`,
+    message: `${params.requester} has requested your vehicle ${car.Description} for ${request.start.format("YYYY-MM-DD HH:mm")} to ${request.end.format("YYYY-MM-DD HH:mm")}.`,
     userId: 'me'
   };
   if (car.Confirm) {
@@ -21,7 +22,7 @@
     request_params.message += `\nReply to this email to approve the request. Ignore this message if you don't want to approve it.`
   } else {
     // go ahead and make the reservation
-    request_params.to = request.requester;
+    // request_params.to = request.requester;
     request.confirmed = true;
   }
 
@@ -50,7 +51,9 @@
   }  
   let event = api.run('google_calendar.create_calendar_event', parameters)[0];
   request.eventId = event.id;
-  
+  request.start = request.start.format("YYYY-MM-DD HH:mm ZZ");
+  request.end = request.end.format("YYYY-MM-DD HH:mm ZZ");
+
   let requests = api.run("this.update_append_request", request);
   if (requests.length > 0) {
     let last_request = requests.pop();

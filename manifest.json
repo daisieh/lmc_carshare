@@ -112,6 +112,9 @@
         "function": {
           "js": "list_requests.js",
           "lang": "js"
+        },
+        "access": {
+          "requireUser": true
         }
       }, {
         "id": "update_append_request",
@@ -174,6 +177,31 @@
         },
         "access": {
           "requireUser": true
+        }
+      }, {
+        "id": "delete_request",
+        "function": {
+          "parameters": [{
+            "name": "eventId",
+            "type": "STRING"
+          }],
+          "js": "delete_request.js",
+          "lang": "js"
+        },
+        "access": {
+          "requireUser": true
+        }
+      }, {
+        "id": "get_calendar_event",
+        "tql": {
+          "parameters": [{
+            "name": "eventId",
+            "type": "STRING"
+          }, {
+            "name": "calendarId",
+            "type": "STRING"
+          }],
+          "tql": "SELECT * FROM google_calendar.get_calendar_event\n  WHERE eventId\u003d@eventId\n  AND calendarId\u003d@calendarId\n"
         }
       }],
       "dataConnections": [{
