@@ -51,8 +51,8 @@
   }  
   let event = api.run('google_calendar.create_calendar_event', parameters)[0];
   request.eventId = event.id;
-  request.start = request.start.format("YYYY-MM-DD HH:mm ZZ");
-  request.end = request.end.format("YYYY-MM-DD HH:mm ZZ");
+  request.start = request.start.format("YYYY-MM-DDTHH:mm:00ZZ");
+  request.end = request.end.format("YYYY-MM-DDTHH:mm:00ZZ");
 
   let requests = api.run("this.update_append_request", request);
   if (requests.length > 0) {

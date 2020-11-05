@@ -223,6 +223,19 @@
           "js": "make_events_busy.js",
           "lang": "js"
         }
+      }, {
+        "id": "send_reminder",
+        "function": {
+          "parameters": [{
+            "name": "eventId",
+            "type": "STRING"
+          }],
+          "js": "send_reminder.js",
+          "lang": "js"
+        },
+        "access": {
+          "requireUser": true
+        }
       }],
       "dataConnections": [{
         "ref": "slack_identify.raw",
