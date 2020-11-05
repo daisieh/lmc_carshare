@@ -52,7 +52,7 @@ class SearchAvailabilityForm extends React.Component<SearchAvailabilityProps, Se
         }
     }
 
-    handleSubmit(event) {
+    handleSubmit() {
         this.props.submitTimes();
     }
 
@@ -136,7 +136,7 @@ class AvailableCars extends React.Component<AvailableCarsProps, {}> {
         this.props.reserveCar.bind(this);
     }
 
-    onClick(value, checked, event) {
+    onClick(value) {
         this.setState(() => {
             this.props.chooseCar(value);
         });
