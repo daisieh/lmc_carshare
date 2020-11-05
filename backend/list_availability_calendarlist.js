@@ -29,7 +29,7 @@
       timeZone : 'America/Vancouver'
     };
     let cal = api.run('google_calendar.create_calendar', parameters)[0];
-    calendars[cars_to_map[i]] = cal;
+    calendars[cars_to_map[i].replace("_available","")] = cal;
   }
     
   return calendars;
