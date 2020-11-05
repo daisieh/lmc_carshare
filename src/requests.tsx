@@ -19,6 +19,7 @@ interface RequestListState {
     requestsToDelete: string[];
     isLoading: boolean;
     errorMessage: string;
+    activeRow: Request | null;
 }
 
 export class RequestList extends React.Component<RequestListProps, RequestListState> {
@@ -27,6 +28,7 @@ export class RequestList extends React.Component<RequestListProps, RequestListSt
         this.state = {
             requests: [],
             requestsToDelete: [],
+            activeRow: null,
             isLoading: true,
             errorMessage: ""
         };
@@ -34,6 +36,7 @@ export class RequestList extends React.Component<RequestListProps, RequestListSt
         this.updateRequestsSuccess = this.updateRequestsSuccess.bind(this);
         this.setToDelete = this.setToDelete.bind(this);
         this.handleDelete = this.handleDelete.bind(this);
+        this.handleReminder = this.handleReminder.bind(this);
 
         this.updateRequests();
     }
@@ -54,10 +57,8 @@ export class RequestList extends React.Component<RequestListProps, RequestListSt
         let filtered_requests = requests.filter(x => {
             if (x.requester === this.props.user.email) {
                 if (moment(x.end).isSameOrAfter(moment())) {
-                    console.log(`${moment(x.end)} is on or after ${moment()}`);
                     return true;
                 }
-                console.log(`${moment(x.end)} is before ${moment()}`);
             }
             return false;
         });
@@ -101,6 +102,20 @@ export class RequestList extends React.Component<RequestListProps, RequestListSt
             });
     }
 
+    async handleReminder() {
+        if (this.state.activeRow && (this.state.activeRow.confirmed === "FALSE")) {
+            console.log(this.state.activeRow);
+            await transposit
+                .run("send_reminder", {
+                    eventId: this.state.activeRow.eventId
+                })
+                .then(x => { console.log(x); this.updateRequests();})
+                .catch(response => {
+                    this.setState( {errorMessage: response.toString(), isLoading: false});
+                });
+        }
+    }
+
     render() {
         let requests = this.state.requests.map(
             x => {
@@ -131,6 +146,9 @@ export class RequestList extends React.Component<RequestListProps, RequestListSt
                 <Table
                     height={400}
                     data={requests}
+                    onRowClick={data => {
+                        this.setState({activeRow: data});
+                    }}
                 >
                     <Column width={80}>
                         <HeaderCell>Delete?</HeaderCell>
@@ -154,9 +172,25 @@ export class RequestList extends React.Component<RequestListProps, RequestListSt
                         <HeaderCell>Booking End</HeaderCell>
                         <Cell dataKey="end" />
                     </Column>
-                    <Column width={80}>
-                        <HeaderCell>Approved?</HeaderCell>
-                        <Cell dataKey="confirmed" />
+                    <Column flexGrow={2}>
+                        <HeaderCell>Awaiting approval?</HeaderCell>
+                        <Cell>
+                            {rowData => {
+                                if (rowData.confirmed === "TRUE") {
+                                    return(<div/>);
+                                }
+                                return (
+                                    <Button
+                                        appearance="link"
+                                        size="sm"
+                                        value={rowData}
+                                        onClick={this.handleReminder}
+                                    >
+                                        Send reminder
+                                    </Button>
+                                );
+                            }}
+                        </Cell>
                     </Column>
                 </Table>
             </div>
@@ -171,5 +205,5 @@ interface Request {
     "start": string;
     "end": string;
     "eventId": string;
-    "confirmed": boolean;
+    "confirmed": string;
 }
