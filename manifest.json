@@ -212,6 +212,17 @@
           "js": "list_availability_calendarlist.js",
           "lang": "js"
         }
+      }, {
+        "id": "make_events_busy",
+        "function": {
+          "parameters": [{
+            "name": "context",
+            "description": "The \u0027context\u0027 parameter is often essential to operations published to Mission Control",
+            "type": "OBJECT"
+          }],
+          "js": "make_events_busy.js",
+          "lang": "js"
+        }
       }],
       "dataConnections": [{
         "ref": "slack_identify.raw",
