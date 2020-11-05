@@ -1,6 +1,6 @@
 import * as React from "react";
 import {render} from "react-dom";
-import {BrowserRouter as Router, Route} from "react-router-dom";
+import {BrowserRouter as Router, Redirect, Route} from "react-router-dom";
 import {Button, Loader, Nav, Navbar} from 'rsuite';
 import {Transposit, User} from "transposit";
 import "./styles.css";
@@ -25,6 +25,7 @@ interface NavigationProps {
     isValid: number;
     features: string[];
     cars: Car[];
+    mode: MODE;
 }
 
 interface NavigationState {
@@ -40,7 +41,7 @@ class Navigation extends React.Component<NavigationProps, NavigationState> {
         this.state = {
             user: this.props.user,
             car: null,
-            mode: MODE.BOOKING
+            mode: this.props.mode
         };
     };
 
@@ -82,7 +83,7 @@ class Navigation extends React.Component<NavigationProps, NavigationState> {
                 } else if (this.state.mode === MODE.CALENDAR) {
                     main =
                         <main className="container main">
-                            <Calendar/>
+                            <Calendar calendars={[]}/>
                         </main>
                 } else if (this.state.mode === MODE.CARS) {
                     main =
@@ -247,7 +248,7 @@ function SignInHandleRedirect() {
                 if (needsKeys) {
                     window.location.href = transposit.settingsUri(window.location.origin);
                 } else {
-                    window.location.href = "/";
+                    window.location.href = "/bookings";
                 }
             },
             () => {
@@ -261,7 +262,7 @@ function SignInHandleRedirect() {
 /**
  * Sign-in protected index page
  */
-function Index() {
+function Index(props) {
     // Check if signed-in
     const isSignedIn = useSignedIn();
     const user = useUser(isSignedIn);
@@ -274,8 +275,19 @@ function Index() {
         return null;
     }
     // If signed-in, display the app
+    console.log(props.match.path);
+    let mode = MODE.BOOKING;
+    if (props.match.path === "/requests") {
+        mode = MODE.REQUESTS;
+    } else if (props.match.path === "/my_car") {
+        mode = MODE.MYCAR;
+    } else if (props.match.path === "/cars") {
+        mode = MODE.CARS;
+    } else if (props.match.path === "/calendar") {
+        mode = MODE.CALENDAR;
+    }
     return (
-            <Navigation user={user} isValid={isValid} features={features} cars={cars}/>
+            <Navigation mode={mode} user={user} isValid={isValid} features={features} cars={cars}/>
     );
 }
 
@@ -289,6 +301,11 @@ function App() {
                 component={SignInHandleRedirect}
             />
             <Route path="/" exact component={Index}/>
+            <Route path="/bookings" exact component={Index}/>
+            <Route path="/requests" exact component={Index}/>
+            <Route path="/calendar" exact component={Index}/>
+            <Route path="/my_car" exact component={Index}/>
+            <Route path="/cars" exact component={Index}/>
         </Router>
     );
 }
