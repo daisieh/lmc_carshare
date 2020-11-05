@@ -236,6 +236,12 @@
         "access": {
           "requireUser": true
         }
+      }, {
+        "id": "create_new_car",
+        "function": {
+          "js": "create_new_car.js",
+          "lang": "js"
+        }
       }],
       "dataConnections": [{
         "ref": "slack_identify.raw",
