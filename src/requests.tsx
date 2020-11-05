@@ -1,7 +1,7 @@
 import * as React from "react";
 import moment from "moment";
 import {Transposit} from "transposit";
-import {Button, Checkbox, Loader, Table} from "rsuite";
+import {Button, Checkbox, Table} from "rsuite";
 import {Car} from "./carbooker";
 const { Column, HeaderCell, Cell } = Table;
 
@@ -11,6 +11,7 @@ const transposit = new Transposit(
 
 interface RequestListProps {
     user: { name: string; email: string; };
+    cars: Car[];
 }
 
 interface RequestListState {
@@ -52,14 +53,19 @@ export class RequestList extends React.Component<RequestListProps, RequestListSt
         requests.shift();
         let filtered_requests = requests.filter(x => {
             if (x.requester === this.props.user.email) {
-                if (moment().isBefore(moment(x.end))) {
-                    console.log(`${moment()} is before ${x.end}`);
+                if (moment(x.end).isSameOrAfter(moment())) {
+                    console.log(`${moment(x.end)} is on or after ${moment()}`);
                     return true;
                 }
-                console.log(`${moment()} is after ${x.end}`);
+                console.log(`${moment(x.end)} is before ${moment()}`);
             }
             return false;
         });
+        filtered_requests.map(x => {
+            x.start = moment(x.start).format("YYYY-MM-DD HH:mm");
+            x.end = moment(x.end).format("YYYY-MM-DD HH:mm");
+            return x;
+        })
         this.setState({
             requests: filtered_requests,
             isLoading: false
@@ -83,29 +89,27 @@ export class RequestList extends React.Component<RequestListProps, RequestListSt
     }
 
     async handleDelete() {
+        this.setState({isLoading: true});
         console.log(`deleting ${this.state.requestsToDelete.toString()}`);
         await transposit
             .run("delete_requests", {
                 eventIds: this.state.requestsToDelete.toString()
             })
-            .then(this.updateRequestsSuccess)
+            .then(x => { console.log(x); this.updateRequests();})
             .catch(response => {
                 this.setState( {errorMessage: response.toString(), isLoading: false});
             });
-        await this.updateRequests();
     }
 
     render() {
-        if (this.state.isLoading) {
-            return (
-                <Loader size="lg" center content="Loading" vertical/>
-            );
-        }
         let requests = this.state.requests.map(
             x => {
+                let desc = x.vehicle;
+                let cars = this.props.cars.filter(car => { return (car.Licence === x.vehicle);});
+                if (cars.length > 0) { desc = cars[0].Description; }
                 return {
                     eventId: x.eventId,
-                    description: x.vehicle,
+                    description: desc,
                     start: x.start,
                     end: x.end,
                     confirmed: x.confirmed
@@ -113,6 +117,7 @@ export class RequestList extends React.Component<RequestListProps, RequestListSt
             });
         return (
             <div className="request-table">
+                <div className="error">{this.state.errorMessage}</div>
                 <p className="request-table-caption">
                     <Button
                         appearance="ghost"
@@ -127,12 +132,12 @@ export class RequestList extends React.Component<RequestListProps, RequestListSt
                     height={400}
                     data={requests}
                 >
-                    <Column width={100}>
+                    <Column width={80}>
                         <HeaderCell>Delete?</HeaderCell>
                         <Cell>
                             {rowData => {
                                 return (
-                                    <Checkbox inline value={rowData.eventId} onChange={this.setToDelete}>&nbsp;</Checkbox>
+                                    <Checkbox defaultChecked={false} inline value={rowData.eventId} onChange={this.setToDelete}>&nbsp;</Checkbox>
                                 );
                             }}
                         </Cell>
@@ -141,13 +146,17 @@ export class RequestList extends React.Component<RequestListProps, RequestListSt
                         <HeaderCell>Vehicle</HeaderCell>
                         <Cell dataKey="description" />
                     </Column>
-                    <Column flexGrow={1}>
+                    <Column flexGrow={2}>
                         <HeaderCell>Booking Start</HeaderCell>
                         <Cell dataKey="start" />
                     </Column>
-                    <Column flexGrow={1}>
+                    <Column flexGrow={2}>
                         <HeaderCell>Booking End</HeaderCell>
                         <Cell dataKey="end" />
+                    </Column>
+                    <Column width={80}>
+                        <HeaderCell>Approved?</HeaderCell>
+                        <Cell dataKey="confirmed" />
                     </Column>
                 </Table>
             </div>
@@ -157,7 +166,7 @@ export class RequestList extends React.Component<RequestListProps, RequestListSt
 
 interface Request {
     "threadId": string;
-    "vehicle": Car;
+    "vehicle": string;
     "requester": string;
     "start": string;
     "end": string;

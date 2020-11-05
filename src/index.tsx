@@ -23,6 +23,7 @@ interface NavigationProps {
     user: { name: string; email: string; };
     isValid: number;
     features: string[];
+    cars: Car[];
 }
 
 interface NavigationState {
@@ -42,7 +43,7 @@ class Navigation extends React.Component<NavigationProps, NavigationState> {
         };
     };
 
-    selectTab(eventKey, event) {
+    selectTab(eventKey) {
         this.setState({mode: eventKey});
     }
 
@@ -70,7 +71,7 @@ class Navigation extends React.Component<NavigationProps, NavigationState> {
                 } else if (this.state.mode === MODE.REQUESTS) {
                     main =
                         <main className="container main">
-                            <RequestList user={this.props.user}/>
+                            <RequestList user={this.props.user} cars={this.props.cars}/>
                         </main>
                 } else if (this.state.mode === MODE.MYCAR) {
                     main =
@@ -192,6 +193,22 @@ function useListFeatures(user: User | null): string[] {
     return features;
 }
 
+function useListCars(user: User | null): Car[] {
+    const [cars, setCars] = React.useState<Car[]>([]);
+    React.useEffect(() => {
+        transposit
+            .run("list_cars", {})
+            .then(x => {
+                setCars(Object.keys(x.results[0]).map(key => x.results[0][key]));
+            })
+            .catch(response => {
+                console.log(response.toString());
+            });
+    }, [user]);
+
+    return cars;
+}
+
 /**
  * Sign-in page
  */
@@ -249,6 +266,7 @@ function Index() {
     const user = useUser(isSignedIn);
     const isValid = useIsValidMember(user);
     const features = useListFeatures(user);
+    const cars = useListCars(user);
 
     // If not signed-in, wait while rendering nothing
     if (!isSignedIn || !user) {
@@ -256,7 +274,7 @@ function Index() {
     }
     // If signed-in, display the app
     return (
-            <Navigation user={user} isValid={isValid} features={features}/>
+            <Navigation user={user} isValid={isValid} features={features} cars={cars}/>
     );
 }
 
