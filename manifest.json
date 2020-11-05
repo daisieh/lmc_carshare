@@ -252,14 +252,14 @@
             "name": "Color",
             "type": "STRING"
           }, {
-            "name": "Tags",
-            "type": "STRING"
+            "name": "Features",
+            "type": "ARRAY"
           }, {
-            "name": "Availability",
-            "type": "STRING"
+            "name": "AlwaysAvailable",
+            "type": "BOOLEAN"
           }, {
-            "name": "Confirmation",
-            "type": "STRING"
+            "name": "Confirm",
+            "type": "BOOLEAN"
           }, {
             "name": "Licence",
             "type": "STRING"
