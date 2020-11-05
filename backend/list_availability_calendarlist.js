@@ -11,7 +11,7 @@
   let calendars = {};
   for (var i in all_calendars) {
     if (availability_calendars.includes(all_calendars[i].summary)) {
-      calendars[all_calendars[i].summary] = all_calendars[i];
+      calendars[all_calendars[i].summary] = all_calendars[i].id;
     }
   }
     

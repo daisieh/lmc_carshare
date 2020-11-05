@@ -10,7 +10,7 @@
       // delete the calendar event as well
       let cals = api.run("this.list_car_calendarlist")[0];
       try {
-        api.run('google_calendar.delete_calendar_event', { eventId: requests[i].eventId, calendarId: cals[requests[i].vehicle].id });
+        api.run('google_calendar.delete_calendar_event', { eventId: requests[i].eventId, calendarId: cals[requests[i].vehicle] });
       } catch (e) {
         console.log("couldn't delete event " + requests[i].eventId + ": " + e);
       }

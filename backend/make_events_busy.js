@@ -1,7 +1,7 @@
 (params) => {
   const moment = require('moment.js');
   let results = {};
-  let availability_calendars = Object.values(api.run("this.list_availability_calendarlist")[0]).map(x => { return x.id;});
+  let availability_calendars = Object.values(api.run("this.list_availability_calendarlist")[0]);
   for (var i in availability_calendars) {
     const parameters = {};
     parameters.calendarId = availability_calendars[i];
@@ -13,7 +13,7 @@
         transparency : 'opaque',
       };
       try {
-        api.run('google_calendar.update_calendar_event', parameters));
+        api.run('google_calendar.update_calendar_event', parameters);
       } catch (e) {
         console.log(e);
       }
