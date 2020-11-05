@@ -239,6 +239,34 @@
       }, {
         "id": "create_new_car",
         "function": {
+          "parameters": [{
+            "name": "Timestamp",
+            "type": "STRING"
+          }, {
+            "name": "Email",
+            "type": "STRING"
+          }, {
+            "name": "Make",
+            "type": "STRING"
+          }, {
+            "name": "Model",
+            "type": "STRING"
+          }, {
+            "name": "Color",
+            "type": "STRING"
+          }, {
+            "name": "Tags",
+            "type": "STRING"
+          }, {
+            "name": "Availability",
+            "type": "STRING"
+          }, {
+            "name": "Confirmation",
+            "type": "STRING"
+          }, {
+            "name": "Licence",
+            "type": "STRING"
+          }],
           "js": "create_new_car.js",
           "lang": "js"
         }
