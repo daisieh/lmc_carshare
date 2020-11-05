@@ -21,7 +21,7 @@
           "lang": "js"
         },
         "access": {
-          "requireApiKey": true
+          "requireUser": true
         }
       }, {
         "id": "list_car_calendarlist",
@@ -179,7 +179,7 @@
           "requireUser": true
         }
       }, {
-        "id": "delete_request",
+        "id": "delete_requests",
         "function": {
           "parameters": [{
             "name": "eventIds",
@@ -205,6 +205,12 @@
             "type": "STRING"
           }],
           "tql": "SELECT * FROM google_calendar.get_calendar_event\n  WHERE eventId\u003d@eventId\n  AND calendarId\u003d@calendarId\n"
+        }
+      }, {
+        "id": "list_availability_calendarlist",
+        "function": {
+          "js": "list_availability_calendarlist.js",
+          "lang": "js"
         }
       }],
       "dataConnections": [{

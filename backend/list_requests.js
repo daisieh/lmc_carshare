@@ -1,5 +1,5 @@
 (params) => {
-  const moment = require('moment.js');
+  const moment = require('moment-timezone-with-data.js');
   let cars = api.run("this.list_cars")[0];
   let parameters = {};
   parameters.range = 'Requests!A:G';
@@ -7,7 +7,6 @@
   let raw_data = api.run("google_sheets.get_sheet_values", parameters)[0];
   let results = [];
   let names = raw_data.values[0];
-  results.push(names);
   for (var i in raw_data.values) {
     if (i == 0) continue;
     let row = raw_data.values[i];
@@ -15,11 +14,20 @@
     for (var j in row) {
       entry[names[j]] = row[j];
     }
-    entry.start = moment(entry.start).format("YYYY-MM-DD HH:mm");
-    entry.end = moment(entry.end).format("YYYY-MM-DD HH:mm");
-    entry.vehicle = cars[entry.vehicle];
+    entry.start = moment(entry.start).tz("America/Vancouver").format("YYYY-MM-DDTHH:mm:00ZZ");
+    entry.end = moment(entry.end).tz("America/Vancouver").format("YYYY-MM-DDTHH:mm:00ZZ");
+
+    // entry.vehicle = cars[entry.vehicle].Description;
     results.push(entry);
   }
+  
+  results.sort((a,b) => {
+    if (a.start === b.start) { return 0; }
+    if (moment(a.start).isBefore(b.start)) { return -1; }
+    return 1;
+  });
+  
+  results.unshift(names);
   return results;
 }
 

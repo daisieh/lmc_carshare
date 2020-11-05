@@ -12,7 +12,7 @@
       try {
         api.run('google_calendar.delete_calendar_event', { eventId: requests[i].eventId, calendarId: cals[requests[i].vehicle].id });
       } catch (e) {
-        console.log("couldn't delete event");
+        console.log("couldn't delete event " + requests[i].eventId + ": " + e);
       }
       deleted.push(requests[i]);
     } else {
