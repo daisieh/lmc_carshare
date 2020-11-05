@@ -4,34 +4,7 @@
   let cars = {};
   let keys = sheet_rows.shift();
   for (var i in sheet_rows) {
-    let car = {};
-    for (var key in keys) {
-      car[keys[key]] = sheet_rows[i][key];
-    }
-    car.Features = car.Tags.split(", ");
-    delete car.Tags;
-
-    car.Licence = car["Licence plate"];
-    delete car["Licence plate"];
-
-    car.Email = car["Email address"];
-    delete car["Email address"];
-
-    if (car["Availability"] === "Only available at specified times") {
-      car.AlwaysAvailable = false;
-    } else {
-      car.AlwaysAvailable = true;
-    }
-    delete car["Availability"];
-    
-    if (car["Confirmation"] === "Email me to confirm requests") {
-      car.Confirm = true;
-    } else {
-      car.Confirm = false;
-    }
-    delete car["Confirmation"];
-
-    car["Description"] = `${car.Color} ${car.Make} ${car.Model} ${car.Licence}`;
+    let car = api.run("this.car_sheet_row_to_object", {sheet_row: sheet_rows[i]})[0];
     cars[car["Licence"]] = car;
   }
   
