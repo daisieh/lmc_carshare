@@ -131,7 +131,7 @@ export class RequestList extends React.Component<RequestListProps, RequestListSt
                 }
             });
         return (
-            <div className="request-table">
+            <div className="requests">
                 <div className="error">{this.state.errorMessage}</div>
                 <p className="request-table-caption">
                     <Button
