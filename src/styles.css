@@ -18647,7 +18647,7 @@ textarea.rs-picker-menu .rs-picker-search-bar .rs-picker-search-bar-input {
 .rs-table-row {
   overflow: hidden;
   position: absolute;
-  height: 36px;
+  height: 20px;
   width: 100%;
   top: 0;
   border-bottom: 1px solid #292d33;
@@ -18663,7 +18663,7 @@ textarea.rs-picker-menu .rs-picker-search-bar .rs-picker-search-bar-input {
 }
 .rs-table-row-expanded {
   position: absolute;
-  height: 46px;
+  height: 20px;
   bottom: 0;
   width: 100%;
   z-index: 4;
