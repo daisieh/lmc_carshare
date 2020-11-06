@@ -6,7 +6,7 @@ import {Transposit, User} from "transposit";
 import "./styles.css";
 import {CarshareBooker, Car} from "./carbooker"
 import {RequestList} from "./requests";
-import {Calendar} from "./calendar";
+import {CarCalendar} from "./carCalendar";
 
 const transposit = new Transposit(
     "https://lmc-carshare-89gbj.transposit.io"
@@ -83,7 +83,7 @@ class Navigation extends React.Component<NavigationProps, NavigationState> {
                 } else if (this.state.mode === MODE.CALENDAR) {
                     main =
                         <main className="container main">
-                            <Calendar/>
+                            <CarCalendar cars={this.props.cars}/>
                         </main>
                 } else if (this.state.mode === MODE.CARS) {
                     main =

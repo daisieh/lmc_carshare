@@ -53,6 +53,7 @@ class SearchAvailabilityForm extends React.Component<SearchAvailabilityProps, Se
     }
 
     handleSubmit() {
+        this.setState({errorMessage: ""});
         this.props.submitTimes();
     }
 
