@@ -1,6 +1,6 @@
 (params) => {
   const moment = require('moment-timezone-with-data.js');
-  const interval = params.interval; // number of secs in one hour is 3600
+  const interval = parseInt(params.interval); // number of secs in one hour is 3600
   let start = moment(params.start);
   let end = moment(params.start).add(1,"day");
   let car_events = api.run("this.list_car_busy_schedule", {start: start, end: end})[0];

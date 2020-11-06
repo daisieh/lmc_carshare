@@ -324,7 +324,7 @@
             "default": {
               "text": "3600"
             },
-            "type": "NUMBER"
+            "type": "STRING"
           }],
           "js": "car_day_array.js",
           "lang": "js"
