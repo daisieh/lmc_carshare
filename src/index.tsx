@@ -1,6 +1,6 @@
 import * as React from "react";
 import {render} from "react-dom";
-import {BrowserRouter as Router, Redirect, Route} from "react-router-dom";
+import {BrowserRouter as Router, Route} from "react-router-dom";
 import {Button, Loader, Nav, Navbar} from 'rsuite';
 import {Transposit, User} from "transposit";
 import "./styles.css";
@@ -83,7 +83,7 @@ class Navigation extends React.Component<NavigationProps, NavigationState> {
                 } else if (this.state.mode === MODE.CALENDAR) {
                     main =
                         <main className="container main">
-                            <Calendar calendars={[]}/>
+                            <Calendar/>
                         </main>
                 } else if (this.state.mode === MODE.CARS) {
                     main =
