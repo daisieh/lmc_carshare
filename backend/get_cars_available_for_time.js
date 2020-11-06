@@ -12,20 +12,23 @@
   }
   let freebusy = api.run('google_calendar.get_calendars_freebusy', {$body: { timeMax : endTime, timeMin : startTime, items : calendar_ids , timeZone: 'America/Vancouver'}})[0];
   
-  for (var i in calendars) {
-    let car = i.replace("_available", "");
+  for (var car in cars) {
     if (!cars[car].AlwaysAvailable) {
-      console.log(`checking to see if (default busy) ${cars[car].Description} is busy on cal ${i}...`);
-      if (freebusy.calendars[calendars[i]].busy.length > 0) {
+      // check its availability calendar
+      console.log(`checking to see if (default busy) ${cars[car].Description} is busy on cal ${car}_available...`);
+      if (freebusy.calendars[`${car}_available`].busy.length > 0) {
         // console.log(`...listed as busy, so it's available`);
-        available_cars.push(cars[car]);
+        if (freebusy.calendars[calendars[car]].busy.length == 0) {
+          // console.log("...not busy, so it's available");
+          available_cars.push(cars[car]);
+        }
       }
     } else {
       console.log(`checking to see if (default available) ${cars[car].Description} is busy...`);
-      if (freebusy.calendars[calendars[i]].busy.length == 0) {
+      if (freebusy.calendars[calendars[car]].busy.length == 0) {
         // console.log("...not busy, so it's available");
         available_cars.push(cars[car]);
-      }
+      }      
     }
   }
   return { 
