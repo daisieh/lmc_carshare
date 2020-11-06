@@ -266,6 +266,9 @@
           }],
           "js": "create_new_car.js",
           "lang": "js"
+        },
+        "access": {
+          "requireUser": true
         }
       }, {
         "id": "car_sheet_row_to_object",
@@ -292,6 +295,42 @@
           }],
           "js": "car_object_to_sheet_row.js",
           "lang": "js"
+        }
+      }, {
+        "id": "list_car_busy_schedule",
+        "function": {
+          "parameters": [{
+            "name": "start",
+            "type": "STRING"
+          }, {
+            "name": "end",
+            "type": "STRING"
+          }],
+          "js": "list_car_busy_schedule.js",
+          "lang": "js"
+        },
+        "access": {
+          "requireUser": true
+        }
+      }, {
+        "id": "car_day_array",
+        "function": {
+          "parameters": [{
+            "name": "start",
+            "type": "STRING"
+          }, {
+            "name": "interval",
+            "description": "number of seconds per interval",
+            "default": {
+              "text": "3600"
+            },
+            "type": "NUMBER"
+          }],
+          "js": "car_day_array.js",
+          "lang": "js"
+        },
+        "access": {
+          "requireUser": true
         }
       }],
       "dataConnections": [{
