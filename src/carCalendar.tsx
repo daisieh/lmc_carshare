@@ -1,9 +1,9 @@
 import * as React from "react";
 import moment from "moment";
 import {Transposit} from "transposit";
-import {Table} from "rsuite";
+// import {Table} from "rsuite";
 import {Car} from "./carbooker";
-const { Column, HeaderCell, Cell } = Table;
+// const { Column, HeaderCell, Cell } = Table;
 
 const transposit = new Transposit(
     "https://lmc-carshare-89gbj.transposit.io"
@@ -62,7 +62,8 @@ export class CarCalendar extends React.Component<CarCalendarProps, CarCalendarSt
     render() {
         let events = "";
         if (this.state.car_events) {
-            events = this.state.car_events.car_events.toString();
+            console.log(this.state.car_events);
+            events = "hello " + this.state.car_events.car_events.toString();
         }
         return (
             <div className="calendar">
