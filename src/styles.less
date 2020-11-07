@@ -104,10 +104,53 @@ p {
   margin-top: 10px;
   padding-left: 4px;
 }
-td.calendar-table-row-label {
-  text-align: right;
-  padding-right: 4px;
+
+.calendar {
+  padding-top: 80px;
 }
-td.calendar-table {
+
+.calendar-table {
+  //width: 400px;
+  table-layout: fixed;
+  border-collapse: collapse;
+}
+
+.calendar-table-col-name-span {
+  min-width: 30px;
+  max-width: 30px;
+  background-color: #0d73d4;
+}
+
+.calendar-table-col-span {
+  min-width: 30px;
+  max-width: 30px;
+  background-color: #4caf50;
+}
+
+.calendar-table tbody {
+  overflow: auto;
+  height: 500px;
+}
+//.calendar-table thead tr {
+//  display: block;
+//  width: 100%;
+//}
+//.calendar-table thead {
+//  display: block;
+//  width: 100%;
+//  //background: black;
+//  //color: #fff;
+//}
+.calendar-table th {
+  transform: rotate(-90deg);
+  transform-origin: 0% 50% 0;
+  max-width: 30px;
+}
+.calendar-table td {
   text-align: center;
 }
+//
+//.calendar-table-row-label {
+//  text-align: right;
+//  padding-right: 4px;
+//}

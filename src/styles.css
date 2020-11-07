@@ -21235,11 +21235,33 @@ p {
   margin-top: 10px;
   padding-left: 4px;
 }
-td.calendar-table-row-label {
-  text-align: right;
-  padding-right: 4px;
+.calendar {
+  padding-top: 80px;
 }
-td.calendar-table {
+.calendar-table {
+  table-layout: fixed;
+  border-collapse: collapse;
+}
+.calendar-table-col-name-span {
+  min-width: 30px;
+  max-width: 30px;
+  background-color: #0d73d4;
+}
+.calendar-table-col-span {
+  min-width: 30px;
+  max-width: 30px;
+  background-color: #4caf50;
+}
+.calendar-table tbody {
+  overflow: auto;
+  height: 500px;
+}
+.calendar-table th {
+  transform: rotate(-90deg);
+  transform-origin: 0% 50% 0;
+  max-width: 30px;
+}
+.calendar-table td {
   text-align: center;
 }
 /*# sourceMappingURL=styles.css.map */
