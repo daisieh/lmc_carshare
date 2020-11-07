@@ -21235,4 +21235,11 @@ p {
   margin-top: 10px;
   padding-left: 4px;
 }
+td.calendar-table-row-label {
+  justify-content: right;
+  padding-right: 4px;
+}
+td.calendar-table {
+  justify-content: center;
+}
 /*# sourceMappingURL=styles.css.map */
