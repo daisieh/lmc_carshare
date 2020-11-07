@@ -64,8 +64,12 @@ export class CarCalendar extends React.Component<CarCalendarProps, CarCalendarSt
     render() {
         let events;
         if (!this.state.isLoading && this.state.car_events) {
-            let hours = ['', '0:00', '1:00', '2:00', '3:00', '4:00', '5:00', '6:00', '7:00', '8:00', '9:00', '10:00', '11:00', '12:00', '13:00', '14:00', '15:00', '16:00', '17:00', '18:00', '19:00', '20:00', '21:00', '22:00', '23:00'];
-            events = this.makeTable(hours, this.state.car_events.cars, this.state.car_events.busy_segments);
+            let hours = ['0:00', '1:00', '2:00', '3:00', '4:00', '5:00', '6:00', '7:00', '8:00', '9:00', '10:00', '11:00', '12:00', '13:00', '14:00', '15:00', '16:00', '17:00', '18:00', '19:00', '20:00', '21:00', '22:00', '23:00'];
+            let row_data = [] as string[][];
+            for (let i in this.state.car_events.busy_segments) {
+                row_data.push(this.state.car_events.busy_segments[i].replace(/1/g,'X').replace(/0/g,'-').split(''));
+            }
+            events = this.makeTable(hours, this.state.car_events.cars, row_data, "calendar-table");
         } else {
             events = <Loader size="lg" center content="Loading" vertical/>
         }
@@ -76,21 +80,33 @@ export class CarCalendar extends React.Component<CarCalendarProps, CarCalendarSt
         );
     }
 
-    makeTable (column_names :string[], row_names :string[], row_data :any[]) {
+    makeTable (column_names :string[], row_names :string[], row_data :any[], class_name :string) {
+        let thead = <tr className={`${class_name}-col-label`}><th/>{column_names.map(x => {return (<th>{x}</th>)})}</tr>;
         let trs = [] as any[];
         for (let i in row_names) {
-            let tr = [(<td>{row_names[i]}</td>)];
-            let row = row_data[i];
-            let tds = [] as String[];
-            for (let x=0; x < row.length; x++) {
-                let busy = (row[x] === '1') ? "X" : "-";
-                tds.push(busy);
-            }
-            tr.push(...tds.map(x => {return (<td>{x}</td>)}));
+            let tr = [(<td className={`${class_name}-row-label`}>{row_names[i]}</td>)];
+            tr.push(...row_data[i].map(x => {return (<td className={class_name}>{x}</td>)}));
             trs.push(tr);
         }
-        let thead = <tr>{column_names.map(x => {return (<th>x</th>)})}</tr>;
-        let tbody = trs.map(x => {return (<tr>{x}</tr>)});
-        return (<table><thead>{thead}</thead><tbody>{tbody}</tbody></table>);
+        let tbody = trs.map(x => {return (<tr className={class_name}>{x}</tr>)});
+        return (<table className={class_name}><thead className={class_name}>{thead}</thead><tbody className={class_name}>{tbody}</tbody></table>);
     }
+    //
+    // makeRotatedTable (column_names :string[], row_names :string[], row_data :any[], class_name :string) {
+    //     let thead = <tr className={`${class_name}-col-label`}><th/>{row_names.map(x => {return (<th>{x}</th>)})}</tr>;
+    //     let trs = [] as any[];
+    //     for (let i in column_names) {
+    //         let tr = [(<td className={`${class_name}-row-label`}>{column_names[i]}</td>)];
+    //         let row = row_data[i];
+    //         let tds = [] as String[];
+    //         for (let x=0; x < row.length; x++) {
+    //             let busy = (row[x] === '1') ? "X" : "-";
+    //             tds.push(busy);
+    //         }
+    //         tr.push(...tds.map(x => {return (<td className={class_name}>{x}</td>)}));
+    //         trs.push(tr);
+    //     }
+    //     let tbody = trs.map(x => {return (<tr className={class_name}>{x}</tr>)});
+    //     return (<table className={class_name}><thead className={class_name}>{thead}</thead><tbody className={class_name}>{tbody}</tbody></table>);
+    // }
 }
