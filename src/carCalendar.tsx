@@ -49,7 +49,7 @@ export class CarCalendar extends React.Component<CarCalendarProps, CarCalendarSt
     async updateEvents() {
         this.setState({isLoading: true});
         await transposit
-            .run("car_day_array", {start: this.state.startTime, interval: '3600'})
+            .run("car_day_array", {start: this.state.startTime, interval: '900'})
             .then(response => { this.setState({car_events: response.results[0] as CarEvents, isLoading: false})})
             .catch(response => {
                 this.setState( {errorMessage: response.toString(), isLoading: false});
@@ -59,13 +59,13 @@ export class CarCalendar extends React.Component<CarCalendarProps, CarCalendarSt
     render() {
         let events;
         if (!this.state.isLoading && this.state.car_events) {
-            let hours = ['0:00', '1:00', '2:00', '3:00', '4:00', '5:00', '6:00', '7:00', '8:00', '9:00', '10:00', '11:00', '12:00', '13:00', '14:00', '15:00', '16:00', '17:00', '18:00', '19:00', '20:00', '21:00', '22:00', '23:00'];
+            let time_labels = this.makeTimeIntervals(this.state.car_events.interval);
             let row_data = [] as string[][];
             for (let i in this.state.car_events.busy_segments) {
                 row_data.push(this.state.car_events.busy_segments[i].replace(/1/g,'X').replace(/0/g,'-').split(''));
             }
             // events = this.makeTable(hours, this.state.car_events.cars, row_data, "calendar-table");
-            events = this.makeRotatedTable(hours, this.state.car_events.cars, row_data, "calendar-table");
+            events = this.makeRotatedTable(time_labels, this.state.car_events.cars, row_data, "calendar-table");
         } else {
             events = <Loader size="lg" center content="Loading" vertical/>
         }
@@ -97,5 +97,23 @@ export class CarCalendar extends React.Component<CarCalendarProps, CarCalendarSt
             new_row_data.push(new_row);
         }
         return this.makeTable(row_names, column_names, new_row_data, class_name);
+    }
+
+    makeTimeIntervals (interval :number) {
+        let day = 86400;
+        let hour = 3600;
+        let quarter = 900;
+
+        let time = 0;
+        let time_labels = [] as string[];
+        while (time < day) {
+            if (time % hour === 0) {
+                time_labels.push(`${time/hour}:00`);
+            } else if (time % quarter === 0) {
+                time_labels.push('-');
+            }
+            time = time + interval;
+        }
+        return time_labels;
     }
 }
