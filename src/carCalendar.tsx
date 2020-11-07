@@ -62,32 +62,35 @@ export class CarCalendar extends React.Component<CarCalendarProps, CarCalendarSt
     }
 
     render() {
-        let events = [] as any[];
+        let events;
         if (!this.state.isLoading && this.state.car_events) {
-            let trs;
-            for (let i in this.state.car_events.cars) {
-                trs = [(<td>{this.state.car_events.cars[i]}</td>)];
-                let busy_seg = `${this.state.car_events.busy_segments[i]}`;
-                let hours = [] as String[];
-                for (let x=0; x < busy_seg.length; x++) {
-                    let busy = (busy_seg[x] === '1') ? "X" : "-";
-                    hours.push(busy);
-                }
-                trs.push(...hours.map(x => {return (<td>{x}</td>)}));
-                events.push(trs);
-            }
-            return (
-                <div className="calendar">
-                    {this.state.car_events.start}
-                    <table className="car_busy_calendar">{events.map(x => {return (<tr>{x}</tr>)})}</table>
-                </div>
-            );
+            let hours = ['', '0:00', '1:00', '2:00', '3:00', '4:00', '5:00', '6:00', '7:00', '8:00', '9:00', '10:00', '11:00', '12:00', '13:00', '14:00', '15:00', '16:00', '17:00', '18:00', '19:00', '20:00', '21:00', '22:00', '23:00'];
+            events = this.makeTable(hours, this.state.car_events.cars, this.state.car_events.busy_segments);
         } else {
-            return (
-                <div className="calendar">
-                    <Loader size="lg" center content="Loading" vertical/>
-                </div>
-            );
+            events = <Loader size="lg" center content="Loading" vertical/>
         }
+        return (
+            <div className="calendar">
+                {events}
+            </div>
+        );
+    }
+
+    makeTable (column_names :string[], row_names :string[], row_data :any[]) {
+        let trs = [] as any[];
+        for (let i in row_names) {
+            let tr = [(<td>{row_names[i]}</td>)];
+            let row = row_data[i];
+            let tds = [] as String[];
+            for (let x=0; x < row.length; x++) {
+                let busy = (row[x] === '1') ? "X" : "-";
+                tds.push(busy);
+            }
+            tr.push(...tds.map(x => {return (<td>{x}</td>)}));
+            trs.push(tr);
+        }
+        let thead = <tr>{column_names.map(x => {return (<th>x</th>)})}</tr>;
+        let tbody = trs.map(x => {return (<tr>{x}</tr>)});
+        return (<table><thead>{thead}</thead><tbody>{tbody}</tbody></table>);
     }
 }
