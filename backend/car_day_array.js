@@ -11,7 +11,7 @@
   for (var i in car_events.cars) {
     let car = car_events.cars[i];
     let events = car_events.car_events[i];
-    let hours = '';
+    let hours = ',';
     let current = moment(start).format('X');
     while (events.length > 0) {
       let event = events.shift();
@@ -19,12 +19,25 @@
       let this_end = moment(event.end).format('X');
       let freespan = (parseInt(this_start) - parseInt(current))/interval;
       let busyspan = (parseInt(this_end) - parseInt(this_start))/interval;
-      hours += `${"0".repeat(freespan)}${"1".repeat(busyspan)}`;
+      hours += `${",".repeat(freespan)}${"1".repeat(busyspan)}`;
       current = this_end;
     }
     let freespan = (parseInt(moment(end).format('X')) - parseInt(current))/interval;
-    hours += "0".repeat(freespan);
+    hours += ",".repeat(freespan) + ",";
+    // replace 1-char blocks:
+    hours = hours.replace(/,1,/g,",o,");
 
+    // replace 2-char blocks:
+    hours = hours.replace(/,11,/g,",<>,");
+
+    // replace 3-char blocks:
+    hours = hours.replace(/,111,/g,",<->,");
+
+    // replace more than 4-char blocks:
+    hours = hours.replace(/,11/g,",<-").replace(/11,/g,"->,").replace(/1/g,"-");
+    
+    // trim off ends
+    hours = hours.replace(/^,/,"").replace(/,$/,"");
     car_lines.push(hours);
   }
   delete car_events["car_events"];
