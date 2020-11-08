@@ -313,7 +313,7 @@
           "requireUser": true
         }
       }, {
-        "id": "car_day_array",
+        "id": "three_day_array",
         "function": {
           "parameters": [{
             "name": "start",
