@@ -110,45 +110,49 @@ p {
 }
 
 .calendar-table {
-  //width: 400px;
+  width: 400px;
   table-layout: fixed;
-  border-collapse: collapse;
 }
 
 .calendar-table-col-name-span {
-  min-width: 30px;
-  max-width: 30px;
+  width: 100px;
   background-color: #0d73d4;
 }
 
 .calendar-table-col-span {
-  min-width: 30px;
-  max-width: 30px;
+  width: 30px;
   background-color: #4caf50;
 }
 
-.calendar-table tbody {
+.calendar-table-body {
+  display: block;
   overflow: auto;
   height: 500px;
+  width: 400px;
 }
-//.calendar-table thead tr {
-//  display: block;
-//  width: 100%;
-//}
-//.calendar-table thead {
-//  display: block;
-//  width: 100%;
-//  //background: black;
-//  //color: #fff;
-//}
+.calendar-table-header {
+  display: block;
+  overflow: hidden;
+  height: 100px;
+  width: 400px;
+}
+
+.calendar-table table th:first-child, td:first-child {
+  background-color: yellow;
+  width: 60px;
+  min-width:60px;
+}
 .calendar-table th {
-  transform: rotate(-90deg);
-  transform-origin: 0% 50% 0;
-  max-width: 30px;
+  transform: rotate(-50deg);
+  transform-origin: 100% 100% 0;
+  text-align: left;
+  padding: 10px;
 }
-.calendar-table td {
-  text-align: center;
-}
+//.calendar-table td {
+//  text-align: center;
+//  min-width: 30px;
+//  max-width: 30px;
+//}
 //
 //.calendar-table-row-label {
 //  text-align: right;

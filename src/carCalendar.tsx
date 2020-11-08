@@ -80,8 +80,7 @@ export class CarCalendar extends React.Component<CarCalendarProps, CarCalendarSt
             <col span={1} className={`${class_name}-col-name-span`}/>
             <col span={column_names.length} className={`${class_name}-col-span`}/>
             </colgroup>
-        let thead = <tr className={`${class_name}`}><th>&nbsp;</th>{column_names.map(x => {return (<th>x</th>)})}</tr>;
-        // let thead = <tr className={`${class_name}`}><th>&nbsp;</th>{column_names.map(x => {return (<th>{x}</th>)})}</tr>;
+        let thead = <tr className={`${class_name}`}><th className={`${class_name}`}>&nbsp;</th>{column_names.map(x => {return (<th className={`${class_name}`}>{x}</th>)})}</tr>;
         let trs = [] as any[];
         for (let i in row_names) {
             let tr = [(<td className={`${class_name}-row-label`}>{row_names[i]}</td>)];
@@ -89,7 +88,17 @@ export class CarCalendar extends React.Component<CarCalendarProps, CarCalendarSt
             trs.push(tr);
         }
         let tbody = trs.map(x => {return (<tr className={class_name}>{x}</tr>)});
-        return (<table className={class_name}>{colgroups}<thead className={class_name}>{thead}</thead><tbody className={class_name}>{tbody}</tbody></table>);
+        return (
+            <div className={class_name}>
+                <table className={`${class_name}-header`}>
+                    {colgroups}
+                    {thead}
+                </table>
+                <table className={`${class_name}-body`}>
+                    {colgroups}{tbody}
+                </table>
+            </div>
+        );
     }
     makeRotatedTable (column_names :string[], row_names :string[], row_data :string[][], class_name :string) {
         let new_row_data = [] as string[][];
