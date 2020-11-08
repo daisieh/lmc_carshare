@@ -49,7 +49,7 @@ export class CarCalendar extends React.Component<CarCalendarProps, CarCalendarSt
     async updateEvents() {
         this.setState({isLoading: true});
         await transposit
-            .run("three_day_array", {start: this.state.startTime, interval: '3600'})
+            .run("three_day_array", {start: this.state.startTime, interval: '900'})
             .then(response => { this.setState({car_events: response.results[0] as CarEvents, isLoading: false})})
             .catch(response => {
                 this.setState( {errorMessage: response.toString(), isLoading: false});
