@@ -21259,19 +21259,18 @@ p {
 .calendar-table-header {
   display: block;
   overflow: hidden;
-  height: 100px;
   width: 400px;
 }
 .calendar-table table th:first-child,
 td:first-child {
-  background-color: yellow;
+  background-color: darkred;
   width: 60px;
   min-width: 60px;
 }
 .calendar-table th {
-  transform: rotate(-50deg);
+  transform: rotate(-90deg);
   transform-origin: 100% 100% 0;
-  text-align: left;
-  padding: 10px;
+  text-align: right;
+  margin-left: 10px;
 }
 /*# sourceMappingURL=styles.css.map */
