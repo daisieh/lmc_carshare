@@ -45,8 +45,10 @@
     car_events = api.run("this.list_car_busy_schedule", {start: start, end: end})[0];
   }
   car_events.busy_segments = car_lines;
+  car_events.interval = interval;
+
   delete car_events["car_events"];
-  return car_events;
+  return car_events; 
 }
 
 /*
