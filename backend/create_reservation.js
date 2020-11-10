@@ -54,6 +54,12 @@
   request.start = request.start.format("YYYY-MM-DDTHH:mm:00ZZ");
   request.end = request.end.format("YYYY-MM-DDTHH:mm:00ZZ");
 
+  // send a notification to the requester:
+  if (request.confirmed) {
+    api.run("this.send_email_to_requester", {eventId: request.eventId});
+  }
+
+  // add request to master spreadsheet
   let requests = api.run("this.update_append_request", request);
   if (requests.length > 0) {
     let last_request = requests.pop();

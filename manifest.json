@@ -332,6 +332,16 @@
         "access": {
           "requireUser": true
         }
+      }, {
+        "id": "send_email_to_requester",
+        "function": {
+          "parameters": [{
+            "name": "eventId",
+            "type": "STRING"
+          }],
+          "js": "send_email_to_requester.js",
+          "lang": "js"
+        }
       }],
       "dataConnections": [{
         "ref": "slack_identify.raw",
