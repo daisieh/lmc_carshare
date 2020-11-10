@@ -94,7 +94,7 @@ export class CarCalendar extends React.Component<CarCalendarProps, CarCalendarSt
                 {column_names.map(x => {return (<th className={`${class_name}`}>{x}</th>)})}
             </tr>;
         let trs = [] as any[];
-        for (let d=0; d<3; d++) {
+        // for (let d=0; d<3; d++) {
             for (let i in row_names) {
                 let tr = [(<td className={`${class_name}-row-label`}>{row_names[i]}</td>)];
                 tr.push(...row_data[i].map(x => {
@@ -102,7 +102,7 @@ export class CarCalendar extends React.Component<CarCalendarProps, CarCalendarSt
                 }));
                 trs.push(tr);
             }
-        }
+        // }
         let tbody = trs.map(x => {return (<tr className={class_name}>{x}</tr>)});
         return (
             <div className={class_name}>
@@ -137,13 +137,17 @@ export class CarCalendar extends React.Component<CarCalendarProps, CarCalendarSt
 
         let time = 0;
         let time_labels = [] as string[];
-        while (time < day) {
-            if (time % hour === 0) {
-                time_labels.push(`${time/hour}:00`);
-            } else if (time % quarter === 0) {
-                time_labels.push('-');
+        let count = 0;
+        while (count < 3) {
+            while (time < day) {
+                if (time % hour === 0) {
+                    time_labels.push(`${time/hour}:00`);
+                } else if (time % quarter === 0) {
+                    time_labels.push('-');
+                }
+                time = time + interval;
             }
-            time = time + interval;
+            count++;
         }
         return time_labels;
     }
