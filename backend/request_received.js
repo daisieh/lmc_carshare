@@ -52,7 +52,6 @@
 
           if (request.confirmed) {
             parameters.$body.attendees.push({'email': request.requester, responseStatus: "accepted"});
-            api.run("this.send_email_to_requester", {eventId: request.eventId});
           }  
           let event = api.run('google_calendar.update_calendar_event', parameters)[0];
 
