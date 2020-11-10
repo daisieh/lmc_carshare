@@ -65,7 +65,7 @@
     };
   }
 
-  let message = api.run('google_mail.send_message', request_params)[0];
+  message = api.run('google_mail.send_message', request_params)[0];
   console.log(message);
 
   // add request to master spreadsheet
