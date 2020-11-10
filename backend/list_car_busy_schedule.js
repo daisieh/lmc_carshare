@@ -41,7 +41,7 @@
     busy.push(...e);
     freebusy.calendars[i.id] = {busy: e};
   }
-  return freebusy;
+  // return freebusy;
   let events = {};
   for (var car in cars) {
     events[car] = [];
