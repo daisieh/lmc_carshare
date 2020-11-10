@@ -54,19 +54,10 @@
   request.start = request.start.format("YYYY-MM-DDTHH:mm:00ZZ");
   request.end = request.end.format("YYYY-MM-DDTHH:mm:00ZZ");
 
-  // send the request to the owner:
+  // send a notification to the requester:
   if (request.confirmed) {
-    request_params = { 
-      to: params.requester,
-      subject: `LMC Carshare reservation`,
-      message: `You have reserved ${car.Description} for ${request.start} to ${request.end}.`,
-      userId: 'me',
-      threadId: request.threadId
-    };
+    api.run("this.send_email_to_requester", {eventId: request.eventId});
   }
-
-  message = api.run('google_mail.send_message', request_params)[0];
-  console.log(message);
 
   // add request to master spreadsheet
   let requests = api.run("this.update_append_request", request);
