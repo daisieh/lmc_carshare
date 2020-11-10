@@ -8,7 +8,7 @@
   for (var i in requests) {
     if (params.eventIds.includes(requests[i].eventId)) {
       // delete the calendar event as well
-      let cals = api.run("this.list_availability_calendarlist")[0];
+      let cals = api.run("this.list_calendars")[0];
       try {
         api.run('google_calendar.delete_calendar_event', { eventId: requests[i].eventId, calendarId: cals[requests[i].vehicle] });
       } catch (e) {

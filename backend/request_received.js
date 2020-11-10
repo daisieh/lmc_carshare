@@ -42,7 +42,7 @@
           
           // also add the attendee to the calendar event
           parameters = {};
-          let calendar_id = api.run("this.list_availability_calendarlist")[0][car.Licence];
+          let calendar_id = api.run("this.list_calendars")[0][car.Licence];
 
           parameters.calendarId = calendar_id;
           parameters.eventId = request.eventId;

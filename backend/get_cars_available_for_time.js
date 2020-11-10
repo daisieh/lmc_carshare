@@ -1,6 +1,6 @@
 (params) => {
   const moment = require('moment-timezone-with-data.js');
-  let calendars = api.run("this.list_availability_calendarlist")[0];
+  let calendars = api.run("this.list_calendars")[0];
   console.log(calendars);
   let startTime = moment(params.start).tz("America/Vancouver");
   let endTime = moment(params.end).tz("America/Vancouver");
