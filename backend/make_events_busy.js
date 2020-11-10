@@ -1,10 +1,10 @@
 (params) => {
   const moment = require('moment.js');
   let results = {};
-  let availability_calendars = Object.values(api.run("this.list_availability_calendarlist")[0]);
-  for (var i in availability_calendars) {
+  let calendars = Object.values(api.run("this.list_calendars")[0]);
+  for (var i in calendars) {
     const parameters = {};
-    parameters.calendarId = availability_calendars[i];
+    parameters.calendarId = calendars[i];
     parameters.timeMin = moment().subtract(14, "days").format();
     let events = api.run('google_calendar.get_calendar_events', parameters);
     for (var j in events) {

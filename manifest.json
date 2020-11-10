@@ -208,9 +208,9 @@
           "tql": "SELECT * FROM google_calendar.get_calendar_event\n  WHERE eventId\u003d@eventId\n  AND calendarId\u003d@calendarId\n"
         }
       }, {
-        "id": "list_availability_calendarlist",
+        "id": "list_calendars",
         "function": {
-          "js": "list_availability_calendarlist.js",
+          "js": "list_calendars.js",
           "lang": "js"
         }
       }, {
