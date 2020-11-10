@@ -30,10 +30,11 @@
           request.confirmed = true;
           api.run("this.update_append_request", request);
           let car = api.run("this.get_car", {licence: request.vehicle})[0];
+          const moment = require('moment-timezone-with-data.js');
           let request_params = { 
             to: request.requester,
             subject: 'Your carshare request has been confirmed',
-            message: `You've been approved to borrow ${car.Description} from ${request.start} to ${request.end}.`,
+            message: `You've been approved to borrow ${car.Description} from ${moment.tz(request.start, 'America/Vancouver').format("h:mm a MMMM D YYYY")} to ${moment.tz(request.end, 'America/Vancouver').format("h:mm a MMMM D YYYY")}.`,
             userId: 'me'
           };
 
