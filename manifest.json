@@ -172,6 +172,13 @@
       }, {
         "id": "list_features",
         "function": {
+          "parameters": [{
+            "name": "all_features",
+            "default": {
+              "text": "false"
+            },
+            "type": "BOOLEAN"
+          }],
           "js": "list_features.js",
           "lang": "js"
         },
