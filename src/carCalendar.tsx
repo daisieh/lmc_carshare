@@ -66,9 +66,9 @@ export class CarCalendar extends React.Component<CarCalendarProps, CarCalendarSt
             }
             console.log(row_data);
             let car_labels = [] as string[];
-            for (let i=0; i<3; i++) {
+            // for (let i=0; i<3; i++) {
                 car_labels.push(...this.state.car_events.cars);
-            }
+            // }
             console.log(car_labels);
             console.log(time_labels);
             events = this.makeRotatedTable(time_labels, car_labels, row_data, "calendar-table");
