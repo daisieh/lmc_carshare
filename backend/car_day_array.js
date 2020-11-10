@@ -1,23 +1,23 @@
 (params) => {
   const moment = require('moment-timezone-with-data.js');
   const interval = parseInt(params.interval); // number of secs in one hour is 3600
-  let start = moment(params.start);
-  let end = moment(params.start).add(3,"day");
+  let start = moment.tz(params.start,"America/Vancouver").format("YYYY-MM-DDTHH:mm:00Z");
+  let end = moment.tz(params.start,"America/Vancouver").add(3,"day").format("YYYY-MM-DDTHH:mm:00Z");
+  console.log(start, end)
   let car_lines = [];
   let car_events = api.run("this.list_car_busy_schedule", {start: start, end: end})[0];
   car_events.interval = interval;
   // return car_events;
-  // for (var x = 0; x < 3; x++) {
     for (var i in car_events.cars) {
       let car = car_events.cars[i];
       let events = car_events.car_events[i];
       let hours = ',';
-      let current = parseInt(moment(start).format('X'));
+      let current = parseInt(moment(start).format('X')/interval);
       while (events.length > 0) {
         let event = events.shift();
         console.log(event);
-        let this_start = parseInt(moment(event.start).format('X'));
-        let this_end = parseInt(moment(event.end).format('X'));
+        let this_start = parseInt(moment(event.start).format('X')/interval);
+        let this_end = parseInt(moment(event.end).format('X')/interval);
         let freespan = this_start - current;
         let busyspan = this_end - this_start;
         console.log(`${freespan} ${busyspan}`)
@@ -27,7 +27,7 @@
         current = this_end;
         console.log(hours);
       }
-      let this_end = parseInt(moment(end).format('X'));
+      let this_end = parseInt(moment(end).format('X')/interval);
       let freespan = this_end - current;
       hours += `${freespan},`;
       // hours += ",".repeat(freespan) + ",";
@@ -47,10 +47,6 @@
 //       hours = hours.replace(/^,/,"").replace(/,$/,"");
       car_lines.push(hours);
     }
-    start = start.add(1,"day");
-    end = end.add(1,"day");
-    car_events = api.run("this.list_car_busy_schedule", {start: start, end: end})[0];
-  // }
   car_events.busy_segments = car_lines;
   car_events.interval = interval;
 
