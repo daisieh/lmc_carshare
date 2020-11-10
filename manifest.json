@@ -24,12 +24,6 @@
           "requireUser": true
         }
       }, {
-        "id": "list_car_calendarlist",
-        "function": {
-          "js": "list_car_calendarlist.js",
-          "lang": "js"
-        }
-      }, {
         "id": "request_received",
         "function": {
           "parameters": [{
