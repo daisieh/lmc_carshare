@@ -59,7 +59,7 @@
     request_params = { 
       to: params.requester,
       subject: `LMC Carshare reservation`,
-      message: `You have reserved ${car.Description} for ${request.start} to ${request.end}. View calendar event at ${event.htmlLink}`,
+      message: `You have reserved ${car.Description} for ${request.start} to ${request.end}.`,
       userId: 'me',
       threadId: request.threadId
     };
