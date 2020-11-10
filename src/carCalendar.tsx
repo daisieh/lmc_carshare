@@ -101,13 +101,13 @@ export class CarCalendar extends React.Component<CarCalendarProps, CarCalendarSt
                     if (x === ',') {
                         return (<td className={`${class_name}-blank`}>&nbsp;</td>);
                     } else if (x === '<') {
-                        return (<td className={`${class_name}-start`}>&nbsp;</td>);
+                        return (<td className={`${class_name}-start`}>^</td>);
                     } else if (x === '-') {
-                        return (<td className={`${class_name}-block`}>&nbsp;</td>);
+                        return (<td className={`${class_name}-block`}>|</td>);
                     } else if (x === '>') {
-                        return (<td className={`${class_name}-end`}>&nbsp;</td>);
+                        return (<td className={`${class_name}-end`}>v</td>);
                     } else if (x === 'o') {
-                        return (<td className={`${class_name}-blip`}>&nbsp;</td>);
+                        return (<td className={`${class_name}-blip`}>o</td>);
                     } else {
                         return (<td className={`${class_name}-blank`}>&nbsp;</td>);
                     }
