@@ -9,7 +9,7 @@
       let request_params = { 
         to: request.requester,
         subject: `LMC Carshare reservation`,
-        message: `You have reserved ${car.Description} for ${moment.tz(request.start, 'America/Vancouver').format("h:mm a MMMM D YYYY")} to ${moment.tz(request.end, 'America/Vancouver').format("h:mm a MMMM D YYYY")}.`,
+        message: `You have reserved ${car.Description} from ${moment.tz(request.start, 'America/Vancouver').format("h:mm a MMMM D YYYY")} to ${moment.tz(request.end, 'America/Vancouver').format("h:mm a MMMM D YYYY")}.`,
         userId: 'me',
         threadId: request.threadId
       };
