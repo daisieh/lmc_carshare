@@ -14,9 +14,7 @@
         threadId: request.threadId
       };
 
-      let message = api.run('google_mail.send_message', request_params)[0];
-      console.log(message);
-
+      return api.run('google_mail.send_message', request_params)[0];
     }
   }
 }
