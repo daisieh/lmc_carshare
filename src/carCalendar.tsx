@@ -148,6 +148,7 @@ export class CarCalendar extends React.Component<CarCalendarProps, CarCalendarSt
                 time = time + interval;
             }
             count++;
+            time = 0;
         }
         return time_labels;
     }
