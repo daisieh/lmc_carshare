@@ -1,8 +1,6 @@
 (params) => {
   const moment = require('moment-timezone-with-data.js');
-  
-  let x = moment.tz('2020-11-08', "America/Vancouver").endOf("day");
-    
+      
   let calendars = api.run("this.list_availability_calendarlist")[0];
   let startTime = moment(params.start).tz("America/Vancouver").format("YYYY-MM-DDTHH:mm:00Z");
   let endTime = moment(params.end).tz("America/Vancouver").format("YYYY-MM-DDTHH:mm:00Z");
@@ -22,17 +20,18 @@
       let start, end;
       if ("date" in x.start) {
         start = moment.tz(x.start.date,"Americas/Vancouver");
-        if (start.isBefore(params.start)) {
-          start = startTime;
-        }
         end = moment.tz(x.end.date,"Americas/Vancouver").endOf('day');
-        if (end.isAfter(params.end)) {
-          end = endTime;
-        }
       } else {
         start = x.start.dateTime;
         end = x.end.dateTime;
       }
+      if (moment(start).isBefore(params.start)) {
+        start = startTime;
+      }
+      if (moment(end).isAfter(params.end)) {
+        end = endTime;
+      }
+
       return {start: start, end: end};
     })
     // if (e.length == 0) {
@@ -42,7 +41,7 @@
     busy.push(...e);
     freebusy.calendars[i.id] = {busy: e};
   }
-  // return freebusy;
+  return freebusy;
   let events = {};
   for (var car in cars) {
     events[car] = [];
