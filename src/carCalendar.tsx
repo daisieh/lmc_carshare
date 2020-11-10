@@ -98,7 +98,19 @@ export class CarCalendar extends React.Component<CarCalendarProps, CarCalendarSt
             for (let i in row_names) {
                 let tr = [(<td className={`${class_name}-row-label`}>{row_names[i]}</td>)];
                 tr.push(...row_data[i].map(x => {
-                    return (<td className={class_name}>{x}</td>)
+                    if (x === ',') {
+                        return (<td className={`${class_name}-blank`}>&nbsp;</td>);
+                    } else if (x === '<') {
+                        return (<td className={`${class_name}-start`}>&nbsp;</td>);
+                    } else if (x === '-') {
+                        return (<td className={`${class_name}-block`}>&nbsp;</td>);
+                    } else if (x === '>') {
+                        return (<td className={`${class_name}-end`}>&nbsp;</td>);
+                    } else if (x === 'o') {
+                        return (<td className={`${class_name}-blip`}>&nbsp;</td>);
+                    } else {
+                        return (<td className={`${class_name}-blank`}>&nbsp;</td>);
+                    }
                 }));
                 trs.push(tr);
             }
