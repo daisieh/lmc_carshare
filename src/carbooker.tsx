@@ -216,6 +216,7 @@ class BookingStatus extends React.Component<BookingStatusProps, {}> {
     render() {
         let message = "";
         if (this.props.booking) {
+            console.log(this.props.booking);
             if (this.props.booking.confirmed) {
                 message = "Check your email for a confirmation of your booking!";
             } else {
