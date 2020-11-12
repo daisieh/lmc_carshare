@@ -202,7 +202,7 @@ interface BookingStatusProps {
     resetBooking: () => void;
 }
 
-class BookingStatus extends React.Component<BookingStatusProps, {}> {
+export class BookingStatus extends React.Component<BookingStatusProps, {}> {
     constructor(props) {
         super(props);
         this.props.resetBooking.bind(this);
