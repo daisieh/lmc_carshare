@@ -1,78 +1,29 @@
 import * as React from "react";
-import moment from "moment";
-import {Transposit} from "transposit";
 import {Button, Checkbox, Table} from "rsuite";
-import {Car} from "./carbooker";
+import {CarRequest, CarshareBooker} from "./dataModel";
 const { Column, HeaderCell, Cell } = Table;
 
-const transposit = new Transposit(
-    "https://lmc-carshare-89gbj.transposit.io"
-);
-
 interface RequestListProps {
-    user: { name: string; email: string; };
-    cars: Car[];
+    booker: CarshareBooker;
 }
 
 interface RequestListState {
-    requests: Request[];
     requestsToDelete: string[];
-    isLoading: boolean;
-    errorMessage: string;
-    activeRow: Request | null;
+    activeRow: CarRequest | null;
 }
 
 export class RequestList extends React.Component<RequestListProps, RequestListState> {
     constructor(props) {
         super(props);
         this.state = {
-            requests: [],
             requestsToDelete: [],
             activeRow: null,
-            isLoading: true,
-            errorMessage: ""
         };
-        this.updateRequests = this.updateRequests.bind(this);
-        this.updateRequestsSuccess = this.updateRequestsSuccess.bind(this);
         this.setToDelete = this.setToDelete.bind(this);
         this.handleDelete = this.handleDelete.bind(this);
         this.handleReminder = this.handleReminder.bind(this);
-
-        this.updateRequests();
     }
 
-    async updateRequests() {
-        this.setState({isLoading: true});
-        await transposit
-            .run("list_requests", {})
-            .then(this.updateRequestsSuccess)
-            .catch(response => {
-                this.setState( {errorMessage: response.toString(), isLoading: false});
-            });
-    }
-
-    updateRequestsSuccess(results) {
-        let requests = results.results;
-        requests.shift();
-        let filtered_requests = requests.filter(x => {
-            if (x.requester === this.props.user.email) {
-                if (moment(x.end).isSameOrAfter(moment())) {
-                    return true;
-                }
-            }
-            return false;
-        });
-        filtered_requests.map(x => {
-            x.start = moment(x.start).format("YYYY-MM-DD HH:mm");
-            x.end = moment(x.end).format("YYYY-MM-DD HH:mm");
-            return x;
-        })
-        this.setState({
-            requests: filtered_requests,
-            isLoading: false
-        });
-        return filtered_requests;
-    }
 
     setToDelete(value, checked) {
         let index = this.state.requestsToDelete.indexOf(value);
@@ -90,38 +41,25 @@ export class RequestList extends React.Component<RequestListProps, RequestListSt
     }
 
     async handleDelete() {
-        this.setState({isLoading: true});
         console.log(`deleting ${this.state.requestsToDelete.toString()}`);
-        await transposit
-            .run("delete_requests", {
-                eventIds: this.state.requestsToDelete.toString()
-            })
-            .then(x => { console.log(x); this.updateRequests();})
-            .catch(response => {
-                this.setState( {errorMessage: response.toString(), isLoading: false});
-            });
+        await this.props.booker.deleteRequests(this.state.requestsToDelete);
     }
 
     async handleReminder() {
-        if (this.state.activeRow && (this.state.activeRow.confirmed === "FALSE")) {
+        if (this.state.activeRow && this.state.activeRow.eventId && (this.state.activeRow.confirmed === "FALSE")) {
             console.log(this.state.activeRow);
-            await transposit
-                .run("send_reminder", {
-                    eventId: this.state.activeRow.eventId
-                })
-                .then(x => { console.log(x); this.updateRequests();})
-                .catch(response => {
-                    this.setState( {errorMessage: response.toString(), isLoading: false});
-                });
+            await this.props.booker.sendReminderForRequest(this.state.activeRow.eventId);
         }
     }
 
     render() {
-        let requests = this.state.requests.map(
+        let requests = this.props.booker.state.requests.map(
             x => {
-                let desc = x.vehicle;
-                let cars = this.props.cars.filter(car => { return (car.Licence === x.vehicle);});
-                if (cars.length > 0) { desc = cars[0].Description; }
+                let car = this.props.booker.getChosenCar();
+                let desc = "";
+                if (car) {
+                    desc = car.Description;
+                }
                 return {
                     eventId: x.eventId,
                     description: desc,
@@ -130,13 +68,15 @@ export class RequestList extends React.Component<RequestListProps, RequestListSt
                     confirmed: x.confirmed
                 }
             });
+        let errorMessage = this.props.booker.state.errorMessage;
+        let loading = this.props.booker.state.isProcessing;
         return (
             <div className="requests">
-                <div className="error">{this.state.errorMessage}</div>
+                <div className="error">{errorMessage}</div>
                 <p className="request-table-caption">
                     <Button
                         appearance="ghost"
-                        loading={this.state.isLoading}
+                        loading={loading}
                         size="sm"
                         onClick={this.handleDelete}
                     >
@@ -198,12 +138,3 @@ export class RequestList extends React.Component<RequestListProps, RequestListSt
     };
 }
 
-interface Request {
-    "threadId": string;
-    "vehicle": string;
-    "requester": string;
-    "start": string;
-    "end": string;
-    "eventId": string;
-    "confirmed": string;
-}
