@@ -1,6 +1,6 @@
 import * as React from "react";
 import {Button, Checkbox, Table} from "rsuite";
-import {CarRequest, CarshareBooker} from "./dataModel";
+import {CarRequest, CarshareBooker} from "./CarshareBooker";
 const { Column, HeaderCell, Cell } = Table;
 
 interface RequestListProps {

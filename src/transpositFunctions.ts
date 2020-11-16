@@ -1,6 +1,6 @@
 import moment from "moment";
 import {Transposit, User} from "transposit";
-import {Car, CarEvents, CarRequest} from "./dataModel";
+import {Car, CarEvents, CarRequest} from "./CarshareBooker";
 import * as React from "react";
 
 const transposit = new Transposit(

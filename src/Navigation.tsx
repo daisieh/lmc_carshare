@@ -1,8 +1,8 @@
-import {CarshareBooker, User} from "./dataModel";
+import {CarshareBooker, User} from "./CarshareBooker";
 import * as React from "react";
 import {Loader, Nav, Navbar} from "rsuite";
 import {AvailableCars, BookingStatus, SearchAvailabilityForm} from "./carbooker";
-import {RequestList} from "./requests";
+import {RequestList} from "./RequestList";
 import {CarCalendar} from "./carCalendar";
 import {SignOut} from "./transpositFunctions";
 

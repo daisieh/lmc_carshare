@@ -1,7 +1,7 @@
 import * as React from "react";
 import moment from "moment";
 import {Button, DatePicker, Modal, Radio, TagPicker} from "rsuite";
-import {CarshareBooker} from "./dataModel";
+import {CarshareBooker} from "./CarshareBooker";
 
 interface SearchAvailabilityProps {
     booker: CarshareBooker;

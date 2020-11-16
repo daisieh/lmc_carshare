@@ -1,5 +1,5 @@
 import * as React from "react";
-import {CarEvents, CarshareBooker} from "./dataModel";
+import {CarEvents, CarshareBooker} from "./CarshareBooker";
 import {Loader} from "rsuite";
 
 interface CarCalendarProps {
