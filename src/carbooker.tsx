@@ -15,33 +15,38 @@ export class SearchAvailabilityForm extends React.Component<SearchAvailabilityPr
         super(props);
         this.handleStartChange = this.handleStartChange.bind(this);
         this.handleEndChange = this.handleEndChange.bind(this);
-        this.handleSubmit = this.handleSubmit.bind(this);
-        this.handleTagPick = this.handleTagPick.bind(this);
+        this.onLookForCars = this.onLookForCars.bind(this);
+        this.onTagPick = this.onTagPick.bind(this);
     }
 
     handleStartChange(event) {
+        let updated;
         if (event) {
-            this.props.booker.updateTimes(moment(event.toString()).format(), "");
+            updated = this.props.booker.updateTimes(moment(event.toString()).format(), "");
         } else {
-            this.props.booker.updateTimes("", "");
+            updated = this.props.booker.updateTimes("", "");
         }
         console.log(this.props.booker.state.pendingRequest.start);
+        console.log(updated);
     }
 
     handleEndChange(event) {
+        let updated;
         if (event) {
-            this.props.booker.updateTimes("", moment(event.toString()).format());
+            updated = this.props.booker.updateTimes("", moment(event.toString()).format());
         } else {
-            this.props.booker.updateTimes("", "");
+            updated = this.props.booker.updateTimes("", "");
         }
+        console.log(this.props.booker.state.pendingRequest.end);
+        console.log(updated);
     }
 
-    handleSubmit() {
+    onLookForCars() {
         this.setState({errorMessage: ""});
         this.props.booker.getAvailableCars();
     }
 
-    handleTagPick(event) {
+    onTagPick(event) {
         let req = this.props.booker.state.pendingRequest;
         req.features = event as string[];
         this.props.booker.setState({pendingRequest: req});
@@ -86,7 +91,7 @@ export class SearchAvailabilityForm extends React.Component<SearchAvailabilityPr
                         style={{width: 300}}
                         data={feat_array}
                         value={booker.state.pendingRequest.features}
-                        onChange={this.handleTagPick}
+                        onChange={this.onTagPick}
                         disabled={disabled}
                     />
                 </div>
@@ -95,7 +100,7 @@ export class SearchAvailabilityForm extends React.Component<SearchAvailabilityPr
                     className="selector"
                     loading={booker.state.isProcessing}
                     size="sm"
-                    onClick={this.handleSubmit}
+                    onClick={this.onLookForCars}
                     disabled={disabled}
                 >
                     Look for cars
@@ -113,17 +118,17 @@ interface AvailableCarsProps {
 export class AvailableCars extends React.Component<AvailableCarsProps, {}> {
     constructor(props) {
         super(props);
-        this.onClick = this.onClick.bind(this);
-        this.handleSubmit = this.handleSubmit.bind(this);
+        this.onClickCarRadio = this.onClickCarRadio.bind(this);
+        this.onReserveCar = this.onReserveCar.bind(this);
     }
 
-    onClick(value) {
+    onClickCarRadio(value) {
         let req = this.props.booker.state.pendingRequest;
         req.vehicle = value;
         this.props.booker.setState({pendingRequest: req});
     }
 
-    handleSubmit(event) {
+    onReserveCar(event) {
         event.preventDefault();
         this.props.booker.bookCar();
     }
@@ -148,7 +153,7 @@ export class AvailableCars extends React.Component<AvailableCarsProps, {}> {
                 let isChosenCar = (email === car.Email);
                 let needsConfirm = car.Confirm ? "(requires approval)" : "";
                 return (
-                    <Radio checked={isChosenCar} onChange={this.onClick} value={car.Email}>
+                    <Radio checked={isChosenCar} onChange={this.onClickCarRadio} value={car.Email}>
                         {car.Description} {needsConfirm}
                     </Radio>
                 )
@@ -162,7 +167,7 @@ export class AvailableCars extends React.Component<AvailableCarsProps, {}> {
                     <Button
                         appearance="ghost"
                         size="sm"
-                        onClick={this.handleSubmit}
+                        onClick={this.onReserveCar}
                         disabled={chosenCar == null}
                         loading={booker.state.isProcessing}
                     >
@@ -185,11 +190,6 @@ interface BookingStatusProps {
 export class BookingStatus extends React.Component<BookingStatusProps, {}> {
     constructor(props) {
         super(props);
-        this.close = this.close.bind(this);
-    }
-
-    close() {
-        this.props.booker.resetPicker();
     }
 
     render() {
@@ -206,7 +206,7 @@ export class BookingStatus extends React.Component<BookingStatusProps, {}> {
         }
         return (
             <div className="modal-container">
-                <Modal show={message !== ""} onHide={this.close}>
+                <Modal show={message !== ""} onHide={() => {this.props.booker.resetPicker();}}>
                     <Modal.Header>
                         <Modal.Title>Booking request sent!</Modal.Title>
                     </Modal.Header>
@@ -214,7 +214,7 @@ export class BookingStatus extends React.Component<BookingStatusProps, {}> {
                         <p>{message}</p>
                     </Modal.Body>
                     <Modal.Footer>
-                        <Button onClick={this.close} appearance="primary">
+                        <Button onClick={() => {this.props.booker.resetPicker();}} appearance="primary">
                             Ok
                         </Button>
                     </Modal.Footer>

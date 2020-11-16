@@ -81,7 +81,7 @@ export class CarshareBooker extends React.Component<CarshareBookerProps, Carshar
         this.sendReminderForRequest = this.sendReminderForRequest.bind(this);
     }
 
-    updateTimes(startTime: string, endTime: string) {
+    updateTimes(startTime: string, endTime: string) :[string, string]{
         let start = moment().add(1, 'hour').startOf('hour');
         let end = start.clone().add(1, 'hour');
         let currentRequest = makeEmptyRequest(this.props.user);
@@ -89,10 +89,6 @@ export class CarshareBooker extends React.Component<CarshareBookerProps, Carshar
             console.log(`reset to ${start.format()} and ${end.format()}`);
             currentRequest.start = start.format();
             currentRequest.end = end.format();
-            this.setState({
-                pendingRequest: currentRequest
-            });
-            return;
         } else if (endTime !== "") {
             end = moment(endTime);
             // set start to at least an hour before
@@ -109,6 +105,7 @@ export class CarshareBooker extends React.Component<CarshareBookerProps, Carshar
         this.setState({
             pendingRequest: currentRequest
         });
+        return [start.format(), end.format()];
     }
 
     resetPicker() {
