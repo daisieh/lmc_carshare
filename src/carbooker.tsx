@@ -188,10 +188,6 @@ interface BookingStatusProps {
 }
 
 export class BookingStatus extends React.Component<BookingStatusProps, {}> {
-    constructor(props) {
-        super(props);
-    }
-
     render() {
         let message = "";
         let booker = this.props.booker;
