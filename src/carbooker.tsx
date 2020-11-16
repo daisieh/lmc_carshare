@@ -63,10 +63,9 @@ export class SearchAvailabilityForm extends React.Component<SearchAvailabilityPr
             inThePast = "WARNING! The selected time slot is in the past.";
         }
         let feat_array:{label: string, value: string}[] = booker.state.allFeatures.map(x => { return {"value": x, "label": x}; });
-
+        console.log(booker.state.allFeatures);
         return (
             <div className="search-form">
-                <p>{this.props.booker.state.pendingRequest.start} {this.props.booker.state.pendingRequest.end}</p>
                 <p className={disabled?"caption-disabled":"caption"}>Select the date and time you'd like to book.</p>
                 <div className="date-select">
                     <DatePicker

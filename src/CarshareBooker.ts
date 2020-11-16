@@ -79,6 +79,11 @@ export class CarshareBooker extends React.Component<CarshareBookerProps, Carshar
         this.resetPicker = this.resetPicker.bind(this);
         this.deleteRequests = this.deleteRequests.bind(this);
         this.sendReminderForRequest = this.sendReminderForRequest.bind(this);
+
+        // set the initial values for state:
+        this.updateFeatures();
+        this.updateAllCars();
+        this.updateRequests();
     }
 
     updateTimes(startTime: string, endTime: string) :[string, string]{
@@ -177,7 +182,8 @@ export class CarshareBooker extends React.Component<CarshareBookerProps, Carshar
         this.setState({
             isProcessing: false,
             errorMessage: response.error,
-            bookedRequest: response.response
+            bookedRequest: response.response,
+            pendingRequest: makeEmptyRequest(this.props.user)
         });
         this.resetPicker();
     }
@@ -198,18 +204,23 @@ export class CarshareBooker extends React.Component<CarshareBookerProps, Carshar
         this.setState({
             isProcessing: false,
             errorMessage: response.error,
-            requests: response.response
+            cars: response.response
         });
     }
 
-    updateFeatures() {
+    async updateFeatures() {
         this.setState({isProcessing: true});
-        let response = Transposit.listFeatures();
-        this.setState({
-            isProcessing: false,
-            errorMessage: response.error,
-            requests: response.response
-        });
+        await Transposit.listFeatures().then(
+            response => {
+                console.log("updateFeatures");
+                console.log(response);
+                this.setState({
+                    isProcessing: false,
+                    errorMessage: response.error,
+                    allFeatures: response.response
+                });
+            }
+        );
     }
 
     getThreeDays() :CarEvents {

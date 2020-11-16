@@ -104,19 +104,28 @@ export function createBooking(pendingRequest: CarRequest) :TranspositResponse {
     return response;
 }
 
-export function listFeatures() :TranspositResponse {
+export async function listFeatures() {
     let response = {
         error: "",
         response: [] as string[]
     };
-    transposit
+    let foo = "hi";
+    await transposit
         .run("list_features", {})
         .then(x => {
+            console.log("features listed");
             response.response = x.results as string[];
+            return {error: "", response: x.results};
         })
         .catch(x => {
+            console.log("features error");
             response.error = x.toString();
+            console.log(response);
+            console.log(foo);
+            return {error: "", response: x.results};
         });
+    console.log("done");
+    console.log(response);
     return response;
 }
 
