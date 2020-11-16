@@ -83,7 +83,6 @@ export class Navigation extends React.Component<NavigationProps, NavigationState
         let navitems = Object.keys(Pages).map(x => {
             return <Nav.Item href={x} active={this.state.mode === x}>{Pages[x]}</Nav.Item>
         });
-        console.log(navitems);
 
         return (
             <>

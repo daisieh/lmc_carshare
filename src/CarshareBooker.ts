@@ -82,30 +82,46 @@ export class CarshareBooker extends React.Component<CarshareBookerProps, Carshar
     }
 
     updateTimes(startTime: string, endTime: string) :[string, string]{
-        let start = moment().add(1, 'hour').startOf('hour');
-        let end = start.clone().add(1, 'hour');
         let currentRequest = makeEmptyRequest(this.props.user);
+        let newStart = moment(this.state.pendingRequest.start);
+        let newEnd = moment(this.state.pendingRequest.end);
+
+        // if both start and end are blank, we're resetting both
         if (startTime === "" && endTime === "") {
-            console.log(`reset to ${start.format()} and ${end.format()}`);
-            currentRequest.start = start.format();
-            currentRequest.end = end.format();
-        } else if (endTime !== "") {
-            end = moment(endTime);
-            // set start to at least an hour before
-            if (start.add(1, "hour").isAfter(end)) {
-                currentRequest.start = end.clone().subtract(1, "hour").format();
+            newStart = moment().add(1, 'hour').startOf('hour');
+            newEnd = moment().add(2, 'hour').startOf('hour');
+        }
+        console.log(`was ${newStart.format()} ${newEnd.format()}`);
+        console.log(`asking for ${startTime} ${endTime}`);
+
+        if (endTime !== "") {
+            // we're setting the endTime,
+            // so if the existing start is less than an hour before,
+            // set the start to an hour before the end
+            console.log(`comparing new end ${endTime} to ${newStart.format()}`);
+            newEnd = moment(endTime);
+            if (newStart.add(1, "hour").isAfter(newEnd)) {
+                newStart = newEnd.clone().subtract(1, "hour");
+                console.log(`...too soon, so set start to ${newStart}`);
             }
         } else if (startTime !== "") {
-            start = moment(startTime);
-            // set end to at least an hour after
-            if (end.subtract(1, "hour").isBefore(start)) {
-                currentRequest.end = start.clone().add(1, "hour").format();
+            // we're setting the startTime,
+            // so if the existing end is less than an hour after,
+            // set the end to an hour after the end
+            console.log(`comparing new start ${startTime} to ${newEnd.format()}`);
+            newStart = moment(startTime);
+            if (newEnd.subtract(1, "hour").isBefore(newStart)) {
+                newEnd = newStart.clone().add(1, "hour");
+                console.log(`...too soon, so set end to ${newEnd}`);
             }
         }
+        currentRequest.start = newStart.format();
+        currentRequest.end = newEnd.format();
         this.setState({
             pendingRequest: currentRequest
         });
-        return [start.format(), end.format()];
+        console.log(`now ${currentRequest.start} ${currentRequest.end}`);
+        return [currentRequest.start, currentRequest.end];
     }
 
     resetPicker() {
@@ -209,8 +225,8 @@ export class CarshareBooker extends React.Component<CarshareBookerProps, Carshar
 
 export function makeEmptyRequest(user: User) :CarRequest {
     return {
-        start: moment().format(),
-        end: moment().add(1, "hour").format(),
+        start: moment().add(1, "hour").startOf("hour").format(),
+        end: moment().add(2, "hour").startOf("hour").format(),
         threadId: null,
         eventId: null,
         vehicle: "",

@@ -8,11 +8,17 @@ interface SearchAvailabilityProps {
 }
 
 interface SearchAvailabilityState {
+    startDate: Date;
+    endDate: Date;
 }
 
 export class SearchAvailabilityForm extends React.Component<SearchAvailabilityProps, SearchAvailabilityState> {
     constructor(props) {
         super(props);
+        this.state = {
+            startDate: new Date(this.props.booker.state.pendingRequest.start),
+            endDate: new Date(this.props.booker.state.pendingRequest.end)
+        }
         this.handleStartChange = this.handleStartChange.bind(this);
         this.handleEndChange = this.handleEndChange.bind(this);
         this.onLookForCars = this.onLookForCars.bind(this);
@@ -22,27 +28,24 @@ export class SearchAvailabilityForm extends React.Component<SearchAvailabilityPr
     handleStartChange(event) {
         let updated;
         if (event) {
-            updated = this.props.booker.updateTimes(moment(event.toString()).format(), "");
+            updated = this.props.booker.updateTimes(event.toString(), "");
         } else {
             updated = this.props.booker.updateTimes("", "");
         }
-        console.log(this.props.booker.state.pendingRequest.start);
-        console.log(updated);
+        this.setState({startDate: new Date(updated[0]), endDate: new Date(updated[1])});
     }
 
     handleEndChange(event) {
         let updated;
         if (event) {
-            updated = this.props.booker.updateTimes("", moment(event.toString()).format());
+            updated = this.props.booker.updateTimes("", event.toString());
         } else {
             updated = this.props.booker.updateTimes("", "");
         }
-        console.log(this.props.booker.state.pendingRequest.end);
-        console.log(updated);
+        this.setState({startDate: new Date(updated[0]), endDate: new Date(updated[1])});
     }
 
     onLookForCars() {
-        this.setState({errorMessage: ""});
         this.props.booker.getAvailableCars();
     }
 
@@ -71,7 +74,7 @@ export class SearchAvailabilityForm extends React.Component<SearchAvailabilityPr
                         size="sm"
                         format="YYYY-MM-DD HH:mm"
                         onChange={this.handleStartChange}
-                        value={new Date(booker.state.pendingRequest.start)}
+                        value={this.state.startDate}
                         disabled={disabled}
                     />
                     <DatePicker
@@ -79,7 +82,7 @@ export class SearchAvailabilityForm extends React.Component<SearchAvailabilityPr
                         size="sm"
                         format="YYYY-MM-DD HH:mm"
                         onChange={this.handleEndChange}
-                        value={new Date(booker.state.pendingRequest.end)}
+                        value={this.state.endDate}
                         disabled={disabled}
                     />
                 </div>
