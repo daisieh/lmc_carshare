@@ -1,9 +1,9 @@
 import * as React from "react";
 import {render} from "react-dom";
-import {BrowserRouter as Router, Route} from "react-router-dom";
+import {BrowserRouter as Router, Redirect, Route, Switch} from "react-router-dom";
 import {Button} from 'rsuite';
 import "./styles.css";
-import {MODE, Navigation} from "./Navigation";
+import {Navigation, Pages} from "./Navigation";
 import {signIn, SignInHandleRedirect, useIsValidMember, useSignedIn, useUser} from "./transpositFunctions";
 
 /**
@@ -41,36 +41,25 @@ function Index(props) {
     }
     // If signed-in, display the app
     console.log(props.match.path);
-    let mode = MODE.BOOKING;
-    if (props.match.path === "/requests") {
-        mode = MODE.REQUESTS;
-    } else if (props.match.path === "/my_car") {
-        mode = MODE.MYCAR;
-    } else if (props.match.path === "/cars") {
-        mode = MODE.CARS;
-    } else if (props.match.path === "/calendar") {
-        mode = MODE.CALENDAR;
-    }
     return (
-            <Navigation mode={mode} user={user} isValid={isValid}/>
+            <Navigation mode={props.match.path} user={user} isValid={isValid}/>
     );
 }
 
 function App() {
+    let routes = Object.keys(Pages).map(x => {return (<Route path={x} exact component={Index}/>)});
     return (
         <Router>
-            <Route path="/signin" exact component={SignIn}/>
-            <Route
-                path="/signin/handle-redirect"
-                exact
-                component={SignInHandleRedirect}
-            />
-            <Route path="/" exact component={Index}/>
-            <Route path="/bookings" exact component={Index}/>
-            <Route path="/requests" exact component={Index}/>
-            <Route path="/calendar" exact component={Index}/>
-            <Route path="/my_car" exact component={Index}/>
-            <Route path="/cars" exact component={Index}/>
+            <Switch>
+                <Route path="/signin" exact component={SignIn}/>
+                <Route
+                    path="/signin/handle-redirect"
+                    exact
+                    component={SignInHandleRedirect}
+                />
+                {routes}
+                <Redirect exact to="/bookings" from="/"/>
+            </Switch>
         </Router>
     );
 }

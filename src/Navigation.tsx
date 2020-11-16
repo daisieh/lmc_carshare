@@ -6,44 +6,40 @@ import {RequestList} from "./requests";
 import {CarCalendar} from "./carCalendar";
 import {SignOut} from "./transpositFunctions";
 
-export enum MODE {
-    "BOOKING",
-    "REQUESTS",
-    "MYCAR",
-    "CALENDAR",
-    "CARS"
+export const Pages = {
+    "/bookings": "Book Car",
+    "/requests": "Requests",
+    "/my_car": "My Car",
+    "/cars": "Available Cars",
+    "/calendar": "Calendar"
 }
 
 interface NavigationProps {
     user: User;
     isValid: number;
-    mode: MODE;
+    mode: string;
 }
 
 interface NavigationState {
-    mode: MODE;
+    mode: string;
     booker: CarshareBooker;
 }
 
 export class Navigation extends React.Component<NavigationProps, NavigationState> {
     constructor(props) {
         super(props);
-        this.selectTab = this.selectTab.bind(this);
         this.state = {
             mode: this.props.mode,
             booker: new CarshareBooker({user: this.props.user})
         };
     };
 
-    selectTab(eventKey) {
-        this.setState({mode: eventKey});
-    }
-
     render() {
         let main =
             <main className="container main">
                 <Loader size="lg" center content="Loading" vertical/>
             </main>
+        console.log(`mode is ${this.state.mode}`);
         if (this.props.user) {
             if (this.props.isValid === -1) {
                 main = <main className="container main">
@@ -54,29 +50,29 @@ export class Navigation extends React.Component<NavigationProps, NavigationState
                     </div>
                 </main>
             } else if (this.props.isValid === 1) {
-                if (this.state.mode === MODE.BOOKING) {
+                if (this.state.mode === "/bookings") {
                     main =
                         <main className="container main">
                             <SearchAvailabilityForm booker={this.state.booker}/>
                             <AvailableCars booker={this.state.booker}/>
                             <BookingStatus booker={this.state.booker}/>
                         </main>
-                } else if (this.state.mode === MODE.REQUESTS) {
+                } else if (this.state.mode === "/requests") {
                     main =
                         <main className="container main">
                             <RequestList booker={this.state.booker}/>
                         </main>
-                } else if (this.state.mode === MODE.MYCAR) {
+                } else if (this.state.mode === "/my_car") {
                     main =
                         <main className="container main">
                             car
                         </main>
-                } else if (this.state.mode === MODE.CALENDAR) {
+                } else if (this.state.mode === "/calendar") {
                     main =
                         <main className="container main">
                             <CarCalendar booker={this.state.booker}/>
                         </main>
-                } else if (this.state.mode === MODE.CARS) {
+                } else if (this.state.mode === "/cars") {
                     main =
                         <main className="container main">
                             cars
@@ -84,6 +80,10 @@ export class Navigation extends React.Component<NavigationProps, NavigationState
                 }
             }
         }
+        let navitems = Object.keys(Pages).map(x => {
+            return <Nav.Item href={x} active={this.state.mode === x}>{Pages[x]}</Nav.Item>
+        });
+        console.log(navitems);
 
         return (
             <>
@@ -92,12 +92,8 @@ export class Navigation extends React.Component<NavigationProps, NavigationState
                         Welcome, {this.props.user.name}
                     </Navbar.Header>
                     <Navbar.Body>
-                        <Nav appearance="tabs" onSelect={this.selectTab}>
-                            <Nav.Item eventKey={MODE.BOOKING} active={this.state.mode === MODE.BOOKING}>Book Car</Nav.Item>
-                            <Nav.Item eventKey={MODE.REQUESTS} active={this.state.mode === MODE.REQUESTS}>Requests</Nav.Item>
-                            <Nav.Item eventKey={MODE.MYCAR} active={this.state.mode === MODE.MYCAR}>My Car</Nav.Item>
-                            <Nav.Item eventKey={MODE.CALENDAR} active={this.state.mode === MODE.CALENDAR}>Calendar</Nav.Item>
-                            <Nav.Item eventKey={MODE.CARS} active={this.state.mode === MODE.CARS}>Cars</Nav.Item>
+                        <Nav appearance="tabs">
+                            {navitems}
                         </Nav>
                         <Nav pullRight>
                             <Nav.Item onClick={SignOut}>Sign Out</Nav.Item>
