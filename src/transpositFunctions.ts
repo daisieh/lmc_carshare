@@ -3,7 +3,7 @@ import {Transposit, User} from "transposit";
 import {Car, CarEvents, CarRequest} from "./CarshareBooker";
 import * as React from "react";
 
-const transposit = new Transposit(
+export const transposit = new Transposit(
     "https://lmc-carshare-89gbj.transposit.io"
 );
 
@@ -109,25 +109,39 @@ export async function listFeatures() {
         error: "",
         response: [] as string[]
     };
-    let foo = "hi";
     await transposit
         .run("list_features", {})
         .then(x => {
             console.log("features listed");
             response.response = x.results as string[];
-            return {error: "", response: x.results};
         })
         .catch(x => {
             console.log("features error");
             response.error = x.toString();
-            console.log(response);
-            console.log(foo);
-            return {error: "", response: x.results};
         });
     console.log("done");
     console.log(response);
     return response;
 }
+
+export function useListFeatures(user: User | null): string[] {
+    const [features, setFeatures] = React.useState<string[]>([]);
+    React.useEffect(() => {
+        transposit
+            .run("list_features", {})
+            .then(x => {
+                if (x.results) {
+                    console.log(`list features gave us back ${x.results.toString()}`);
+                    setFeatures(x.results as string[]);
+                }
+            })
+            .catch(response => {
+                console.log(response.toString());
+            });
+    }, [user]);
+    return features;
+}
+
 
 export function listAllCars() :TranspositResponse {
     let response = {
