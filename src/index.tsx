@@ -5,6 +5,8 @@ import {Button} from 'rsuite';
 import "./styles.css";
 import {Navigation, Pages} from "./Navigation";
 import {signIn, SignInHandleRedirect, useIsValidMember, useSignedIn, useUser} from "./transpositFunctions";
+import store from './redux/store';
+import {Provider} from 'react-redux';
 
 /**
  * Sign-in page
@@ -65,5 +67,5 @@ function App() {
 }
 
 const rootElement = document.getElementById("root");
-render(<App/>, rootElement);
+render(<Provider store={store}><App/></Provider>, rootElement);
 
