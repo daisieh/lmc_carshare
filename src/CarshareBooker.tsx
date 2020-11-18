@@ -200,7 +200,7 @@ export class CarshareBooker extends React.Component<CarshareBookerProps, Carshar
     }
 }
 
-function makeEmptyRequest(user: User) :CarRequest {
+export function makeEmptyRequest(user: User) :CarRequest {
     return {
         start: moment().add(1, "hour").startOf("hour").format(),
         end: moment().add(2, "hour").startOf("hour").format(),

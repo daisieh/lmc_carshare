@@ -1,7 +1,7 @@
 import {CarshareBooker} from "./CarshareBooker"
 import * as React from "react";
 import {Loader, Nav, Navbar} from "rsuite";
-import {AvailableCars, BookingStatus, SearchAvailabilityForm} from "./carbooker";
+import SearchAvailabilityForm from "./SearchAvailabilityForm";
 import {RequestList} from "./RequestList";
 import {CarCalendar} from "./carCalendar";
 import {SignOut} from "./fakeTranspositFunctions";
@@ -57,30 +57,30 @@ export class Navigation extends React.Component<NavigationProps, NavigationState
                 if (this.state.mode === "/bookings") {
                     main =
                         <main className="container main">
-                            <SearchAvailabilityForm booker={this.state.booker}/>
-                            <AvailableCars booker={this.state.booker}/>
-                            <BookingStatus booker={this.state.booker}/>
+                            <SearchAvailabilityForm user={this.props.user}/>
+                            {/*<AvailableCars booker={this.state.booker}/>*/}
+                            {/*<BookingStatus booker={this.state.booker}/>*/}
                         </main>
-                } else if (this.state.mode === "/requests") {
-                    main =
-                        <main className="container main">
-                            <RequestList booker={this.state.booker}/>
-                        </main>
-                } else if (this.state.mode === "/my_car") {
-                    main =
-                        <main className="container main">
-                            car
-                        </main>
-                } else if (this.state.mode === "/calendar") {
-                    main =
-                        <main className="container main">
-                            <CarCalendar booker={this.state.booker}/>
-                        </main>
-                } else if (this.state.mode === "/cars") {
-                    main =
-                        <main className="container main">
-                            cars
-                        </main>
+                // } else if (this.state.mode === "/requests") {
+                //     main =
+                //         <main className="container main">
+                //             <RequestList booker={this.state.booker}/>
+                //         </main>
+                // } else if (this.state.mode === "/my_car") {
+                //     main =
+                //         <main className="container main">
+                //             car
+                //         </main>
+                // } else if (this.state.mode === "/calendar") {
+                //     main =
+                //         <main className="container main">
+                //             <CarCalendar booker={this.state.booker}/>
+                //         </main>
+                // } else if (this.state.mode === "/cars") {
+                //     main =
+                //         <main className="container main">
+                //             cars
+                //         </main>
                 }
             }
         }
