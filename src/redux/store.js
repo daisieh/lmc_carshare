@@ -1,6 +1,10 @@
-import { createStore } from 'redux'
-import rootReducer from './reducers/reducer'
+import {configureStore} from "@reduxjs/toolkit";
+import {featureSlice} from "./reducers/featureSlice";
 
-const store = createStore(rootReducer)
+const store = configureStore({
+    reducer: {
+        allFeatures: featureSlice.reducer
+    }
+});
 
 export default store

@@ -4,9 +4,10 @@ import {BrowserRouter as Router, Redirect, Route, Switch} from "react-router-dom
 import {Button} from 'rsuite';
 import "./styles.css";
 import {Navigation, Pages} from "./Navigation";
-import {signIn, SignInHandleRedirect, useIsValidMember, useSignedIn, useUser} from "./transpositFunctions";
+import {signIn, SignInHandleRedirect, useIsValidMember, useSignedIn, useUser} from "./fakeTranspositFunctions";
 import store from './redux/store';
-import {Provider} from 'react-redux';
+import {CarshareBooker} from "./CarshareBooker";
+import { Provider, useSelector } from 'react-redux'
 
 /**
  * Sign-in page
@@ -36,6 +37,7 @@ function Index(props) {
     const isSignedIn = useSignedIn();
     const user = useUser(isSignedIn);
     const isValid = useIsValidMember(user);
+    console.log(`hi hi ${useSelector(state => state.allFeatures.features)}`);
 
     // If not signed-in, wait while rendering nothing
     if (!isSignedIn || !user) {
@@ -44,12 +46,12 @@ function Index(props) {
     // If signed-in, display the app
     console.log(props.match.path);
     return (
-            <Navigation mode={props.match.path} user={user} isValid={isValid}/>
+        <Navigation mode={props.match.path} user={user} isValid={isValid}/>
     );
 }
 
 function App() {
-    let routes = Object.keys(Pages).map(x => {return (<Route path={x} exact component={Index}/>)});
+    let routes = Object.keys(Pages).map(x => {return (<Route key={x} path={x} exact component={Index}/>)});
     return (
         <Router>
             <Switch>
@@ -68,4 +70,3 @@ function App() {
 
 const rootElement = document.getElementById("root");
 render(<Provider store={store}><App/></Provider>, rootElement);
-

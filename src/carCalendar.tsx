@@ -1,6 +1,7 @@
 import * as React from "react";
-import {CarEvents, CarshareBooker} from "./CarshareBooker";
+import {CarshareBooker} from "./CarshareBooker";
 import {Loader} from "rsuite";
+import {CarEvents} from "./types";
 
 interface CarCalendarProps {
     booker: CarshareBooker;

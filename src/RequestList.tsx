@@ -1,6 +1,7 @@
 import * as React from "react";
 import {Button, Checkbox, Table} from "rsuite";
-import {CarRequest, CarshareBooker} from "./CarshareBooker";
+import {CarshareBooker} from "./CarshareBooker";
+import {CarRequest} from "./types";
 const { Column, HeaderCell, Cell } = Table;
 
 interface RequestListProps {

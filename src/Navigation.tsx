@@ -1,10 +1,14 @@
-import {CarshareBooker, User} from "./CarshareBooker";
+import {CarshareBooker} from "./CarshareBooker"
 import * as React from "react";
 import {Loader, Nav, Navbar} from "rsuite";
 import {AvailableCars, BookingStatus, SearchAvailabilityForm} from "./carbooker";
 import {RequestList} from "./RequestList";
 import {CarCalendar} from "./carCalendar";
-import {SignOut} from "./transpositFunctions";
+import {SignOut} from "./fakeTranspositFunctions";
+import {Provider} from 'react-redux';
+import store from "./redux/store";
+import {User} from "./types";
+import TestReduxClass from "./TestReduxClass";
 
 export const Pages = {
     "/bookings": "Book Car",
@@ -81,7 +85,7 @@ export class Navigation extends React.Component<NavigationProps, NavigationState
             }
         }
         let navitems = Object.keys(Pages).map(x => {
-            return <Nav.Item href={x} active={this.state.mode === x}>{Pages[x]}</Nav.Item>
+            return <Nav.Item key={x} href={x} active={this.state.mode === x}>{Pages[x]}</Nav.Item>
         });
 
         return (
@@ -99,6 +103,7 @@ export class Navigation extends React.Component<NavigationProps, NavigationState
                         </Nav>
                     </Navbar.Body>
                 </Navbar>
+                <Provider store={store}><TestReduxClass/></Provider>
                 {main}
             </>
         );

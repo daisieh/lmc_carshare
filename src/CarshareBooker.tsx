@@ -1,46 +1,12 @@
 import * as React from "react";
 import moment from "moment";
-import * as Transposit from "./transpositFunctions";
-
-export interface User {
-    "name": string;
-    "email": string;
-}
-
-export interface Car {
-    "Timestamp": string;
-    "Make": string;
-    "Model": string;
-    "Color": string;
-    "Features": string[];
-    "Email": string;
-    "Licence": string;
-    "AlwaysAvailable": boolean;
-    "Confirm": boolean;
-    "Description": string;
-}
-
-export interface CarRequest {
-    "threadId": string | null;
-    "vehicle": string;
-    "requester": string;
-    "start": string;
-    "end": string;
-    "eventId": string | null;
-    "confirmed": string | null;
-    "features": string[];
-}
-
-export interface CarEvents {
-    start: string;
-    end: string;
-    cars: string[];
-    interval: number;
-    busy_segments: string[];
-}
+import * as Transposit from "./fakeTranspositFunctions";
+import {connect} from "react-redux";
+import {Car, CarRequest, CarEvents, User} from "./types";
 
 interface CarshareBookerProps {
     user: { name: string; email: string; };
+    features: string[];
 }
 
 interface CarshareBookerState {
@@ -79,11 +45,11 @@ export class CarshareBooker extends React.Component<CarshareBookerProps, Carshar
         this.resetPicker = this.resetPicker.bind(this);
         this.deleteRequests = this.deleteRequests.bind(this);
         this.sendReminderForRequest = this.sendReminderForRequest.bind(this);
-
         // set the initial values for state:
-        this.updateFeatures();
-        this.updateAllCars();
-        this.updateRequests();
+    }
+
+    render() {
+        return (<div/>);
     }
 
     updateTimes(startTime: string, endTime: string) :[string, string]{
@@ -217,7 +183,7 @@ export class CarshareBooker extends React.Component<CarshareBookerProps, Carshar
                 this.setState({
                     isProcessing: false,
                     errorMessage: response.error,
-                    allFeatures: response.response
+                    // allFeatures: response.response
                 });
             }
         );
@@ -234,7 +200,7 @@ export class CarshareBooker extends React.Component<CarshareBookerProps, Carshar
     }
 }
 
-export function makeEmptyRequest(user: User) :CarRequest {
+function makeEmptyRequest(user: User) :CarRequest {
     return {
         start: moment().add(1, "hour").startOf("hour").format(),
         end: moment().add(2, "hour").startOf("hour").format(),
@@ -246,3 +212,8 @@ export function makeEmptyRequest(user: User) :CarRequest {
         features: [] as string[]
     }
 }
+
+const mapStateToProps = (state) => {
+    return {features: state.allFeatures.features};
+}
+export default connect(mapStateToProps)(CarshareBooker)
