@@ -36,7 +36,3 @@ export interface CarEvents {
     interval: number;
     busy_segments: string[];
 }
-
-export type State = {
-    reducer: ReturnType<typeof featureSlice.reducer>;
-}

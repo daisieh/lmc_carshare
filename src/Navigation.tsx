@@ -2,13 +2,10 @@ import {CarshareBooker} from "./CarshareBooker"
 import * as React from "react";
 import {Loader, Nav, Navbar} from "rsuite";
 import SearchAvailabilityForm from "./SearchAvailabilityForm";
-import {RequestList} from "./RequestList";
+import RequestList from "./RequestList";
 import {CarCalendar} from "./carCalendar";
 import {SignOut} from "./fakeTranspositFunctions";
-import {Provider} from 'react-redux';
-import store from "./redux/store";
 import {User} from "./types";
-import TestReduxClass from "./TestReduxClass";
 
 export const Pages = {
     "/bookings": "Book Car",
@@ -61,11 +58,11 @@ export class Navigation extends React.Component<NavigationProps, NavigationState
                             {/*<AvailableCars booker={this.state.booker}/>*/}
                             {/*<BookingStatus booker={this.state.booker}/>*/}
                         </main>
-                // } else if (this.state.mode === "/requests") {
-                //     main =
-                //         <main className="container main">
-                //             <RequestList booker={this.state.booker}/>
-                //         </main>
+                } else if (this.state.mode === "/requests") {
+                    main =
+                        <main className="container main">
+                            <RequestList/>
+                        </main>
                 // } else if (this.state.mode === "/my_car") {
                 //     main =
                 //         <main className="container main">
@@ -103,7 +100,6 @@ export class Navigation extends React.Component<NavigationProps, NavigationState
                         </Nav>
                     </Navbar.Body>
                 </Navbar>
-                <Provider store={store}><TestReduxClass/></Provider>
                 {main}
             </>
         );

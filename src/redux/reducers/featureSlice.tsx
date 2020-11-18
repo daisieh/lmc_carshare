@@ -1,4 +1,4 @@
-import { createSlice } from '@reduxjs/toolkit'
+import {createSlice, PayloadAction} from '@reduxjs/toolkit'
 
 export const featureSlice = createSlice({
     name: 'features',
@@ -12,13 +12,13 @@ export const featureSlice = createSlice({
         ]
     },
     reducers: {
-        add: (state, action) => {
-            state.value.push(action.payload);
+        add: (state, action :PayloadAction<string>) => {
+            state.features.push(action.payload);
         },
-        remove: (state, action) => {
-            let index = state.value.indexOf(action.payload);
+        remove: (state, action :PayloadAction<string>) => {
+            let index = state.features.indexOf(action.payload);
             if (index >= 0) {
-                state.value.splice(index, 1);
+                state.features.splice(index, 1);
             }
         }
     }

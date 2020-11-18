@@ -1,11 +1,17 @@
 import * as React from "react";
 import {Button, Checkbox, Table} from "rsuite";
 import {CarshareBooker} from "./CarshareBooker";
-import {CarRequest} from "./types";
+import {Car, CarRequest} from "./types";
+import {connect} from "react-redux";
+import {Dispatch} from "redux";
+import {requestSlice} from "./redux/reducers/requestSlice";
+
 const { Column, HeaderCell, Cell } = Table;
 
 interface RequestListProps {
-    booker: CarshareBooker;
+    requests: CarRequest[],
+    cars: Car[],
+    dispatch: Dispatch
 }
 
 interface RequestListState {
@@ -43,24 +49,23 @@ export class RequestList extends React.Component<RequestListProps, RequestListSt
 
     async handleDelete() {
         console.log(`deleting ${this.state.requestsToDelete.toString()}`);
-        await this.props.booker.deleteRequests(this.state.requestsToDelete);
+        this.props.dispatch({type: "requests/remove", payload: this.state.requestsToDelete.toString()});
     }
 
     async handleReminder() {
         if (this.state.activeRow && this.state.activeRow.eventId && (this.state.activeRow.confirmed === "FALSE")) {
             console.log(this.state.activeRow);
-            await this.props.booker.sendReminderForRequest(this.state.activeRow.eventId);
+            //await this.props.booker.sendReminderForRequest(this.state.activeRow.eventId);
         }
     }
 
     render() {
-        let requests = this.props.booker.state.requests.map(
+        let licenceMap = this.props.cars.map(x => {return x.Licence;});
+        let cars = this.props.cars;
+        let requests = this.props.requests.map(
             x => {
-                let car = this.props.booker.getChosenCar();
-                let desc = "";
-                if (car) {
-                    desc = car.Description;
-                }
+                let index = licenceMap.indexOf(x.vehicle);
+                let desc = cars[index].Description;
                 return {
                     eventId: x.eventId,
                     description: desc,
@@ -69,8 +74,8 @@ export class RequestList extends React.Component<RequestListProps, RequestListSt
                     confirmed: x.confirmed
                 }
             });
-        let errorMessage = this.props.booker.state.errorMessage;
-        let loading = this.props.booker.state.isProcessing;
+        let errorMessage = "";//this.props.booker.state.errorMessage;
+        let loading = false;//this.props.booker.state.isProcessing;
         return (
             <div className="requests">
                 <div className="error">{errorMessage}</div>
@@ -139,3 +144,8 @@ export class RequestList extends React.Component<RequestListProps, RequestListSt
     };
 }
 
+const mapStateToProps = (state) => {
+    return {requests: state.requests, cars: state.cars};
+}
+
+export default connect(mapStateToProps)(RequestList)

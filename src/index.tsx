@@ -37,7 +37,6 @@ function Index(props) {
     const isSignedIn = useSignedIn();
     const user = useUser(isSignedIn);
     const isValid = useIsValidMember(user);
-    console.log(`hi hi ${useSelector(state => state.allFeatures.features)}`);
 
     // If not signed-in, wait while rendering nothing
     if (!isSignedIn || !user) {
