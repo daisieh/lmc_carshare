@@ -3,6 +3,7 @@ import {Button, Checkbox, Table} from "rsuite";
 import {Car, CarRequest} from "./types";
 import {connect} from "react-redux";
 import {Dispatch} from "redux";
+import {requestSlice} from "./redux/reducers/requestSlice";
 
 const { Column, HeaderCell, Cell } = Table;
 
@@ -48,7 +49,9 @@ export class RequestList extends React.Component<RequestListProps, RequestListSt
 
     handleDelete() {
         console.log(`deleting ${this.state.requestsToDelete.toString()}`);
-        this.props.dispatch({type: "requests/remove", payload: this.state.requestsToDelete.toString()});
+        this.state.requestsToDelete.forEach(x => {
+            this.props.dispatch(requestSlice.actions.remove(x));
+        });
     }
 
     async handleReminder() {
