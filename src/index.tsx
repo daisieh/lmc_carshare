@@ -32,8 +32,6 @@ function SignIn() {
 /**
  * Sign-in protected index page
  */
-type RootState = ReturnType<typeof store.getState>;
-
 function Index(props) {
     // Check if signed-in
     const isSignedIn = useSignedIn();
@@ -46,12 +44,22 @@ function Index(props) {
         return null;
     }
 
+    if (isValid === -1) {
+        return (<main className="container main">
+            <div>
+                {user.name}, your address {user.email} is
+                not registered as a carshare member.
+                Please contact the LMC Carshare team to register your account.
+            </div>
+        </main>);
+    }
+
     // load data store
     dispatch(loadRequests());
     // If signed-in, display the app
     console.log(props.match.path);
     return (
-        <Navigation mode={props.match.path} user={user} isValid={isValid}/>
+        <Navigation mode={props.match.path} user={user}/>
     );
 }
 

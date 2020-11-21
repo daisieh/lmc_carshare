@@ -3,7 +3,6 @@ import * as React from "react";
 import {Loader, Nav, Navbar} from "rsuite";
 import SearchAvailabilityForm from "./SearchAvailabilityForm";
 import RequestList from "./RequestList";
-import {CarCalendar} from "./carCalendar";
 import {SignOut} from "./fakeTranspositFunctions";
 import {User} from "./types";
 
@@ -17,7 +16,6 @@ export const Pages = {
 
 interface NavigationProps {
     user: User;
-    isValid: number;
     mode: string;
 }
 
@@ -42,15 +40,6 @@ export class Navigation extends React.Component<NavigationProps, NavigationState
             </main>
         console.log(`mode is ${this.state.mode}`);
         if (this.props.user) {
-            if (this.props.isValid === -1) {
-                main = <main className="container main">
-                    <div>
-                        {this.props.user.name}, your address {this.props.user.email} is
-                        not registered as a carshare member.
-                        Please contact the LMC Carshare team to register your account.
-                    </div>
-                </main>
-            } else if (this.props.isValid === 1) {
                 if (this.state.mode === "/bookings") {
                     main =
                         <main className="container main">
@@ -79,7 +68,6 @@ export class Navigation extends React.Component<NavigationProps, NavigationState
                 //             cars
                 //         </main>
                 }
-            }
         }
         let navitems = Object.keys(Pages).map(x => {
             return <Nav.Item key={x} href={x} active={this.state.mode === x}>{Pages[x]}</Nav.Item>
