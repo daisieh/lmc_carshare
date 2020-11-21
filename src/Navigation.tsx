@@ -4,15 +4,8 @@ import {Loader, Nav, Navbar} from "rsuite";
 import SearchAvailabilityForm from "./SearchAvailabilityForm";
 import RequestList from "./RequestList";
 import {SignOut} from "./fakeTranspositFunctions";
-import {User} from "./types";
-
-export const Pages = {
-    "/bookings": "Book Car",
-    "/requests": "Requests",
-    "/my_car": "My Car",
-    "/cars": "Available Cars",
-    "/calendar": "Calendar"
-}
+import {Pages, User} from "./types";
+import {connect} from "react-redux";
 
 interface NavigationProps {
     user: User;
@@ -21,15 +14,13 @@ interface NavigationProps {
 
 interface NavigationState {
     mode: string;
-    booker: CarshareBooker;
 }
 
 export class Navigation extends React.Component<NavigationProps, NavigationState> {
     constructor(props) {
         super(props);
         this.state = {
-            mode: this.props.mode,
-            booker: new CarshareBooker({user: this.props.user})
+            mode: this.props.mode
         };
     };
 
@@ -93,3 +84,9 @@ export class Navigation extends React.Component<NavigationProps, NavigationState
         );
     };
 }
+
+const mapStateToProps = (state) => {
+    return {user: state.user.user};
+}
+
+export default connect(mapStateToProps)(Navigation)

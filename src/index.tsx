@@ -3,12 +3,14 @@ import {render} from "react-dom";
 import {BrowserRouter as Router, Redirect, Route, Switch} from "react-router-dom";
 import {Button} from 'rsuite';
 import "./styles.css";
-import {Navigation, Pages} from "./Navigation";
+import Navigation from "./Navigation";
 import {signIn, SignInHandleRedirect, useIsValidMember, useSignedIn, useUser} from "./fakeTranspositFunctions";
 import store from './redux/store';
 import {Provider, useDispatch} from 'react-redux'
 import {loadRequests} from "./redux/reducers/requestSlice";
 import {loadFeatures} from "./redux/reducers/featureSlice";
+import {Pages} from "./types";
+import {userSlice} from "./redux/reducers/userSlice";
 
 /**
  * Sign-in page
@@ -58,10 +60,12 @@ function Index(props) {
     // load data store
     dispatch(loadRequests());
     dispatch(loadFeatures());
+    dispatch(userSlice.actions.set(user));
+
     // If signed-in, display the app
     console.log(props.match.path);
     return (
-        <Navigation mode={props.match.path} user={user}/>
+        <Navigation mode={props.match.path}/>
     );
 }
 

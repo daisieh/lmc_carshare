@@ -1,5 +1,3 @@
-import {featureSlice} from "./redux/reducers/featureSlice";
-
 export interface User {
     "name": string;
     "email": string;
@@ -35,4 +33,12 @@ export interface CarEvents {
     cars: string[];
     interval: number;
     busy_segments: string[];
+}
+
+export const Pages = {
+    "/bookings": "Book Car",
+    "/requests": "Requests",
+    "/my_car": "My Car",
+    "/cars": "Available Cars",
+    "/calendar": "Calendar"
 }
