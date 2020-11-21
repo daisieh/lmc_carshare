@@ -6,8 +6,8 @@ import "./styles.css";
 import {Navigation, Pages} from "./Navigation";
 import {signIn, SignInHandleRedirect, useIsValidMember, useSignedIn, useUser} from "./fakeTranspositFunctions";
 import store from './redux/store';
-import {CarshareBooker} from "./CarshareBooker";
-import { Provider, useSelector } from 'react-redux'
+import {Provider, useDispatch} from 'react-redux'
+import {loadRequests} from "./redux/reducers/requestSlice";
 
 /**
  * Sign-in page
@@ -32,16 +32,22 @@ function SignIn() {
 /**
  * Sign-in protected index page
  */
+type RootState = ReturnType<typeof store.getState>;
+
 function Index(props) {
     // Check if signed-in
     const isSignedIn = useSignedIn();
     const user = useUser(isSignedIn);
     const isValid = useIsValidMember(user);
+    const dispatch = useDispatch();
 
     // If not signed-in, wait while rendering nothing
     if (!isSignedIn || !user) {
         return null;
     }
+
+    // load data store
+    dispatch(loadRequests());
     // If signed-in, display the app
     console.log(props.match.path);
     return (

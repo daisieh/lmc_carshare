@@ -12,9 +12,17 @@ interface AvailableCars {
     "cars": Car[];
 }
 
-interface TranspositResponse {
+export interface TranspositResponse {
     error: string;
     response: any;
+}
+
+export async function listRequests() {
+    let response = {
+        error: "",
+        response: fakeRequests as CarRequest[]
+    };
+    return Promise.resolve(response);
 }
 
 export function getAvailableCars(pendingRequest :CarRequest) :TranspositResponse {
@@ -25,12 +33,12 @@ export function getAvailableCars(pendingRequest :CarRequest) :TranspositResponse
     return response;
 }
 
-export function deleteRequests(eventIds :string[]) :TranspositResponse {
+export async function deleteRequests(eventIds :string[]) {
     let response = {
         error: "",
         response: [] as CarRequest[]
     };
-    return response;
+    return Promise.resolve(response);
 }
 
 export function sendReminderToOwner(eventId: string) :TranspositResponse {
@@ -89,14 +97,6 @@ export function getThreeDaysEvents() :TranspositResponse {
         response: null as CarEvents | null
     };
     return response;
-}
-
-export async function listRequests() {
-    let response = {
-        error: "",
-        response: fakeRequests as CarRequest[]
-    };
-    return Promise.resolve(response);
 }
 
 

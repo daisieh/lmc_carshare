@@ -1,6 +1,5 @@
 import * as React from "react";
 import {Button, Checkbox, Table} from "rsuite";
-import {CarshareBooker} from "./CarshareBooker";
 import {Car, CarRequest} from "./types";
 import {connect} from "react-redux";
 import {Dispatch} from "redux";
@@ -10,6 +9,7 @@ const { Column, HeaderCell, Cell } = Table;
 
 interface RequestListProps {
     requests: CarRequest[],
+    status: string,
     cars: Car[],
     dispatch: Dispatch
 }
@@ -75,7 +75,7 @@ export class RequestList extends React.Component<RequestListProps, RequestListSt
                 }
             });
         let errorMessage = "";//this.props.booker.state.errorMessage;
-        let loading = false;//this.props.booker.state.isProcessing;
+        let loading = (this.props.status === "loading");
         return (
             <div className="requests">
                 <div className="error">{errorMessage}</div>
@@ -145,7 +145,7 @@ export class RequestList extends React.Component<RequestListProps, RequestListSt
 }
 
 const mapStateToProps = (state) => {
-    return {requests: state.requests, cars: state.cars};
+    return {requests: state.requests.entries, cars: state.cars.entries, isLoading: state.requests.status};
 }
 
 export default connect(mapStateToProps)(RequestList)

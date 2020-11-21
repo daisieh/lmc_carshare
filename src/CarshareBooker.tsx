@@ -128,8 +128,8 @@ export class CarshareBooker extends React.Component<CarshareBookerProps, Carshar
         this.setState({isProcessing: true});
         let response = Transposit.deleteRequests(eventIds);
         this.setState({
-            isProcessing: false,
-            errorMessage: response.error
+            // isProcessing: false,
+            // errorMessage: response.error
         });
     }
 
@@ -156,12 +156,12 @@ export class CarshareBooker extends React.Component<CarshareBookerProps, Carshar
 
     updateRequests() {
         this.setState({isProcessing: true});
-        let response = Transposit.listRequests(this.props.user);
-        this.setState({
-            isProcessing: false,
-            errorMessage: response.error,
-            requests: response.response
-        });
+        let response = Transposit.listRequests();
+        // this.setState({
+        //     isProcessing: false,
+        //     errorMessage: response.error,
+        //     requests: response.response
+        // });
     }
 
     updateAllCars() {
