@@ -3,7 +3,6 @@ import {Button, Checkbox, Table} from "rsuite";
 import {Car, CarRequest} from "./types";
 import {connect} from "react-redux";
 import {Dispatch} from "redux";
-import {requestSlice} from "./redux/reducers/requestSlice";
 
 const { Column, HeaderCell, Cell } = Table;
 
@@ -145,7 +144,7 @@ export class RequestList extends React.Component<RequestListProps, RequestListSt
 }
 
 const mapStateToProps = (state) => {
-    return {requests: state.requests.entries, cars: state.cars.entries, isLoading: state.requests.status};
+    return {requests: state.requests.entries, cars: state.cars.entries, status: state.requests.status};
 }
 
 export default connect(mapStateToProps)(RequestList)

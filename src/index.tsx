@@ -8,6 +8,7 @@ import {signIn, SignInHandleRedirect, useIsValidMember, useSignedIn, useUser} fr
 import store from './redux/store';
 import {Provider, useDispatch} from 'react-redux'
 import {loadRequests} from "./redux/reducers/requestSlice";
+import {loadFeatures} from "./redux/reducers/featureSlice";
 
 /**
  * Sign-in page
@@ -56,6 +57,7 @@ function Index(props) {
 
     // load data store
     dispatch(loadRequests());
+    dispatch(loadFeatures());
     // If signed-in, display the app
     console.log(props.match.path);
     return (

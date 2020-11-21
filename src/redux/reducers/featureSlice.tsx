@@ -1,26 +1,51 @@
-import {createSlice, PayloadAction} from '@reduxjs/toolkit'
+import {createAsyncThunk, createSlice, PayloadAction} from '@reduxjs/toolkit'
+import {listFeatures} from "../../fakeTranspositFunctions";
+
+interface FeatureState {
+    entries: string[],
+    status: 'idle' | 'loading' | 'succeeded' | 'failed',
+    error: string | null
+}
+
+export const loadFeatures = createAsyncThunk(
+    'features/loadFeatures',
+    async () => {
+        const response = await listFeatures();
+        return response.response;
+    }
+)
 
 export const featureSlice = createSlice({
     name: 'features',
     initialState: {
-        features: [
-            "pet friendly",
-            "child friendly",
-            "eco friendly",
-            "cargo",
-            "camping"
-        ]
-    },
+        entries: ["foo"],
+        status: "idle",
+        error: ""
+    } as FeatureState,
     reducers: {
         add: (state, action :PayloadAction<string>) => {
-            state.features.push(action.payload);
+            state.entries.push(action.payload);
         },
         remove: (state, action :PayloadAction<string>) => {
-            let index = state.features.indexOf(action.payload);
+            let index = state.entries.indexOf(action.payload);
             if (index >= 0) {
-                state.features.splice(index, 1);
+                state.entries.splice(index, 1);
             }
         }
+    },
+    extraReducers: builder => {
+        builder.addCase(loadFeatures.fulfilled, (state, action) => {
+            state.entries = action.payload;
+            console.log("howdy " + state.entries);
+            state.status = "idle";
+        })
+        builder.addCase(loadFeatures.pending, (state, action) => {
+            state.status = "loading";
+        })
+        builder.addCase(loadFeatures.rejected, (state, action) => {
+            state.status = "failed";
+            state.error = action.error.toString();
+        })
     }
 })
 

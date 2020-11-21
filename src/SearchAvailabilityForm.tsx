@@ -55,9 +55,10 @@ export class SearchAvailabilityForm extends React.Component<SearchAvailabilityPr
     }
 
     onTagPick(event) {
-        // let req = this.props.booker.state.pendingRequest;
-        // req.features = event as string[];
-        // this.props.booker.setState({pendingRequest: req});
+        console.log(`pick ${event.toString()}`);
+        let req = this.state.pendingRequest;
+        req.features = event as string[];
+        this.setState({pendingRequest: req});
     }
 
     updateTimes(startTime: string, endTime: string) :[string, string]{
@@ -110,9 +111,6 @@ export class SearchAvailabilityForm extends React.Component<SearchAvailabilityPr
             inThePast = "WARNING! The selected time slot is in the past.";
         }
         let feat_array:{label: string, value: string}[] = this.props.features.map(x => { return {"value": x, "label": x}; });
-        // let feat_array:{label: string, value: string}[] = this.state.allFeatures.map(x => { return {"value": x, "label": x}; });
-        // console.log(booker.state.allFeatures);
-        // let feat_array = [{value:"foo", label:"bar"}];
         return (
             <div className="search-form">
                 <p className={disabled?"caption-disabled":"caption"}>Select the date and time you'd like to book.</p>
@@ -163,6 +161,6 @@ export class SearchAvailabilityForm extends React.Component<SearchAvailabilityPr
 }
 
 const mapStateToProps = (state) => {
-    return {features: state.allFeatures.features};
+    return {features: state.allFeatures.entries};
 }
 export default connect(mapStateToProps)(SearchAvailabilityForm)

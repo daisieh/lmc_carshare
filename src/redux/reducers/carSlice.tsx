@@ -3,7 +3,8 @@ import {Car} from "../../types";
 
 export const carSlice = createSlice({
     name: 'cars',
-    initialState: [
+    initialState: {
+        entries: [
             {
                 "Timestamp": "20/01/2020 16:21:11",
                 "Make": "Toyota",
@@ -51,22 +52,27 @@ export const carSlice = createSlice({
                 "Confirm": true,
                 "Description": "Orange Honda Element ELEMENT"
             }
-        ] as Car[]
-    ,
+        ] as Car[],
+        isLoading: false,
+        errorMessage: ""
+    },
     reducers: {
         add: (state, action :PayloadAction<Car>) => {
-            state.push(action.payload);
+            state.entries.push(action.payload);
         },
         remove: (state, action :PayloadAction<string>) => {
-            let licenceMap = state.map(x => {return x.Licence;});
+            let licenceMap = state.entries.map(x => {return x.Licence;});
             let index = licenceMap.indexOf(action.payload);
             if (index >= 0) {
-                state.splice(index, 1);
+                state.entries.splice(index, 1);
             }
+        },
+        load: (state, action :PayloadAction<Car[]>) => {
+            state.entries = action.payload;
         }
     }
 })
 
-export const { add, remove } = carSlice.actions
+export const { add, remove, load } = carSlice.actions
 
 export default carSlice.reducer

@@ -25,6 +25,21 @@ export async function listRequests() {
     return Promise.resolve(response);
 }
 
+export async function listFeatures() {
+    let response = {
+        error: "",
+        response: [] as string[]
+    };
+    response.response = [
+        "pet friendly",
+        "child friendly",
+        "eco friendly",
+        "cargo",
+        "camping"
+    ];
+    return Promise.resolve(response);
+}
+
 export function getAvailableCars(pendingRequest :CarRequest) :TranspositResponse {
     let response = {
         error: "",
@@ -54,21 +69,6 @@ export function createBooking(pendingRequest: CarRequest) :TranspositResponse {
         error: "",
         response: null as CarRequest | null
     };
-    return response;
-}
-
-export async function listFeatures() {
-    let response = {
-        error: "",
-        response: [] as string[]
-    };
-    response.response = [
-        "pet friendly",
-        "child friendly",
-        "eco friendly",
-        "cargo",
-        "camping"
-    ];
     return response;
 }
 
