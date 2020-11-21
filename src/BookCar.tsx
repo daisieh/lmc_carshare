@@ -16,7 +16,7 @@ interface SearchAvailabilityProps {
 
 interface SearchAvailabilityState {
     pendingRequest: CarRequest;
-    bookedRequest: CarRequest;
+    bookedRequest: CarRequest | null;
     startDate: Date;
     endDate: Date;
     availableCars: Car[];
@@ -29,7 +29,7 @@ export class BookCar extends React.Component<SearchAvailabilityProps, SearchAvai
             startDate: new Date(),
             endDate: new Date(),
             pendingRequest: makeEmptyRequest(this.props.user),
-            bookedRequest: makeEmptyRequest(this.props.user),
+            bookedRequest: null,
             availableCars: [] as Car[]
         }
         this.handleStartChange = this.handleStartChange.bind(this);
@@ -38,7 +38,6 @@ export class BookCar extends React.Component<SearchAvailabilityProps, SearchAvai
         this.onTagPick = this.onTagPick.bind(this);
         this.onClickCarRadio = this.onClickCarRadio.bind(this);
         this.onReserveCar = this.onReserveCar.bind(this);
-        this.getChosenCar = this.getChosenCar.bind(this);
         this.resetPicker = this.resetPicker.bind(this);
         this.updateTimes = this.updateTimes.bind(this);
     }
@@ -128,16 +127,6 @@ export class BookCar extends React.Component<SearchAvailabilityProps, SearchAvai
         return [currentRequest.start, currentRequest.end];
     }
 
-    getChosenCar(): Car | null {
-        let cars = this.props.cars.filter(car => {
-            return (car.Licence === this.state.pendingRequest.vehicle);
-        });
-        if (cars.length > 0) {
-            return cars[0];
-        }
-        return null;
-    }
-
     bookCar() {
         let response = Transposit.createBooking(this.state.pendingRequest);
         this.setState({
@@ -150,7 +139,7 @@ export class BookCar extends React.Component<SearchAvailabilityProps, SearchAvai
     resetPicker() {
         this.setState({
             pendingRequest: makeEmptyRequest(this.props.user),
-            bookedRequest: makeEmptyRequest(this.props.user),
+            bookedRequest: null,
             availableCars: [] as Car[]
         });
     }
