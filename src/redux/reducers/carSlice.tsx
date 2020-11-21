@@ -1,61 +1,28 @@
-import {createSlice, PayloadAction} from '@reduxjs/toolkit'
+import {createAsyncThunk, createSlice, PayloadAction} from '@reduxjs/toolkit'
 import {Car} from "../../types";
+import {listAllCars} from "../../fakeTranspositFunctions";
+
+interface CarState {
+    entries: Car[],
+    status: 'idle' | 'loading' | 'succeeded' | 'failed',
+    error: string | null
+}
+
+export const loadCars = createAsyncThunk(
+    'cars/loadCars',
+    async () => {
+        const response = await listAllCars();
+        return response.response;
+    }
+)
 
 export const carSlice = createSlice({
     name: 'cars',
     initialState: {
-        entries: [
-            {
-                "Timestamp": "20/01/2020 16:21:11",
-                "Make": "Toyota",
-                "Model": "Prius",
-                "Color": "Blue",
-                "Features": [
-                    "pet friendly",
-                    "child friendly",
-                    "eco friendly"
-                ],
-                "Licence": "AL675T",
-                "Email": "lmc.blue.prius.2009@gmail.com",
-                "AlwaysAvailable": true,
-                "Confirm": false,
-                "Description": "Blue Toyota Prius AL675T"
-            },
-            {
-                "Timestamp": "20/01/2020 16:20:52",
-                "Make": "Nissan",
-                "Model": "Leaf",
-                "Color": "Orange",
-                "Features": [
-                    "child friendly",
-                    "eco friendly"
-                ],
-                "Licence": "NLEAF",
-                "Email": "lmc.orange.leaf.2017@gmail.com",
-                "AlwaysAvailable": true,
-                "Confirm": true,
-                "Description": "Orange Nissan Leaf NLEAF"
-            },
-            {
-                "Timestamp": "20/01/2020 16:24:21",
-                "Make": "Honda",
-                "Model": "Element",
-                "Color": "Orange",
-                "Features": [
-                    "pet friendly",
-                    "cargo",
-                    "camping"
-                ],
-                "Licence": "ELEMENT",
-                "Email": "mutantdaisies@gmail.com",
-                "AlwaysAvailable": false,
-                "Confirm": true,
-                "Description": "Orange Honda Element ELEMENT"
-            }
-        ] as Car[],
-        isLoading: false,
-        errorMessage: ""
-    },
+        entries: [] as Car[],
+        status: "idle",
+        error: ""
+    } as CarState,
     reducers: {
         add: (state, action :PayloadAction<Car>) => {
             state.entries.push(action.payload);
@@ -66,13 +33,23 @@ export const carSlice = createSlice({
             if (index >= 0) {
                 state.entries.splice(index, 1);
             }
-        },
-        load: (state, action :PayloadAction<Car[]>) => {
-            state.entries = action.payload;
         }
+    },
+    extraReducers: builder => {
+        builder.addCase(loadCars.fulfilled, (state, action) => {
+            state.entries = action.payload;
+            state.status = "idle";
+        })
+        builder.addCase(loadCars.pending, (state) => {
+            state.status = "loading";
+        })
+        builder.addCase(loadCars.rejected, (state, action) => {
+            state.status = "failed";
+            state.error = action.error.toString();
+        })
     }
 })
 
-export const { add, remove, load } = carSlice.actions
+export const { add, remove } = carSlice.actions
 
 export default carSlice.reducer

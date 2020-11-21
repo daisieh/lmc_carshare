@@ -11,6 +11,7 @@ import {loadRequests} from "./redux/reducers/requestSlice";
 import {loadFeatures} from "./redux/reducers/featureSlice";
 import {Pages} from "./types";
 import {userSlice} from "./redux/reducers/userSlice";
+import {loadCars} from "./redux/reducers/carSlice";
 
 /**
  * Sign-in page
@@ -60,6 +61,7 @@ function Index(props) {
     // load data store
     dispatch(loadRequests());
     dispatch(loadFeatures());
+    dispatch(loadCars());
     dispatch(userSlice.actions.set(user));
 
     // If signed-in, display the app
