@@ -4,16 +4,21 @@ import {Button, DatePicker, Modal, Radio, TagPicker} from "rsuite";
 import {Car, CarRequest, User} from "./types";
 import {connect} from "react-redux";
 import * as Transposit from "./fakeTranspositFunctions";
+import {requestSlice} from "./redux/reducers/requestSlice";
+import {Dispatch} from "redux";
+import {carSlice, loadAvailableCars} from "./redux/reducers/carSlice";
 
-interface SearchAvailabilityProps {
+interface BookCarProps {
     user: User;
     features: string[];
     cars: Car[];
+    available: Car[];
     status: string;
     error: string;
+    dispatch: Dispatch;
 }
 
-interface SearchAvailabilityState {
+interface BookCarState {
     pendingRequest: CarRequest;
     bookedRequest: CarRequest | null;
     startDate: Date;
@@ -21,7 +26,7 @@ interface SearchAvailabilityState {
     availableCars: Car[];
 }
 
-export class BookCar extends React.Component<SearchAvailabilityProps, SearchAvailabilityState> {
+export class BookCar extends React.Component<BookCarProps, BookCarState> {
     constructor(props) {
         super(props);
         this.state = {
@@ -74,6 +79,7 @@ export class BookCar extends React.Component<SearchAvailabilityProps, SearchAvai
 
     onLookForCars() {
         // this.props.booker.getAvailableCars();
+        // this.props.dispatch(loadAvailableCars(this.state.pendingRequest));
     }
 
     onTagPick(event) {
@@ -294,6 +300,7 @@ const mapStateToProps = (state) => {
         user: state.user.user,
         features: state.allFeatures.entries,
         cars: state.cars.entries,
+        available: state.cars.available,
         status: state.cars.status,
         error: state.cars.error};
 }

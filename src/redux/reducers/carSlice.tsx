@@ -1,9 +1,10 @@
 import {createAsyncThunk, createSlice, PayloadAction} from '@reduxjs/toolkit'
-import {Car} from "../../types";
-import {listAllCars} from "../../fakeTranspositFunctions";
+import {Car, CarRequest} from "../../types";
+import {getAvailableCars, listAllCars} from "../../fakeTranspositFunctions";
 
 interface CarState {
     entries: Car[],
+    available: Car[],
     status: 'idle' | 'loading' | 'succeeded' | 'failed',
     error: string | null
 }
@@ -16,10 +17,20 @@ export const loadCars = createAsyncThunk(
     }
 )
 
+export const loadAvailableCars = createAsyncThunk(
+    'cars/loadAvailableCars',
+    async (request :CarRequest) => {
+        console.log(`hi ${request.vehicle}`);
+        const response = await getAvailableCars(request);
+        return response.response;
+    }
+)
+
 export const carSlice = createSlice({
     name: 'cars',
     initialState: {
         entries: [] as Car[],
+        available: [] as Car[],
         status: "idle",
         error: ""
     } as CarState,
@@ -44,6 +55,17 @@ export const carSlice = createSlice({
             state.status = "loading";
         })
         builder.addCase(loadCars.rejected, (state, action) => {
+            state.status = "failed";
+            state.error = action.error.toString();
+        })
+        builder.addCase(loadAvailableCars.fulfilled, (state, action) => {
+            state.available = action.payload;
+            state.status = "idle";
+        })
+        builder.addCase(loadAvailableCars.pending, (state) => {
+            state.status = "loading";
+        })
+        builder.addCase(loadAvailableCars.rejected, (state, action) => {
             state.status = "failed";
             state.error = action.error.toString();
         })
