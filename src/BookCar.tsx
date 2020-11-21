@@ -1,33 +1,57 @@
 import {makeEmptyRequest} from "./CarshareBooker";
 import * as React from "react";
 import moment from "moment";
-import {Button, DatePicker, TagPicker} from "rsuite";
-import {CarRequest, User} from "./types";
+import {Button, DatePicker, Modal, Radio, TagPicker} from "rsuite";
+import {Car, CarRequest, User} from "./types";
 import {connect} from "react-redux";
+import * as Transposit from "./fakeTranspositFunctions";
 
 interface SearchAvailabilityProps {
     user: User;
     features: string[];
+    cars: Car[];
+    status: string;
+    error: string;
 }
 
 interface SearchAvailabilityState {
     pendingRequest: CarRequest;
+    bookedRequest: CarRequest;
     startDate: Date;
     endDate: Date;
+    availableCars: Car[];
 }
 
-export class SearchAvailabilityForm extends React.Component<SearchAvailabilityProps, SearchAvailabilityState> {
+export class BookCar extends React.Component<SearchAvailabilityProps, SearchAvailabilityState> {
     constructor(props) {
         super(props);
         this.state = {
             startDate: new Date(),
             endDate: new Date(),
-            pendingRequest: makeEmptyRequest(this.props.user)
+            pendingRequest: makeEmptyRequest(this.props.user),
+            bookedRequest: makeEmptyRequest(this.props.user),
+            availableCars: [] as Car[]
         }
         this.handleStartChange = this.handleStartChange.bind(this);
         this.handleEndChange = this.handleEndChange.bind(this);
         this.onLookForCars = this.onLookForCars.bind(this);
         this.onTagPick = this.onTagPick.bind(this);
+        this.onClickCarRadio = this.onClickCarRadio.bind(this);
+        this.onReserveCar = this.onReserveCar.bind(this);
+        this.getChosenCar = this.getChosenCar.bind(this);
+        this.resetPicker = this.resetPicker.bind(this);
+        this.updateTimes = this.updateTimes.bind(this);
+    }
+
+    onClickCarRadio(value) {
+        let req = this.state.pendingRequest;
+        req.vehicle = value;
+        this.setState({pendingRequest: req});
+    }
+
+    onReserveCar(event) {
+        event.preventDefault();
+        // this.props.booker.bookCar();
     }
 
     handleStartChange(event) {
@@ -104,6 +128,33 @@ export class SearchAvailabilityForm extends React.Component<SearchAvailabilityPr
         return [currentRequest.start, currentRequest.end];
     }
 
+    getChosenCar(): Car | null {
+        let cars = this.props.cars.filter(car => {
+            return (car.Licence === this.state.pendingRequest.vehicle);
+        });
+        if (cars.length > 0) {
+            return cars[0];
+        }
+        return null;
+    }
+
+    bookCar() {
+        let response = Transposit.createBooking(this.state.pendingRequest);
+        this.setState({
+            bookedRequest: response.response,
+            pendingRequest: makeEmptyRequest(this.props.user)
+        });
+        this.resetPicker();
+    }
+
+    resetPicker() {
+        this.setState({
+            pendingRequest: makeEmptyRequest(this.props.user),
+            bookedRequest: makeEmptyRequest(this.props.user),
+            availableCars: [] as Car[]
+        });
+    }
+
     render() {
         let disabled = false;//(booker.state.availableCars && booker.state.availableCars.length > 0) || (booker.state.pendingRequest !== null);
         let inThePast = "";
@@ -111,7 +162,7 @@ export class SearchAvailabilityForm extends React.Component<SearchAvailabilityPr
             inThePast = "WARNING! The selected time slot is in the past.";
         }
         let feat_array:{label: string, value: string}[] = this.props.features.map(x => { return {"value": x, "label": x}; });
-        return (
+        let search_form = (
             <div className="search-form">
                 <p className={disabled?"caption-disabled":"caption"}>Select the date and time you'd like to book.</p>
                 <div className="date-select">
@@ -157,10 +208,92 @@ export class SearchAvailabilityForm extends React.Component<SearchAvailabilityPr
                 <div className="error">{inThePast}</div>
             </div>
         );
+
+        let available_cars = (
+            <div className="available-form">
+                No cars available at this time
+            </div>
+        );
+        let chosenCar = null as Car | null;
+        let email = "";
+        if (this.state.availableCars.length > 0) {
+            chosenCar = this.props.cars.filter(car => {
+                return (car.Licence === this.state.pendingRequest.vehicle);
+            })[0];
+            if (chosenCar != null) {
+                email = chosenCar.Email;
+            }
+            console.log(`there are ${this.state.availableCars.length} cars, chosen car is ${email}`);
+            let rows = this.state.availableCars.map((car) => {
+                let isChosenCar = (email === car.Email);
+                let needsConfirm = car.Confirm ? "(requires approval)" : "";
+                return (
+                    <Radio checked={isChosenCar} onChange={this.onClickCarRadio} value={car.Email}>
+                        {car.Description} {needsConfirm}
+                    </Radio>
+                )
+            });
+            available_cars = (
+                <div className="available-form">
+                    <p>Cars available for booking:</p>
+                    {rows}
+                    <br/>
+                    <Button
+                        appearance="ghost"
+                        size="sm"
+                        onClick={this.onReserveCar}
+                        disabled={chosenCar == null}
+                        loading={this.props.status === "processing"}
+                    >
+                        Book it!
+                    </Button>
+                </div>
+            );
+        }
+
+        let message = "";
+        let bookedReq = this.state.bookedRequest;
+        if (bookedReq) {
+            console.log(bookedReq);
+            if (bookedReq.confirmed) {
+                message = "Check your calendar for a confirmation of your booking!";
+            } else {
+                message = "The car's owner has been notified. You will receive an email if they have approved your request.";
+            }
+        }
+        let booking_status = (
+            <div className="modal-container">
+                <Modal show={message !== ""} onHide={() => {this.resetPicker();}}>
+                    <Modal.Header>
+                        <Modal.Title>Booking request sent!</Modal.Title>
+                    </Modal.Header>
+                    <Modal.Body>
+                        <p>{message}</p>
+                    </Modal.Body>
+                    <Modal.Footer>
+                        <Button onClick={() => {this.resetPicker();}} appearance="primary">
+                            Ok
+                        </Button>
+                    </Modal.Footer>
+                </Modal>
+            </div>
+        );
+
+        return (
+            <div>
+                {search_form}
+                {available_cars}
+                {booking_status}
+            </div>);
     }
 }
 
 const mapStateToProps = (state) => {
-    return {features: state.allFeatures.entries};
+    return {
+        user: state.user.user,
+        features: state.allFeatures.entries,
+        cars: state.cars.entries,
+        status: state.cars.status,
+        error: state.cars.error};
 }
-export default connect(mapStateToProps)(SearchAvailabilityForm)
+export default connect(mapStateToProps)(BookCar)

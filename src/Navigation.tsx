@@ -1,7 +1,6 @@
-import {CarshareBooker} from "./CarshareBooker"
 import * as React from "react";
 import {Loader, Nav, Navbar} from "rsuite";
-import SearchAvailabilityForm from "./SearchAvailabilityForm";
+import BookCar from "./BookCar";
 import RequestList from "./RequestList";
 import {SignOut} from "./fakeTranspositFunctions";
 import {Pages, User} from "./types";
@@ -34,9 +33,7 @@ export class Navigation extends React.Component<NavigationProps, NavigationState
                 if (this.state.mode === "/bookings") {
                     main =
                         <main className="container main">
-                            <SearchAvailabilityForm user={this.props.user}/>
-                            {/*<AvailableCars booker={this.state.booker}/>*/}
-                            {/*<BookingStatus booker={this.state.booker}/>*/}
+                            <BookCar/>
                         </main>
                 } else if (this.state.mode === "/requests") {
                     main =
