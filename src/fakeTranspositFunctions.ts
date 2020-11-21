@@ -40,6 +40,14 @@ export async function listFeatures() {
     return Promise.resolve(response);
 }
 
+export async function listAllCars() {
+    let response = {
+        error: "",
+        response: fakeCars as Car[]
+    };
+    return Promise.resolve(response);
+}
+
 export function getAvailableCars(pendingRequest :CarRequest) :TranspositResponse {
     let response = {
         error: "",
@@ -82,14 +90,6 @@ export function useListFeatures(user: User | null): string[] {
     return features;
 }
 
-
-export function listAllCars() :TranspositResponse {
-    let response = {
-        error: "",
-        response: [] as Car[]
-    };
-    return response;
-}
 
 export function getThreeDaysEvents() :TranspositResponse {
     let response = {
