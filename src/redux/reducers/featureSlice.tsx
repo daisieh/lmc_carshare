@@ -36,10 +36,9 @@ export const featureSlice = createSlice({
     extraReducers: builder => {
         builder.addCase(loadFeatures.fulfilled, (state, action) => {
             state.entries = action.payload;
-            console.log("howdy " + state.entries);
             state.status = "idle";
         })
-        builder.addCase(loadFeatures.pending, (state, action) => {
+        builder.addCase(loadFeatures.pending, (state) => {
             state.status = "loading";
         })
         builder.addCase(loadFeatures.rejected, (state, action) => {
