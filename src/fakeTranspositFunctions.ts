@@ -174,3 +174,53 @@ const fakeRequests = [
         "confirmed": "TRUE"
     }
 ];
+
+const fakeCars = [
+    {
+        "Timestamp": "20/01/2020 16:21:11",
+        "Make": "Toyota",
+        "Model": "Prius",
+        "Color": "Blue",
+        "Features": [
+            "pet friendly",
+            "child friendly",
+            "eco friendly"
+        ],
+        "Licence": "AL675T",
+        "Email": "lmc.blue.prius.2009@gmail.com",
+        "AlwaysAvailable": true,
+        "Confirm": false,
+        "Description": "Blue Toyota Prius AL675T"
+    },
+    {
+        "Timestamp": "20/01/2020 16:20:52",
+        "Make": "Nissan",
+        "Model": "Leaf",
+        "Color": "Orange",
+        "Features": [
+            "child friendly",
+            "eco friendly"
+        ],
+        "Licence": "NLEAF",
+        "Email": "lmc.orange.leaf.2017@gmail.com",
+        "AlwaysAvailable": true,
+        "Confirm": true,
+        "Description": "Orange Nissan Leaf NLEAF"
+    },
+    {
+        "Timestamp": "20/01/2020 16:24:21",
+        "Make": "Honda",
+        "Model": "Element",
+        "Color": "Orange",
+        "Features": [
+            "pet friendly",
+            "cargo",
+            "camping"
+        ],
+        "Licence": "ELEMENT",
+        "Email": "mutantdaisies@gmail.com",
+        "AlwaysAvailable": false,
+        "Confirm": true,
+        "Description": "Orange Honda Element ELEMENT"
+    }
+];
