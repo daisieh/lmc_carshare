@@ -175,7 +175,7 @@ export function getThreeDaysEvents() :TranspositResponse {
     return response;
 }
 
-export function listRequests(user: User): TranspositResponse {
+export function listRequests(): TranspositResponse {
     let response = {
         error: "",
         response: [] as CarRequest[]
@@ -186,25 +186,7 @@ export function listRequests(user: User): TranspositResponse {
             // shift off the labels
             results.results.shift();
             let requests = results.results as CarRequest[];
-            // if there's a user, filter to that user and only to future times.
-            // if user is null, return all requests
-            response.response = requests.filter(x => {
-                if (user) {
-                    if (x.requester === user.email) {
-                        if (moment(x.end).isSameOrAfter(moment())) {
-                            return true;
-                        }
-                    }
-                    return false;
-                } else {
-                    return true;
-                }
-            });
-            response.response.map(x => {
-                x.start = moment(x.start).format("YYYY-MM-DD HH:mm");
-                x.end = moment(x.end).format("YYYY-MM-DD HH:mm");
-                return x;
-            })
+            response.response = requests;
         })
         .catch(x => {
             response.error = x.toString();
