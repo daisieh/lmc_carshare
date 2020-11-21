@@ -46,7 +46,7 @@ export class RequestList extends React.Component<RequestListProps, RequestListSt
         }
     }
 
-    async handleDelete() {
+    handleDelete() {
         console.log(`deleting ${this.state.requestsToDelete.toString()}`);
         this.props.dispatch({type: "requests/remove", payload: this.state.requestsToDelete.toString()});
     }
@@ -56,6 +56,10 @@ export class RequestList extends React.Component<RequestListProps, RequestListSt
             console.log(this.state.activeRow);
             //await this.props.booker.sendReminderForRequest(this.state.activeRow.eventId);
         }
+    }
+
+    sendReminderForRequest(eventId: string) {
+        console.log(`sending reminder for ${eventId}`);
     }
 
     render() {

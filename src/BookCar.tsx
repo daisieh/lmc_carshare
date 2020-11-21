@@ -1,4 +1,3 @@
-import {makeEmptyRequest} from "./CarshareBooker";
 import * as React from "react";
 import moment from "moment";
 import {Button, DatePicker, Modal, Radio, TagPicker} from "rsuite";
@@ -274,6 +273,19 @@ export class BookCar extends React.Component<SearchAvailabilityProps, SearchAvai
                 {available_cars}
                 {booking_status}
             </div>);
+    }
+}
+
+function makeEmptyRequest(user: User) :CarRequest {
+    return {
+        start: moment().add(1, "hour").startOf("hour").format(),
+        end: moment().add(2, "hour").startOf("hour").format(),
+        threadId: null,
+        eventId: null,
+        vehicle: "",
+        confirmed: null,
+        requester: user.email,
+        features: [] as string[]
     }
 }
 
