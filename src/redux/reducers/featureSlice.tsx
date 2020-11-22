@@ -1,5 +1,5 @@
 import {createAsyncThunk, createSlice, PayloadAction} from '@reduxjs/toolkit'
-import {listFeatures} from "../../fakeTranspositFunctions";
+import {listFeatures} from "../../transpositFunctions";
 
 interface FeatureState {
     entries: string[],

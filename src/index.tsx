@@ -4,7 +4,7 @@ import {BrowserRouter as Router, Redirect, Route, Switch} from "react-router-dom
 import {Button} from 'rsuite';
 import "./styles.css";
 import Navigation from "./Navigation";
-import {signIn, SignInHandleRedirect, useIsValidMember, useSignedIn, useUser} from "./fakeTranspositFunctions";
+import {signIn, SignInHandleRedirect, useIsValidMember, useSignedIn, useUser} from "./transpositFunctions";
 import store from './redux/store';
 import {Provider, useDispatch} from 'react-redux'
 import {loadRequests} from "./redux/reducers/requestSlice";

@@ -1,6 +1,6 @@
 import {createAsyncThunk, createSlice} from '@reduxjs/toolkit'
 import {CarEvents, CarRequest} from "../../types";
-import {createBooking, listRequests, deleteRequests} from "../../fakeTranspositFunctions";
+import {createBooking, listRequests, deleteRequests} from "../../transpositFunctions";
 import {AppDispatch} from "../store";
 
 interface RequestState {

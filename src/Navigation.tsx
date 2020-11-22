@@ -2,7 +2,7 @@ import * as React from "react";
 import {Loader, Nav, Navbar} from "rsuite";
 import BookCar from "./BookCar";
 import RequestList from "./RequestList";
-import {SignOut} from "./fakeTranspositFunctions";
+import {SignOut} from "./transpositFunctions";
 import {Pages, User} from "./types";
 import {connect} from "react-redux";
 import {Calendar} from "./Calendar";
