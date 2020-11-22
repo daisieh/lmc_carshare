@@ -121,7 +121,7 @@ export const requestSlice = createSlice({
             state.status = "failed";
             state.error = action.error.toString();
         })
-        builder.addCase(resetNewest.fulfilled, (state, action) => {
+        builder.addCase(resetNewest.fulfilled, (state) => {
             state.newest = null;
             state.status = "idle";
         })

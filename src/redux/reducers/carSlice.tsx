@@ -91,7 +91,7 @@ export const carSlice = createSlice({
             state.status = "failed";
             state.error = action.error.toString();
         })
-        builder.addCase(clearAvailable.fulfilled, (state, action) => {
+        builder.addCase(clearAvailable.fulfilled, (state) => {
             state.available = [] as Car[];
             state.status = "idle";
         })
