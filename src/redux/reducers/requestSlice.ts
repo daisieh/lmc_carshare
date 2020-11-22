@@ -25,7 +25,7 @@ export const createRequest = createAsyncThunk<CarRequest, CarRequest, {
         jwt: string
     }
 }>(
-    'cars/loadAvailableCars',
+    'requests/createRequest',
     async (request :CarRequest) => {
         const response = await createBooking(request);
         return response.response as CarRequest;
@@ -47,7 +47,8 @@ export const requestSlice = createSlice({
             }
         ] as CarRequest[],
         status: "idle",
-        error: ""
+        error: "",
+        newest: null
     } as RequestState,
     reducers: {
         add: (state, action :PayloadAction<CarRequest[]>) => {

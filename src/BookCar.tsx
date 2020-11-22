@@ -51,7 +51,7 @@ export class BookCar extends React.Component<BookCarProps, BookCarState> {
 
     onReserveCar(event) {
         event.preventDefault();
-        // this.props.booker.bookCar();
+        this.props.dispatch(createRequest(this.state.pendingRequest));
     }
 
     handleStartChange(event) {
@@ -256,7 +256,6 @@ export class BookCar extends React.Component<BookCarProps, BookCarState> {
         let message = "";
         let bookedReq = this.props.bookedRequest;
         if (bookedReq) {
-            console.log(bookedReq);
             if (bookedReq.confirmed) {
                 message = "Check your calendar for a confirmation of your booking!";
             } else {
