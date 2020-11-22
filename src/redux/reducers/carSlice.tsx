@@ -31,6 +31,18 @@ export const loadAvailableCars = createAsyncThunk<string[], CarRequest, {
         return response.response as string[];
     }
 )
+export const clearAvailable = createAsyncThunk<any, any, {
+    dispatch: AppDispatch
+    state: CarState
+    extra: {
+        jwt: string
+    }
+}>(
+    'cars/clearAvailable',
+    async () => {
+        return "";
+    }
+)
 
 export const carSlice = createSlice({
     name: 'cars',
@@ -50,9 +62,6 @@ export const carSlice = createSlice({
             if (index >= 0) {
                 state.entries.splice(index, 1);
             }
-        },
-        clearAvailable: (state) => {
-            state.available = [] as Car[];
         }
     },
     extraReducers: builder => {
@@ -82,9 +91,20 @@ export const carSlice = createSlice({
             state.status = "failed";
             state.error = action.error.toString();
         })
+        builder.addCase(clearAvailable.fulfilled, (state, action) => {
+            state.available = [] as Car[];
+            state.status = "idle";
+        })
+        builder.addCase(clearAvailable.pending, (state) => {
+            state.status = "loading";
+        })
+        builder.addCase(clearAvailable.rejected, (state, action) => {
+            state.status = "failed";
+            state.error = action.error.toString();
+        })
     }
 })
 
-export const { add, remove, clearAvailable } = carSlice.actions
+export const { add, remove } = carSlice.actions
 
 export default carSlice.reducer

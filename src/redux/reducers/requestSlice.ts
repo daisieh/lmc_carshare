@@ -1,4 +1,4 @@
-import {createAsyncThunk, createSlice, PayloadAction} from '@reduxjs/toolkit'
+import {createAsyncThunk, createSlice} from '@reduxjs/toolkit'
 import {CarEvents, CarRequest} from "../../types";
 import {createBooking, listRequests, deleteRequests} from "../../fakeTranspositFunctions";
 import {AppDispatch} from "../store";
@@ -48,6 +48,19 @@ export const deleteRequest = createAsyncThunk<CarRequest[], string[], {
     }
 )
 
+export const resetNewest = createAsyncThunk<any, any, {
+    dispatch: AppDispatch
+    state: RequestState
+    extra: {
+        jwt: string
+    }
+}>(
+    'requests/resetNewest',
+    async () => {
+        return "";
+    }
+)
+
 export const requestSlice = createSlice({
     name: 'requests',
     initialState: {
@@ -67,9 +80,6 @@ export const requestSlice = createSlice({
         newest: null
     } as RequestState,
     reducers: {
-        resetNewest: (state) => {
-            state.newest = null;
-        }
     },
     extraReducers: builder => {
         builder.addCase(loadRequests.fulfilled, (state, action) => {
@@ -111,9 +121,20 @@ export const requestSlice = createSlice({
             state.status = "failed";
             state.error = action.error.toString();
         })
+        builder.addCase(resetNewest.fulfilled, (state, action) => {
+            state.newest = null;
+            state.status = "idle";
+        })
+        builder.addCase(resetNewest.pending, (state) => {
+            state.status = "loading";
+        })
+        builder.addCase(resetNewest.rejected, (state, action) => {
+            state.status = "failed";
+            state.error = action.error.toString();
+        })
     }
 })
 
-export const { resetNewest } = requestSlice.actions
+export const {  } = requestSlice.actions
 
 export default requestSlice.reducer

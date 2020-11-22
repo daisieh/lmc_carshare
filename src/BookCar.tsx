@@ -3,7 +3,7 @@ import moment from "moment";
 import {Button, DatePicker, Modal, Radio, TagPicker} from "rsuite";
 import {Car, CarRequest, User} from "./types";
 import {connect} from "react-redux";
-import {carSlice, loadAvailableCars} from "./redux/reducers/carSlice";
+import {clearAvailable, loadAvailableCars} from "./redux/reducers/carSlice";
 import {ThunkDispatch} from "@reduxjs/toolkit";
 import {createRequest, requestSlice} from "./redux/reducers/requestSlice";
 
@@ -147,14 +147,14 @@ export class BookCar extends React.Component<BookCarProps, BookCarState> {
         this.setState({
             pendingRequest: makeEmptyRequest(this.props.user)
         });
-        this.resetPicker();
     }
 
     resetPicker() {
+        this.props.dispatch(resetNewest({}));
+        this.props.dispatch(clearAvailable({}));
         this.setState({
             pendingRequest: makeEmptyRequest(this.props.user)
         });
-        this.props.dispatch(carSlice.actions.clearAvailable);
     }
 
     render() {
@@ -264,7 +264,7 @@ export class BookCar extends React.Component<BookCarProps, BookCarState> {
         }
         let booking_status = (
             <div className="modal-container">
-                <Modal show={message !== ""} onHide={() => {this.resetPicker(); this.props.dispatch(requestSlice.actions.resetNewest);}}>
+                <Modal show={message !== ""} onHide={() => {this.resetPicker();}}>
                     <Modal.Header>
                         <Modal.Title>Booking request sent!</Modal.Title>
                     </Modal.Header>
@@ -272,7 +272,7 @@ export class BookCar extends React.Component<BookCarProps, BookCarState> {
                         <p>{message}</p>
                     </Modal.Body>
                     <Modal.Footer>
-                        <Button onClick={() => {this.resetPicker(); this.props.dispatch(requestSlice.actions.resetNewest);}} appearance="primary">
+                        <Button onClick={() => {this.resetPicker();}} appearance="primary">
                             Ok
                         </Button>
                     </Modal.Footer>
