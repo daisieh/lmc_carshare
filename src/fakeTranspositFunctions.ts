@@ -62,19 +62,29 @@ export async function getAvailableCars(pendingRequest :CarRequest) {
 }
 
 export async function deleteRequests(eventIds :string[]) {
+    let reqs = fakeRequests;
+    let deleted = [] as CarRequest[];
+    console.log(`deleteRequests ${eventIds}`);
+    let eventMap = reqs.map(y => {return y.eventId;});
+    eventIds.forEach(x => {
+        let index = eventMap.indexOf(x);
+        if (index >= 0) {
+            deleted.push(fakeRequests[index] as CarRequest);
+        }
+    });
     let response = {
         error: "",
-        response: [] as CarRequest[]
+        response: deleted
     };
     return Promise.resolve(response);
 }
 
-export function sendReminderToOwner(eventId: string) :TranspositResponse {
+export async function sendReminderToOwner(eventId: string) {
     let response = {
         error: "",
         response: null
     };
-    return response;
+    return Promise.resolve(response);
 }
 
 export async function createBooking(pendingRequest: CarRequest) {
@@ -94,23 +104,12 @@ export async function createBooking(pendingRequest: CarRequest) {
     return Promise.resolve(response);
 }
 
-export function useListFeatures(user: User | null): string[] {
-    const [features, setFeatures] = React.useState<string[]>([]);
-    React.useEffect(() => {
-        listFeatures().then(x => {
-            setFeatures((x.response));
-        });
-    }, [user]);
-    return features;
-}
-
-
-export function getThreeDaysEvents() :TranspositResponse {
+export async function getThreeDaysEvents() {
     let response = {
         error: "",
-        response: null as CarEvents | null
+        response: fakeCarEvent
     };
-    return response;
+    return Promise.resolve(response);
 }
 
 
@@ -238,3 +237,20 @@ const fakeCars = [
         "Description": "Orange Honda Element ELEMENT"
     }
 ];
+
+const fakeCarEvent =
+    {
+        "start": "2020-11-20T00:00:00-08:00",
+        "end": "2020-11-23T00:00:00-08:00",
+        "cars": [
+            "AL675T",
+            "NLEAF",
+            "ELEMENT"
+        ],
+        "interval": 900,
+        "busy_segments": [
+            ",,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,<-->,,,,,,,,,,,,,,,,",
+            ",,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,",
+            ",,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,"
+        ]
+    };

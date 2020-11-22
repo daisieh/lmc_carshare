@@ -18,12 +18,12 @@ interface TranspositResponse {
     response: any;
 }
 
-export function getAvailableCars(pendingRequest :CarRequest) :TranspositResponse {
+export async function getAvailableCars(pendingRequest :CarRequest) {
     let response = {
         error: "",
         response: [] as Car[]
     };
-    transposit
+    await transposit
         .run("get_cars_available_for_time", {
             start: pendingRequest.start,
             end: pendingRequest.end
@@ -40,14 +40,15 @@ export function getAvailableCars(pendingRequest :CarRequest) :TranspositResponse
                 }
                 return res;
             });
+            return response;
         })
         .catch(response => {
             response.error = response.toString();
+            return response;
         });
-    return response;
 }
 
-export function deleteRequests(eventIds :string[]) :TranspositResponse {
+export async function deleteRequests(eventIds :string[]) {
     let response = {
         error: "",
         response: [] as CarRequest[]
@@ -58,37 +59,39 @@ export function deleteRequests(eventIds :string[]) :TranspositResponse {
         })
         .then(x => {
             response.response = x.results as CarRequest[];
+            return response;
         })
         .catch(response => {
             response.error = response.toString();
+            return response;
         });
-    return response;
 }
 
-export function sendReminderToOwner(eventId: string) :TranspositResponse {
+export async function sendReminderToOwner(eventId: string) {
     let response = {
         error: "",
         response: null
     };
-    transposit
+    await transposit
         .run("send_reminder", {
             eventId: eventId
         })
         .then(x => {
             console.log(x);
+            return response;
         })
         .catch(response => {
             response.error = response.toString();
+            return response;
         });
-    return response;
 }
 
-export function createBooking(pendingRequest: CarRequest) :TranspositResponse {
+export async function createBooking(pendingRequest: CarRequest) {
     let response = {
         error: "",
         response: null as CarRequest | null
     };
-    transposit
+    await transposit
         .run("create_reservation", {
             start: pendingRequest.start,
             end: pendingRequest.end,
@@ -97,11 +100,12 @@ export function createBooking(pendingRequest: CarRequest) :TranspositResponse {
         })
         .then(results => {
             response.response = results.results[0] as CarRequest;
+            return response;
         })
         .catch(results => {
             response.error = results.toString();
+            return response;
         });
-    return response;
 }
 
 export async function listFeatures() {
@@ -114,68 +118,51 @@ export async function listFeatures() {
         .then(x => {
             console.log("features listed");
             response.response = x.results as string[];
+            return response;
         })
         .catch(x => {
             console.log("features error");
             response.error = x.toString();
+            return response;
         });
-    console.log("done");
-    console.log(response);
-    return response;
 }
 
-export function useListFeatures(user: User | null): string[] {
-    const [features, setFeatures] = React.useState<string[]>([]);
-    React.useEffect(() => {
-        transposit
-            .run("list_features", {})
-            .then(x => {
-                if (x.results) {
-                    console.log(`list features gave us back ${x.results.toString()}`);
-                    setFeatures(x.results as string[]);
-                }
-            })
-            .catch(response => {
-                console.log(response.toString());
-            });
-    }, [user]);
-    return features;
-}
-
-
-export function listAllCars() :TranspositResponse {
+export async function listAllCars() {
     let response = {
         error: "",
         response: [] as Car[]
     };
-    transposit
+    await transposit
         .run("list_cars", {})
         .then(x => {
             response.response = Object.keys(x.results[0]).map(key => x.results[0][key]) as Car[];
+            return response;
         })
         .catch(x => {
             response.error = x.toString();
+            return response;
         });
     return response;
 }
 
-export function getThreeDaysEvents() :TranspositResponse {
+export async function getThreeDaysEvents() {
     let response = {
         error: "",
         response: null as CarEvents | null
     };
-    transposit
+    await transposit
         .run("three_day_array", {start: moment().format(), interval: '900'})
         .then(x => {
             response.response = x.results[0] as CarEvents
+            return response;
         })
         .catch(x => {
             response.error = x.toString();
+            return response;
         });
-    return response;
 }
 
-export function listRequests(): TranspositResponse {
+export async function listRequests() {
     let response = {
         error: "",
         response: [] as CarRequest[]
@@ -187,11 +174,12 @@ export function listRequests(): TranspositResponse {
             results.results.shift();
             let requests = results.results as CarRequest[];
             response.response = requests;
+            return response;
         })
         .catch(x => {
             response.error = x.toString();
+            return response;
         });
-    return response;
 }
 
 

@@ -1,6 +1,4 @@
 import * as React from "react";
-import * as Transposit from "./fakeTranspositFunctions";
-import {CarEvents} from "./types";
 
 interface CarshareBookerProps {
 }
@@ -22,15 +20,5 @@ export class CarshareBooker extends React.Component<CarshareBookerProps, Carshar
 
     render() {
         return (<div/>);
-    }
-
-    getThreeDays() :CarEvents {
-        this.setState({isProcessing: true});
-        let response = Transposit.getThreeDaysEvents();
-        this.setState({
-            isProcessing: false,
-            errorMessage: response.error
-        });
-        return response.response;
     }
 }
