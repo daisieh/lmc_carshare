@@ -2,8 +2,8 @@ import * as React from "react";
 import {Button, Checkbox, Table} from "rsuite";
 import {Car, CarRequest} from "./types";
 import {connect} from "react-redux";
-import {Dispatch} from "redux";
-import {requestSlice} from "./redux/reducers/requestSlice";
+import {deleteRequest} from "./redux/reducers/requestSlice";
+import {ThunkDispatch} from "@reduxjs/toolkit";
 
 const { Column, HeaderCell, Cell } = Table;
 
@@ -11,7 +11,7 @@ interface RequestListProps {
     requests: CarRequest[],
     status: string,
     cars: Car[],
-    dispatch: Dispatch
+    dispatch: ThunkDispatch<any, any, any>;
 }
 
 interface RequestListState {
@@ -49,9 +49,7 @@ export class RequestList extends React.Component<RequestListProps, RequestListSt
 
     handleDelete() {
         console.log(`deleting ${this.state.requestsToDelete.toString()}`);
-        this.state.requestsToDelete.forEach(x => {
-            this.props.dispatch(requestSlice.actions.remove(x));
-        });
+            this.props.dispatch(deleteRequest(this.state.requestsToDelete));
     }
 
     async handleReminder() {

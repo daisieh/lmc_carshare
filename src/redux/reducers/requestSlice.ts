@@ -1,13 +1,14 @@
 import {createAsyncThunk, createSlice, PayloadAction} from '@reduxjs/toolkit'
-import {CarRequest} from "../../types";
-import {createBooking, listRequests} from "../../fakeTranspositFunctions";
+import {CarEvents, CarRequest} from "../../types";
+import {createBooking, listRequests, deleteRequests} from "../../fakeTranspositFunctions";
 import {AppDispatch} from "../store";
 
 interface RequestState {
     entries: CarRequest[],
     newest: CarRequest | null,
     status: 'idle' | 'loading' | 'succeeded' | 'failed',
-    error: string | null
+    error: string | null,
+    threeDays: CarEvents
 }
 
 export const loadRequests = createAsyncThunk(
@@ -32,6 +33,21 @@ export const createRequest = createAsyncThunk<CarRequest, CarRequest, {
     }
 )
 
+export const deleteRequest = createAsyncThunk<CarRequest[], string[], {
+    dispatch: AppDispatch
+    state: RequestState
+    extra: {
+        jwt: string
+    }
+}>(
+    'requests/deleteRequest',
+    async (eventIds) => {
+        console.log(`deleting ${eventIds}`);
+        const response = await deleteRequests(eventIds);
+        return response.response as CarRequest[];
+    }
+)
+
 export const requestSlice = createSlice({
     name: 'requests',
     initialState: {
@@ -51,21 +67,6 @@ export const requestSlice = createSlice({
         newest: null
     } as RequestState,
     reducers: {
-        add: (state, action :PayloadAction<CarRequest[]>) => {
-            state.status = "loading";
-            state.entries.push(...action.payload);
-            state.status = "idle";
-        },
-        remove: (state, action :PayloadAction<string>) => {
-            state.status = "loading";
-            let eventMap = state.entries.map(x => {return x.eventId;});
-            console.log(`removing ${action.payload} from ${eventMap}`);
-            let index = eventMap.indexOf(action.payload);
-            if (index >= 0) {
-                state.entries.splice(index, 1);
-            }
-            state.status = "idle";
-        },
         resetNewest: (state) => {
             state.newest = null;
         }
@@ -94,9 +95,25 @@ export const requestSlice = createSlice({
             state.status = "failed";
             state.error = action.error.toString();
         })
+        builder.addCase(deleteRequest.fulfilled, (state, action) => {
+            action.payload.forEach(x => {
+                let eventMap = state.entries.map(y => {return y.eventId;});
+                let index = eventMap.indexOf(x.eventId);
+                state.entries.splice(index, 1);
+            });
+            state.newest = null;
+            state.status = "idle";
+        })
+        builder.addCase(deleteRequest.pending, (state) => {
+            state.status = "loading";
+        })
+        builder.addCase(deleteRequest.rejected, (state, action) => {
+            state.status = "failed";
+            state.error = action.error.toString();
+        })
     }
 })
 
-export const { add, remove, resetNewest } = requestSlice.actions
+export const { resetNewest } = requestSlice.actions
 
 export default requestSlice.reducer
