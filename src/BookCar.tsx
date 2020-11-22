@@ -5,7 +5,7 @@ import {Car, CarRequest, User} from "./types";
 import {connect} from "react-redux";
 import {clearAvailable, loadAvailableCars} from "./redux/reducers/carSlice";
 import {ThunkDispatch} from "@reduxjs/toolkit";
-import {createRequest, requestSlice} from "./redux/reducers/requestSlice";
+import {createRequest, resetNewest} from "./redux/reducers/requestSlice";
 
 interface BookCarProps {
     user: User;
