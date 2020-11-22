@@ -1,23 +1,21 @@
 import * as React from "react";
-import {CarshareBooker} from "./CarshareBooker";
 import {Loader} from "rsuite";
 import {CarEvents} from "./types";
 
-interface CarCalendarProps {
-    booker: CarshareBooker;
+interface CalendarProps {
 }
 
-interface CarCalendarState {
+interface CalendarState {
     car_events: CarEvents | null;
     isLoading: boolean;
     errorMessage: string;
 }
 
-export class CarCalendar extends React.Component<CarCalendarProps, CarCalendarState> {
+export class Calendar extends React.Component<CalendarProps, CalendarState> {
     constructor(props) {
         super(props);
         this.state = {
-            car_events: this.props.booker.getThreeDays(),
+            car_events: null,//this.props.booker.getThreeDays(),
             isLoading: true,
             errorMessage: ""
         };
@@ -34,7 +32,7 @@ export class CarCalendar extends React.Component<CarCalendarProps, CarCalendarSt
             console.log(row_data);
             let car_labels = [] as string[];
             // for (let i=0; i<3; i++) {
-                car_labels.push(...this.state.car_events.cars);
+            car_labels.push(...this.state.car_events.cars);
             // }
             console.log(car_labels);
             console.log(time_labels);
@@ -54,7 +52,7 @@ export class CarCalendar extends React.Component<CarCalendarProps, CarCalendarSt
         let colgroups = <colgroup className={`${class_name}`}>
             <col span={1} className={`${class_name}-col-name-span`}/>
             <col span={column_names.length} className={`${class_name}-col-span`}/>
-            </colgroup>
+        </colgroup>
         let thead =
             <tr className={`${class_name}`}>
                 <th className={`${class_name}`}>&nbsp;</th>
@@ -62,25 +60,25 @@ export class CarCalendar extends React.Component<CarCalendarProps, CarCalendarSt
             </tr>;
         let trs = [] as any[];
         // for (let d=0; d<3; d++) {
-            for (let i in row_names) {
-                let tr = [(<td className={`${class_name}-row-label`}>{row_names[i]}</td>)];
-                tr.push(...row_data[i].map(x => {
-                    if (x === ',') {
-                        return (<td className={`${class_name}-blank`}>&nbsp;</td>);
-                    } else if (x === '<') {
-                        return (<td className={`${class_name}-start`}>^</td>);
-                    } else if (x === '-') {
-                        return (<td className={`${class_name}-block`}>|</td>);
-                    } else if (x === '>') {
-                        return (<td className={`${class_name}-end`}>v</td>);
-                    } else if (x === 'o') {
-                        return (<td className={`${class_name}-blip`}>o</td>);
-                    } else {
-                        return (<td className={`${class_name}-blank`}>&nbsp;</td>);
-                    }
-                }));
-                trs.push(tr);
-            }
+        for (let i in row_names) {
+            let tr = [(<td className={`${class_name}-row-label`}>{row_names[i]}</td>)];
+            tr.push(...row_data[i].map(x => {
+                if (x === ',') {
+                    return (<td className={`${class_name}-blank`}>&nbsp;</td>);
+                } else if (x === '<') {
+                    return (<td className={`${class_name}-start`}>^</td>);
+                } else if (x === '-') {
+                    return (<td className={`${class_name}-block`}>|</td>);
+                } else if (x === '>') {
+                    return (<td className={`${class_name}-end`}>v</td>);
+                } else if (x === 'o') {
+                    return (<td className={`${class_name}-blip`}>o</td>);
+                } else {
+                    return (<td className={`${class_name}-blank`}>&nbsp;</td>);
+                }
+            }));
+            trs.push(tr);
+        }
         // }
         let tbody = trs.map(x => {return (<tr className={class_name}>{x}</tr>)});
         return (

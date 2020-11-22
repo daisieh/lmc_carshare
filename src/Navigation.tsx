@@ -5,6 +5,7 @@ import RequestList from "./RequestList";
 import {SignOut} from "./fakeTranspositFunctions";
 import {Pages, User} from "./types";
 import {connect} from "react-redux";
+import {Calendar} from "./Calendar";
 
 interface NavigationProps {
     user: User;
@@ -45,11 +46,11 @@ export class Navigation extends React.Component<NavigationProps, NavigationState
                 //         <main className="container main">
                 //             car
                 //         </main>
-                // } else if (this.state.mode === "/calendar") {
-                //     main =
-                //         <main className="container main">
-                //             <CarCalendar booker={this.state.booker}/>
-                //         </main>
+                } else if (this.state.mode === "/calendar") {
+                    main =
+                        <main className="container main">
+                            <Calendar/>
+                        </main>
                 // } else if (this.state.mode === "/cars") {
                 //     main =
                 //         <main className="container main">
