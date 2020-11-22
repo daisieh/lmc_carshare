@@ -1,6 +1,7 @@
 import {createAsyncThunk, createSlice, PayloadAction} from '@reduxjs/toolkit'
 import {Car, CarRequest} from "../../types";
 import {getAvailableCars, listAllCars} from "../../fakeTranspositFunctions";
+import {AppDispatch} from "../store";
 
 interface CarState {
     entries: Car[],
@@ -17,12 +18,17 @@ export const loadCars = createAsyncThunk(
     }
 )
 
-export const loadAvailableCars = createAsyncThunk(
+export const loadAvailableCars = createAsyncThunk<string[], CarRequest, {
+    dispatch: AppDispatch
+    state: CarState
+    extra: {
+        jwt: string
+    }
+}>(
     'cars/loadAvailableCars',
     async (request :CarRequest) => {
-        console.log(`hi ${request.vehicle}`);
         const response = await getAvailableCars(request);
-        return response.response;
+        return response.response as string[];
     }
 )
 
@@ -44,6 +50,9 @@ export const carSlice = createSlice({
             if (index >= 0) {
                 state.entries.splice(index, 1);
             }
+        },
+        clearAvailable: (state) => {
+            state.available = [] as Car[];
         }
     },
     extraReducers: builder => {
@@ -59,7 +68,11 @@ export const carSlice = createSlice({
             state.error = action.error.toString();
         })
         builder.addCase(loadAvailableCars.fulfilled, (state, action) => {
-            state.available = action.payload;
+            let licenceMap = state.entries.map(x => {return x.Licence;});
+            state.available = action.payload.map(x => {
+                return state.entries[licenceMap.indexOf(x)] as Car;
+            });
+            console.log(`available is ${state.available[0].Description}`);
             state.status = "idle";
         })
         builder.addCase(loadAvailableCars.pending, (state) => {
@@ -72,6 +85,6 @@ export const carSlice = createSlice({
     }
 })
 
-export const { add, remove } = carSlice.actions
+export const { add, remove, clearAvailable } = carSlice.actions
 
 export default carSlice.reducer

@@ -1,9 +1,11 @@
 import {createAsyncThunk, createSlice, PayloadAction} from '@reduxjs/toolkit'
 import {CarRequest} from "../../types";
-import {listRequests} from "../../fakeTranspositFunctions";
+import {createBooking, listRequests} from "../../fakeTranspositFunctions";
+import {AppDispatch} from "../store";
 
 interface RequestState {
     entries: CarRequest[],
+    newest: CarRequest | null,
     status: 'idle' | 'loading' | 'succeeded' | 'failed',
     error: string | null
 }
@@ -13,6 +15,20 @@ export const loadRequests = createAsyncThunk(
     async () => {
         const response = await listRequests();
         return response.response;
+    }
+)
+
+export const createRequest = createAsyncThunk<CarRequest, CarRequest, {
+    dispatch: AppDispatch
+    state: RequestState
+    extra: {
+        jwt: string
+    }
+}>(
+    'cars/loadAvailableCars',
+    async (request :CarRequest) => {
+        const response = await createBooking(request);
+        return response.response as CarRequest;
     }
 )
 
@@ -48,6 +64,9 @@ export const requestSlice = createSlice({
                 state.entries.splice(index, 1);
             }
             state.status = "idle";
+        },
+        resetNewest: (state) => {
+            state.newest = null;
         }
     },
     extraReducers: builder => {
@@ -55,16 +74,28 @@ export const requestSlice = createSlice({
             state.entries = action.payload;
             state.status = "idle";
         })
-        builder.addCase(loadRequests.pending, (state, action) => {
+        builder.addCase(loadRequests.pending, (state) => {
             state.status = "loading";
         })
         builder.addCase(loadRequests.rejected, (state, action) => {
             state.status = "failed";
             state.error = action.error.toString();
         })
+        builder.addCase(createRequest.fulfilled, (state, action) => {
+            state.entries.push(action.payload);
+            state.newest = action.payload;
+            state.status = "idle";
+        })
+        builder.addCase(createRequest.pending, (state) => {
+            state.status = "loading";
+        })
+        builder.addCase(createRequest.rejected, (state, action) => {
+            state.status = "failed";
+            state.error = action.error.toString();
+        })
     }
 })
 
-export const { add, remove } = requestSlice.actions
+export const { add, remove, resetNewest } = requestSlice.actions
 
 export default requestSlice.reducer

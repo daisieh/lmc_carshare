@@ -3,10 +3,9 @@ import moment from "moment";
 import {Button, DatePicker, Modal, Radio, TagPicker} from "rsuite";
 import {Car, CarRequest, User} from "./types";
 import {connect} from "react-redux";
-import * as Transposit from "./fakeTranspositFunctions";
-import {requestSlice} from "./redux/reducers/requestSlice";
-import {Dispatch} from "redux";
 import {carSlice, loadAvailableCars} from "./redux/reducers/carSlice";
+import {ThunkDispatch} from "@reduxjs/toolkit";
+import {createRequest, requestSlice} from "./redux/reducers/requestSlice";
 
 interface BookCarProps {
     user: User;
@@ -15,26 +14,24 @@ interface BookCarProps {
     available: Car[];
     status: string;
     error: string;
-    dispatch: Dispatch;
+    dispatch: ThunkDispatch<any, any, any>;
+    bookedRequest: CarRequest | null;
 }
 
 interface BookCarState {
     pendingRequest: CarRequest;
-    bookedRequest: CarRequest | null;
     startDate: Date;
     endDate: Date;
-    availableCars: Car[];
 }
 
 export class BookCar extends React.Component<BookCarProps, BookCarState> {
     constructor(props) {
         super(props);
+        let now = this.updateTimes("", "");
         this.state = {
-            startDate: new Date(),
-            endDate: new Date(),
-            pendingRequest: makeEmptyRequest(this.props.user),
-            bookedRequest: null,
-            availableCars: [] as Car[]
+            startDate: new Date(now[0]),
+            endDate: new Date(now[1]),
+            pendingRequest: makeEmptyRequest(this.props.user)
         }
         this.handleStartChange = this.handleStartChange.bind(this);
         this.handleEndChange = this.handleEndChange.bind(this);
@@ -64,7 +61,15 @@ export class BookCar extends React.Component<BookCarProps, BookCarState> {
         } else {
             updated = this.updateTimes("", "");
         }
-        this.setState({startDate: new Date(updated[0]), endDate: new Date(updated[1])});
+        let pending = this.state.pendingRequest;
+        pending.start = updated[0];
+        pending.end = updated[1];
+
+        this.setState({
+            startDate: new Date(updated[0]),
+            endDate: new Date(updated[1]),
+            pendingRequest: pending
+        });
     }
 
     handleEndChange(event) {
@@ -74,12 +79,19 @@ export class BookCar extends React.Component<BookCarProps, BookCarState> {
         } else {
             updated = this.updateTimes("", "");
         }
-        this.setState({startDate: new Date(updated[0]), endDate: new Date(updated[1])});
+        let pending = this.state.pendingRequest;
+        pending.start = updated[0];
+        pending.end = updated[1];
+
+        this.setState({
+            startDate: new Date(updated[0]),
+            endDate: new Date(updated[1]),
+            pendingRequest: pending
+        });
     }
 
     onLookForCars() {
-        // this.props.booker.getAvailableCars();
-        // this.props.dispatch(loadAvailableCars(this.state.pendingRequest));
+        this.props.dispatch(loadAvailableCars(this.state.pendingRequest));
     }
 
     onTagPick(event) {
@@ -91,13 +103,15 @@ export class BookCar extends React.Component<BookCarProps, BookCarState> {
 
     updateTimes(startTime: string, endTime: string) :[string, string]{
         let currentRequest = makeEmptyRequest(this.props.user);
-        let newStart = moment(this.state.pendingRequest.start);
-        let newEnd = moment(this.state.pendingRequest.end);
+        let newEnd, newStart;
 
         // if both start and end are blank, we're resetting both
         if (startTime === "" && endTime === "") {
             newStart = moment().add(1, 'hour').startOf('hour');
             newEnd = moment().add(2, 'hour').startOf('hour');
+        } else {
+            newStart = moment(this.state.startDate);
+            newEnd = moment(this.state.endDate);
         }
         console.log(`was ${newStart.format()} ${newEnd.format()}`);
         console.log(`asking for ${startTime} ${endTime}`);
@@ -125,17 +139,12 @@ export class BookCar extends React.Component<BookCarProps, BookCarState> {
         }
         currentRequest.start = newStart.format();
         currentRequest.end = newEnd.format();
-        this.setState({
-            pendingRequest: currentRequest
-        });
-        console.log(`now ${currentRequest.start} ${currentRequest.end}`);
         return [currentRequest.start, currentRequest.end];
     }
 
     bookCar() {
-        let response = Transposit.createBooking(this.state.pendingRequest);
+        this.props.dispatch(createRequest(this.state.pendingRequest));
         this.setState({
-            bookedRequest: response.response,
             pendingRequest: makeEmptyRequest(this.props.user)
         });
         this.resetPicker();
@@ -143,16 +152,15 @@ export class BookCar extends React.Component<BookCarProps, BookCarState> {
 
     resetPicker() {
         this.setState({
-            pendingRequest: makeEmptyRequest(this.props.user),
-            bookedRequest: null,
-            availableCars: [] as Car[]
+            pendingRequest: makeEmptyRequest(this.props.user)
         });
+        this.props.dispatch(carSlice.actions.clearAvailable);
     }
 
     render() {
         let disabled = false;//(booker.state.availableCars && booker.state.availableCars.length > 0) || (booker.state.pendingRequest !== null);
         let inThePast = "";
-        if (moment(this.state.pendingRequest.start).isBefore(moment())) {
+        if (moment(this.state.startDate).isBefore(moment())) {
             inThePast = "WARNING! The selected time slot is in the past.";
         }
         let feat_array:{label: string, value: string}[] = this.props.features.map(x => { return {"value": x, "label": x}; });
@@ -210,19 +218,19 @@ export class BookCar extends React.Component<BookCarProps, BookCarState> {
         );
         let chosenCar = null as Car | null;
         let email = "";
-        if (this.state.availableCars.length > 0) {
+        if (this.props.available.length > 0) {
             chosenCar = this.props.cars.filter(car => {
                 return (car.Licence === this.state.pendingRequest.vehicle);
             })[0];
             if (chosenCar != null) {
                 email = chosenCar.Email;
             }
-            console.log(`there are ${this.state.availableCars.length} cars, chosen car is ${email}`);
-            let rows = this.state.availableCars.map((car) => {
+            console.log(`there are ${this.props.available.length} cars, chosen car is ${email}`);
+            let rows = this.props.available.map((car) => {
                 let isChosenCar = (email === car.Email);
                 let needsConfirm = car.Confirm ? "(requires approval)" : "";
                 return (
-                    <Radio checked={isChosenCar} onChange={this.onClickCarRadio} value={car.Email}>
+                    <Radio checked={isChosenCar} onChange={this.onClickCarRadio} value={car.Licence} key={car.Licence}>
                         {car.Description} {needsConfirm}
                     </Radio>
                 )
@@ -246,7 +254,7 @@ export class BookCar extends React.Component<BookCarProps, BookCarState> {
         }
 
         let message = "";
-        let bookedReq = this.state.bookedRequest;
+        let bookedReq = this.props.bookedRequest;
         if (bookedReq) {
             console.log(bookedReq);
             if (bookedReq.confirmed) {
@@ -257,7 +265,7 @@ export class BookCar extends React.Component<BookCarProps, BookCarState> {
         }
         let booking_status = (
             <div className="modal-container">
-                <Modal show={message !== ""} onHide={() => {this.resetPicker();}}>
+                <Modal show={message !== ""} onHide={() => {this.resetPicker(); this.props.dispatch(requestSlice.actions.resetNewest);}}>
                     <Modal.Header>
                         <Modal.Title>Booking request sent!</Modal.Title>
                     </Modal.Header>
@@ -265,7 +273,7 @@ export class BookCar extends React.Component<BookCarProps, BookCarState> {
                         <p>{message}</p>
                     </Modal.Body>
                     <Modal.Footer>
-                        <Button onClick={() => {this.resetPicker();}} appearance="primary">
+                        <Button onClick={() => {this.resetPicker(); this.props.dispatch(requestSlice.actions.resetNewest);}} appearance="primary">
                             Ok
                         </Button>
                     </Modal.Footer>
@@ -302,6 +310,8 @@ const mapStateToProps = (state) => {
         cars: state.cars.entries,
         available: state.cars.available,
         status: state.cars.status,
-        error: state.cars.error};
+        error: state.cars.error,
+        bookedRequest: state.requests.newest
+    };
 }
 export default connect(mapStateToProps)(BookCar)

@@ -9,7 +9,7 @@ interface User {
 interface AvailableCars {
     "start": string;
     "end": string;
-    "cars": Car[];
+    "cars": string[];
 }
 
 export interface TranspositResponse {
@@ -48,12 +48,17 @@ export async function listAllCars() {
     return Promise.resolve(response);
 }
 
-export function getAvailableCars(pendingRequest :CarRequest) :TranspositResponse {
+export async function getAvailableCars(pendingRequest :CarRequest) {
+    let fakeResponse = {
+        start: pendingRequest.start,
+        end: pendingRequest.end,
+        cars: [fakeCars[1].Licence]
+    } as AvailableCars;
     let response = {
         error: "",
-        response: [] as Car[]
+        response: fakeResponse.cars
     };
-    return response;
+    return Promise.resolve(response);
 }
 
 export async function deleteRequests(eventIds :string[]) {
@@ -72,12 +77,21 @@ export function sendReminderToOwner(eventId: string) :TranspositResponse {
     return response;
 }
 
-export function createBooking(pendingRequest: CarRequest) :TranspositResponse {
+export async function createBooking(pendingRequest: CarRequest) {
+    let fakeReq =     {
+        "threadId": "1759168e6f62e313",
+        "vehicle": "NLEAF",
+        "requester": "testy@test.com",
+        "start": "2021-03-10T05:00:00-0800",
+        "end": "2021-03-10T14:00:00-0800",
+        "eventId": "o106pbpmlcap5t6a4oc16b335g",
+        "confirmed": "TRUE"
+    };
     let response = {
         error: "",
-        response: null as CarRequest | null
+        response: fakeReq as CarRequest | null
     };
-    return response;
+    return Promise.resolve(response);
 }
 
 export function useListFeatures(user: User | null): string[] {
