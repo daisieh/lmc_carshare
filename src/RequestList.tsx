@@ -71,7 +71,10 @@ export class RequestList extends React.Component<RequestListProps, RequestListSt
         let requests = this.props.requests.map(
             x => {
                 let index = licenceMap.indexOf(x.vehicle);
-                let desc = cars[index].Description;
+                let desc = "";
+                if (cars.length > 0) {
+                    desc = cars[index].Description;
+                }
                 return {
                     eventId: x.eventId,
                     description: desc,
