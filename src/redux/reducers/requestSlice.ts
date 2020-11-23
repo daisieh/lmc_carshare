@@ -1,6 +1,12 @@
 import {createAsyncThunk, createSlice} from '@reduxjs/toolkit'
 import {CarEvents, CarRequest} from "../../types";
-import {createBooking, listRequests, deleteRequests, getThreeDaysEvents} from "../../transpositFunctions";
+import {
+    createBooking,
+    listRequests,
+    deleteRequests,
+    getThreeDaysEvents,
+    sendReminderToOwner
+} from "../../transpositFunctions";
 import {AppDispatch} from "../store";
 
 interface RequestState {
@@ -46,6 +52,21 @@ export const deleteRequest = createAsyncThunk<CarRequest[], string[], {
         console.log(`deleting ${eventIds}`);
         const response = await deleteRequests(eventIds);
         return response.response as CarRequest[];
+    }
+)
+
+export const sendReminderForRequest = createAsyncThunk<string, CarRequest, {
+    dispatch: AppDispatch
+    state: RequestState
+    extra: {
+        jwt: string
+    }
+}>(
+    'requests/sendReminderForRequest',
+    async (request) => {
+        console.log(`sending reminder for  ${request.eventId}`);
+        const response = await sendReminderToOwner(request.eventId as string);
+        return response.response;
     }
 )
 
@@ -119,6 +140,16 @@ export const requestSlice = createSlice({
             state.status = "loading";
         })
         builder.addCase(createRequest.rejected, (state, action) => {
+            state.status = "failed";
+            state.error = action.error.toString();
+        })
+        builder.addCase(sendReminderForRequest.fulfilled, (state) => {
+            state.status = "idle";
+        })
+        builder.addCase(sendReminderForRequest.pending, (state) => {
+            state.status = "loading";
+        })
+        builder.addCase(sendReminderForRequest.rejected, (state, action) => {
             state.status = "failed";
             state.error = action.error.toString();
         })

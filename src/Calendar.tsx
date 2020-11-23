@@ -34,9 +34,7 @@ export class Calendar extends React.Component<CalendarProps, CalendarState> {
             }
             console.log(row_data);
             let car_labels = [] as string[];
-            // for (let i=0; i<3; i++) {
             car_labels.push(...this.props.threeDays.cars);
-            // }
             console.log(car_labels);
             console.log(time_labels);
             events = this.makeRotatedTable(time_labels, car_labels, row_data, "calendar-table");

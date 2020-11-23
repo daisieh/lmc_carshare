@@ -2,7 +2,7 @@ import * as React from "react";
 import {Button, Checkbox, Table} from "rsuite";
 import {Car, CarRequest} from "./types";
 import {connect} from "react-redux";
-import {deleteRequest} from "./redux/reducers/requestSlice";
+import {deleteRequest, sendReminderForRequest} from "./redux/reducers/requestSlice";
 import {ThunkDispatch} from "@reduxjs/toolkit";
 
 const { Column, HeaderCell, Cell } = Table;
@@ -11,6 +11,7 @@ interface RequestListProps {
     requests: CarRequest[],
     status: string,
     cars: Car[],
+    error: string,
     dispatch: ThunkDispatch<any, any, any>;
 }
 
@@ -48,19 +49,13 @@ export class RequestList extends React.Component<RequestListProps, RequestListSt
     }
 
     handleDelete() {
-        console.log(`deleting ${this.state.requestsToDelete.toString()}`);
-            this.props.dispatch(deleteRequest(this.state.requestsToDelete));
+        this.props.dispatch(deleteRequest(this.state.requestsToDelete));
     }
 
     async handleReminder() {
         if (this.state.activeRow && this.state.activeRow.eventId && (this.state.activeRow.confirmed === "FALSE")) {
-            console.log(this.state.activeRow);
-            //await this.props.booker.sendReminderForRequest(this.state.activeRow.eventId);
+            this.props.dispatch(sendReminderForRequest(this.state.activeRow));
         }
-    }
-
-    sendReminderForRequest(eventId: string) {
-        console.log(`sending reminder for ${eventId}`);
     }
 
     render() {
@@ -75,17 +70,17 @@ export class RequestList extends React.Component<RequestListProps, RequestListSt
                 }
                 return {
                     eventId: x.eventId,
+                    vehicle: x.vehicle,
                     description: desc,
                     start: x.start,
                     end: x.end,
                     confirmed: x.confirmed
                 }
             });
-        let errorMessage = "";//this.props.booker.state.errorMessage;
         let loading = (this.props.status === "loading");
         return (
             <div className="requests">
-                <div className="error">{errorMessage}</div>
+                <div className="error">{this.props.error}</div>
                 <p className="request-table-caption">
                     <Button
                         appearance="ghost"
@@ -135,6 +130,7 @@ export class RequestList extends React.Component<RequestListProps, RequestListSt
                                 return (
                                     <Button
                                         appearance="link"
+                                        disabled={!(this.state.activeRow !== null && this.state.activeRow.eventId === rowData.eventId)}
                                         size="sm"
                                         value={rowData}
                                         onClick={this.handleReminder}
@@ -152,7 +148,12 @@ export class RequestList extends React.Component<RequestListProps, RequestListSt
 }
 
 const mapStateToProps = (state) => {
-    return {requests: state.requests.entries, cars: state.cars.entries, status: state.requests.status};
+    return {
+        requests: state.requests.entries,
+        cars: state.cars.entries,
+        status: state.requests.status,
+        error: state.requests.error
+    };
 }
 
 export default connect(mapStateToProps)(RequestList)

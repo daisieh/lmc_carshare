@@ -82,7 +82,7 @@ export async function deleteRequests(eventIds :string[]) {
 export async function sendReminderToOwner(eventId: string) {
     let response = {
         error: "",
-        response: null
+        response: `sendReminderToOwner of ${eventId}`
     };
     return Promise.resolve(response);
 }
@@ -97,6 +97,7 @@ export async function createBooking(pendingRequest: CarRequest) {
 }
 
 export async function getThreeDaysEvents(start: string, interval: number) {
+    console.log(`getThreeDaysEvents with ${start} and ${interval}`);
     let response = {
         error: "",
         response: fakeCarEvent
@@ -176,7 +177,7 @@ const fakeRequests = [
         "start": "2021-03-10T05:00:00-0800",
         "end": "2021-03-10T14:00:00-0800",
         "eventId": "o106pbpmlcap5t6a4oc16b335g",
-        "confirmed": "TRUE"
+        "confirmed": "FALSE"
     }
 ];
 

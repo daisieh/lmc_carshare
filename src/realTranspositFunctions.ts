@@ -1,4 +1,3 @@
-import moment from "moment";
 import {Transposit, User} from "transposit";
 import {Car, CarEvents, CarRequest} from "./types";
 import * as React from "react";
@@ -65,7 +64,7 @@ export async function deleteRequests(eventIds :string[]) {
 export async function sendReminderToOwner(eventId: string) {
     let response = {
         error: "",
-        response: null
+        response: ""
     };
     await transposit
         .run("send_reminder", {
@@ -73,6 +72,7 @@ export async function sendReminderToOwner(eventId: string) {
         })
         .then(x => {
             console.log(x);
+            response.response = x.toString();
             return response;
         })
         .catch(response => {
