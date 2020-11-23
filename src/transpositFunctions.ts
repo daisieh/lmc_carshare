@@ -15,25 +15,15 @@ interface AvailableCars {
 export async function getAvailableCars(pendingRequest :CarRequest) {
     let response = {
         error: "",
-        response: [] as Car[]
+        response: [] as string[]
     };
-    await transposit
+    return await transposit
         .run("get_cars_available_for_time", {
             start: pendingRequest.start,
             end: pendingRequest.end
         })
         .then(results => {
-            let selectedFeatures = pendingRequest.features;
-            let raw_cars = results.results[0] as AvailableCars;
-            response.response = raw_cars.cars.filter(x => {
-                let res = true;
-                for (let i in selectedFeatures) {
-                    if (x.Features.indexOf(selectedFeatures[i]) < 0) {
-                        res = false;
-                    }
-                }
-                return res;
-            });
+            response.response = results.results as string[];
             return response;
         })
         .catch(response => {
@@ -47,7 +37,7 @@ export async function deleteRequests(eventIds :string[]) {
         error: "",
         response: [] as CarRequest[]
     };
-    transposit
+    return transposit
         .run("delete_requests", {
             eventIds: eventIds.toString()
         })
@@ -66,7 +56,7 @@ export async function sendReminderToOwner(eventId: string) {
         error: "",
         response: ""
     };
-    await transposit
+    return await transposit
         .run("send_reminder", {
             eventId: eventId
         })
@@ -78,7 +68,7 @@ export async function sendReminderToOwner(eventId: string) {
         .catch(response => {
             response.error = response.toString();
             return response;
-        });
+        })
 }
 
 export async function createBooking(pendingRequest: CarRequest) {
@@ -86,7 +76,7 @@ export async function createBooking(pendingRequest: CarRequest) {
         error: "",
         response: null as CarRequest | null
     };
-    await transposit
+    return await transposit
         .run("create_reservation", {
             start: pendingRequest.start,
             end: pendingRequest.end,
@@ -108,7 +98,7 @@ export async function listFeatures() {
         error: "",
         response: [] as string[]
     };
-    await transposit
+    return await transposit
         .run("list_features", {})
         .then(x => {
             console.log("features listed");
@@ -127,7 +117,7 @@ export async function listAllCars() {
         error: "",
         response: [] as Car[]
     };
-    await transposit
+    return await transposit
         .run("list_cars", {})
         .then(x => {
             response.response = Object.keys(x.results[0]).map(key => x.results[0][key]) as Car[];
@@ -137,7 +127,6 @@ export async function listAllCars() {
             response.error = x.toString();
             return response;
         });
-    return response;
 }
 
 export async function getThreeDaysEvents(start: string, interval: number) {
@@ -145,7 +134,7 @@ export async function getThreeDaysEvents(start: string, interval: number) {
         error: "",
         response: null as CarEvents | null
     };
-    await transposit
+    return await transposit
         .run("three_day_array", {start: start, interval: interval.toString()})
         .then(x => {
             response.response = x.results[0] as CarEvents
@@ -162,7 +151,7 @@ export async function listRequests() {
         error: "",
         response: [] as CarRequest[]
     };
-    transposit
+    return transposit
         .run("list_requests", {})
         .then(results => {
             // shift off the labels

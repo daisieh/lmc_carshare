@@ -28,7 +28,7 @@ export const loadAvailableCars = createAsyncThunk<string[], CarRequest, {
     'cars/loadAvailableCars',
     async (request :CarRequest) => {
         const response = await getAvailableCars(request);
-        return response.response as string[];
+        return response.response;
     }
 )
 export const clearAvailable = createAsyncThunk<any, any, {
