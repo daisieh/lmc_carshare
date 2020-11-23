@@ -15,10 +15,6 @@ interface AvailableCarsState {
 }
 
 export class AvailableCars extends React.Component<AvailableCarsProps, AvailableCarsState> {
-    constructor(props) {
-        super(props);
-    }
-
     render() {
         return (
             <div className="calendar">

@@ -1,4 +1,4 @@
-import {createAsyncThunk, createSlice} from '@reduxjs/toolkit'
+import {createAsyncThunk, createSlice, PayloadAction} from '@reduxjs/toolkit'
 import {CarEvents, CarRequest} from "../../types";
 import {
     createBooking,
@@ -118,6 +118,16 @@ export const requestSlice = createSlice({
         interval: 900
     } as RequestState,
     reducers: {
+        add: (state, action :PayloadAction<CarRequest>) => {
+            state.entries.push(action.payload);
+        },
+        remove: (state, action :PayloadAction<string>) => {
+            let licenceMap = state.entries.map(x => {return x.vehicle;});
+            let index = licenceMap.indexOf(action.payload);
+            if (index >= 0) {
+                state.entries.splice(index, 1);
+            }
+        }
     },
     extraReducers: builder => {
         builder.addCase(loadRequests.fulfilled, (state, action) => {
@@ -194,6 +204,6 @@ export const requestSlice = createSlice({
     }
 })
 
-export const {  } = requestSlice.actions
+export const { add, remove } = requestSlice.actions
 
 export default requestSlice.reducer
