@@ -6,6 +6,7 @@ import {SignOut} from "./transpositFunctions";
 import {Pages, User} from "./types";
 import {connect} from "react-redux";
 import Calendar from "./Calendar";
+import AvailableCars from "./AvailableCars";
 
 interface NavigationProps {
     user: User;
@@ -29,7 +30,6 @@ export class Navigation extends React.Component<NavigationProps, NavigationState
             <main className="container main">
                 <Loader size="lg" center content="Loading" vertical/>
             </main>
-        console.log(`mode is ${this.state.mode}`);
         if (this.props.user) {
                 if (this.state.mode === "/bookings") {
                     main =
@@ -41,21 +41,21 @@ export class Navigation extends React.Component<NavigationProps, NavigationState
                         <main className="container main">
                             <RequestList/>
                         </main>
-                // } else if (this.state.mode === "/my_car") {
-                //     main =
-                //         <main className="container main">
-                //             car
-                //         </main>
+                } else if (this.state.mode === "/my_car") {
+                    main =
+                        <main className="container main">
+                            car
+                        </main>
                 } else if (this.state.mode === "/calendar") {
                     main =
                         <main className="container main">
                             <Calendar/>
                         </main>
-                // } else if (this.state.mode === "/cars") {
-                //     main =
-                //         <main className="container main">
-                //             cars
-                //         </main>
+                } else if (this.state.mode === "/cars") {
+                    main =
+                        <main className="container main">
+                            <AvailableCars/>
+                        </main>
                 }
         }
         let navitems = Object.keys(Pages).map(x => {
