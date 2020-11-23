@@ -1,38 +1,41 @@
 import * as React from "react";
 import {Loader} from "rsuite";
-import {CarEvents} from "./types";
+import {Car, CarEvents, User} from "./types";
+import {ThunkDispatch} from "@reduxjs/toolkit";
+import {connect} from "react-redux";
+import {getThreeDays} from "./redux/reducers/requestSlice";
 
 interface CalendarProps {
+    threeDays: CarEvents | null;
+    user: User;
+    cars: Car[];
+    status: string;
+    error: string;
+    interval: number;
+    dispatch: ThunkDispatch<any, any, any>;
 }
 
 interface CalendarState {
-    car_events: CarEvents | null;
-    isLoading: boolean;
-    errorMessage: string;
 }
 
 export class Calendar extends React.Component<CalendarProps, CalendarState> {
     constructor(props) {
         super(props);
-        this.state = {
-            car_events: null,//this.props.booker.getThreeDays(),
-            isLoading: true,
-            errorMessage: ""
-        };
+        this.props.dispatch(getThreeDays({start: (new Date()).toString(), interval: this.props.interval}));
     }
 
     render() {
         let events;
-        if (!this.state.isLoading && this.state.car_events) {
-            let time_labels = this.makeTimeIntervals(this.state.car_events.interval);
+        if ((this.props.status !== "loading") && (this.props.threeDays !== null)) {
+            let time_labels = this.makeTimeIntervals(this.props.threeDays.interval);
             let row_data = [] as string[][];
-            for (let i in this.state.car_events.busy_segments) {
-                row_data.push(this.state.car_events.busy_segments[i].split(''));
+            for (let i in this.props.threeDays.busy_segments) {
+                row_data.push(this.props.threeDays.busy_segments[i].split(''));
             }
             console.log(row_data);
             let car_labels = [] as string[];
             // for (let i=0; i<3; i++) {
-            car_labels.push(...this.state.car_events.cars);
+            car_labels.push(...this.props.threeDays.cars);
             // }
             console.log(car_labels);
             console.log(time_labels);
@@ -55,13 +58,12 @@ export class Calendar extends React.Component<CalendarProps, CalendarState> {
         </colgroup>
         let thead =
             <tr className={`${class_name}`}>
-                <th className={`${class_name}`}>&nbsp;</th>
-                {column_names.map(x => {return (<th className={`${class_name}`}>{x}</th>)})}
+                <th className={`${class_name}`} key="head">&nbsp;</th>
+                {column_names.map(x => {return (<th className={`${class_name}`} key={x}>{x}</th>)})}
             </tr>;
         let trs = [] as any[];
-        // for (let d=0; d<3; d++) {
         for (let i in row_names) {
-            let tr = [(<td className={`${class_name}-row-label`}>{row_names[i]}</td>)];
+            let tr = [(<td className={`${class_name}-row-label`} key={row_names[i]}>{row_names[i]}</td>)];
             tr.push(...row_data[i].map(x => {
                 if (x === ',') {
                     return (<td className={`${class_name}-blank`}>&nbsp;</td>);
@@ -79,7 +81,6 @@ export class Calendar extends React.Component<CalendarProps, CalendarState> {
             }));
             trs.push(tr);
         }
-        // }
         let tbody = trs.map(x => {return (<tr className={class_name}>{x}</tr>)});
         return (
             <div className={class_name}>
@@ -130,3 +131,15 @@ export class Calendar extends React.Component<CalendarProps, CalendarState> {
         return time_labels;
     }
 }
+
+const mapStateToProps = (state) => {
+    return {
+        threeDays: state.requests.threeDays,
+        user: state.user.user,
+        cars: state.cars.entries,
+        status: state.requests.status,
+        error: state.requests.error,
+        interval: state.requests.interval
+    };
+}
+export default connect(mapStateToProps)(Calendar)

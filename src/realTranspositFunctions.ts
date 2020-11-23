@@ -140,13 +140,13 @@ export async function listAllCars() {
     return response;
 }
 
-export async function getThreeDaysEvents() {
+export async function getThreeDaysEvents(start: string, interval: number) {
     let response = {
         error: "",
         response: null as CarEvents | null
     };
     await transposit
-        .run("three_day_array", {start: moment().format(), interval: '900'})
+        .run("three_day_array", {start: start, interval: interval.toString()})
         .then(x => {
             response.response = x.results[0] as CarEvents
             return response;

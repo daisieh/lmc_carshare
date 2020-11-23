@@ -1,6 +1,6 @@
 import {createAsyncThunk, createSlice} from '@reduxjs/toolkit'
 import {CarEvents, CarRequest} from "../../types";
-import {createBooking, listRequests, deleteRequests} from "../../transpositFunctions";
+import {createBooking, listRequests, deleteRequests, getThreeDaysEvents} from "../../transpositFunctions";
 import {AppDispatch} from "../store";
 
 interface RequestState {
@@ -8,7 +8,8 @@ interface RequestState {
     newest: CarRequest | null,
     status: 'idle' | 'loading' | 'succeeded' | 'failed',
     error: string | null,
-    threeDays: CarEvents
+    threeDays: CarEvents | null,
+    interval: number
 }
 
 export const loadRequests = createAsyncThunk(
@@ -61,6 +62,20 @@ export const resetNewest = createAsyncThunk<any, any, {
     }
 )
 
+export const getThreeDays = createAsyncThunk<CarEvents, {start: string, interval: number}, {
+    dispatch: AppDispatch
+    state: RequestState
+    extra: {
+        jwt: string
+    }
+}>(
+    'requests/getThreeDays',
+    async (req :{start: string, interval: number}) => {
+        const response = await getThreeDaysEvents(req.start, req.interval);
+        return response.response as CarEvents;
+    }
+)
+
 export const requestSlice = createSlice({
     name: 'requests',
     initialState: {
@@ -77,7 +92,9 @@ export const requestSlice = createSlice({
         ] as CarRequest[],
         status: "idle",
         error: "",
-        newest: null
+        newest: null,
+        threeDays: null,
+        interval: 900
     } as RequestState,
     reducers: {
     },
@@ -129,6 +146,17 @@ export const requestSlice = createSlice({
             state.status = "loading";
         })
         builder.addCase(resetNewest.rejected, (state, action) => {
+            state.status = "failed";
+            state.error = action.error.toString();
+        })
+        builder.addCase(getThreeDays.fulfilled, (state, action) => {
+            state.threeDays = action.payload;
+            state.status = "idle";
+        })
+        builder.addCase(getThreeDays.pending, (state) => {
+            state.status = "loading";
+        })
+        builder.addCase(getThreeDays.rejected, (state, action) => {
             state.status = "failed";
             state.error = action.error.toString();
         })

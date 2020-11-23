@@ -5,7 +5,7 @@ import RequestList from "./RequestList";
 import {SignOut} from "./transpositFunctions";
 import {Pages, User} from "./types";
 import {connect} from "react-redux";
-import {Calendar} from "./Calendar";
+import Calendar from "./Calendar";
 
 interface NavigationProps {
     user: User;
