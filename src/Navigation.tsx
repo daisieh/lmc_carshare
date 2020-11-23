@@ -1,36 +1,27 @@
-import {CarshareBooker, User} from "./CarshareBooker";
 import * as React from "react";
 import {Loader, Nav, Navbar} from "rsuite";
-import {AvailableCars, BookingStatus, SearchAvailabilityForm} from "./carbooker";
-import {RequestList} from "./RequestList";
-import {CarCalendar} from "./carCalendar";
+import BookCar from "./BookCar";
+import RequestList from "./RequestList";
 import {SignOut} from "./transpositFunctions";
-
-export const Pages = {
-    "/bookings": "Book Car",
-    "/requests": "Requests",
-    "/my_car": "My Car",
-    "/cars": "Available Cars",
-    "/calendar": "Calendar"
-}
+import {Pages, User} from "./types";
+import {connect} from "react-redux";
+import Calendar from "./Calendar";
+import AvailableCars from "./AvailableCars";
 
 interface NavigationProps {
     user: User;
-    isValid: number;
     mode: string;
 }
 
 interface NavigationState {
     mode: string;
-    booker: CarshareBooker;
 }
 
 export class Navigation extends React.Component<NavigationProps, NavigationState> {
     constructor(props) {
         super(props);
         this.state = {
-            mode: this.props.mode,
-            booker: new CarshareBooker({user: this.props.user})
+            mode: this.props.mode
         };
     };
 
@@ -39,28 +30,16 @@ export class Navigation extends React.Component<NavigationProps, NavigationState
             <main className="container main">
                 <Loader size="lg" center content="Loading" vertical/>
             </main>
-        console.log(`mode is ${this.state.mode}`);
         if (this.props.user) {
-            if (this.props.isValid === -1) {
-                main = <main className="container main">
-                    <div>
-                        {this.props.user.name}, your address {this.props.user.email} is
-                        not registered as a carshare member.
-                        Please contact the LMC Carshare team to register your account.
-                    </div>
-                </main>
-            } else if (this.props.isValid === 1) {
                 if (this.state.mode === "/bookings") {
                     main =
                         <main className="container main">
-                            <SearchAvailabilityForm booker={this.state.booker}/>
-                            <AvailableCars booker={this.state.booker}/>
-                            <BookingStatus booker={this.state.booker}/>
+                            <BookCar/>
                         </main>
                 } else if (this.state.mode === "/requests") {
                     main =
                         <main className="container main">
-                            <RequestList booker={this.state.booker}/>
+                            <RequestList/>
                         </main>
                 } else if (this.state.mode === "/my_car") {
                     main =
@@ -70,18 +49,17 @@ export class Navigation extends React.Component<NavigationProps, NavigationState
                 } else if (this.state.mode === "/calendar") {
                     main =
                         <main className="container main">
-                            <CarCalendar booker={this.state.booker}/>
+                            <Calendar/>
                         </main>
                 } else if (this.state.mode === "/cars") {
                     main =
                         <main className="container main">
-                            cars
+                            <AvailableCars/>
                         </main>
                 }
-            }
         }
         let navitems = Object.keys(Pages).map(x => {
-            return <Nav.Item href={x} active={this.state.mode === x}>{Pages[x]}</Nav.Item>
+            return <Nav.Item key={x} href={x} active={this.state.mode === x}>{Pages[x]}</Nav.Item>
         });
 
         return (
@@ -104,3 +82,9 @@ export class Navigation extends React.Component<NavigationProps, NavigationState
         );
     };
 }
+
+const mapStateToProps = (state) => {
+    return {user: state.user.user};
+}
+
+export default connect(mapStateToProps)(Navigation)

@@ -3,8 +3,15 @@ import {render} from "react-dom";
 import {BrowserRouter as Router, Redirect, Route, Switch} from "react-router-dom";
 import {Button} from 'rsuite';
 import "./styles.css";
-import {Navigation, Pages} from "./Navigation";
+import Navigation from "./Navigation";
 import {signIn, SignInHandleRedirect, useIsValidMember, useSignedIn, useUser} from "./transpositFunctions";
+import store from './redux/store';
+import {Provider, useDispatch} from 'react-redux'
+import {loadRequests} from "./redux/reducers/requestSlice";
+import {loadFeatures} from "./redux/reducers/featureSlice";
+import {Pages} from "./types";
+import {userSlice} from "./redux/reducers/userSlice";
+import {loadCars} from "./redux/reducers/carSlice";
 
 /**
  * Sign-in page
@@ -34,20 +41,38 @@ function Index(props) {
     const isSignedIn = useSignedIn();
     const user = useUser(isSignedIn);
     const isValid = useIsValidMember(user);
+    const dispatch = useDispatch();
 
     // If not signed-in, wait while rendering nothing
     if (!isSignedIn || !user) {
         return null;
     }
+
+    if (isValid === -1) {
+        return (<main className="container main">
+            <div>
+                {user.name}, your address {user.email} is
+                not registered as a carshare member.
+                Please contact the LMC Carshare team to register your account.
+            </div>
+        </main>);
+    }
+
+    // load data store
+    dispatch(loadRequests());
+    dispatch(loadFeatures());
+    dispatch(loadCars());
+    dispatch(userSlice.actions.set(user));
+
     // If signed-in, display the app
     console.log(props.match.path);
     return (
-            <Navigation mode={props.match.path} user={user} isValid={isValid}/>
+        <Navigation mode={props.match.path}/>
     );
 }
 
 function App() {
-    let routes = Object.keys(Pages).map(x => {return (<Route path={x} exact component={Index}/>)});
+    let routes = Object.keys(Pages).map(x => {return (<Route key={x} path={x} exact component={Index}/>)});
     return (
         <Router>
             <Switch>
@@ -65,5 +90,4 @@ function App() {
 }
 
 const rootElement = document.getElementById("root");
-render(<App/>, rootElement);
-
+render(<Provider store={store}><App/></Provider>, rootElement);
