@@ -17,14 +17,14 @@
         // console.log(`...listed as busy, so it's available`);
         if (freebusy.calendars[calendars[car]].busy.length == 0) {
           // console.log("...not busy, so it's available");
-          available_cars.push(cars[car]);
+          available_cars.push(car);
         }
       }
     } else {
       console.log(`checking to see if (default available) ${cars[car].Description} is busy...`);
       if (freebusy.calendars[calendars[car]].busy.length == 0) {
         // console.log("...not busy, so it's available");
-        available_cars.push(cars[car]);
+        available_cars.push(car);
       }      
     }
   }
