@@ -1,5 +1,5 @@
 import * as React from "react";
-import {Loader} from "rsuite";
+import {DatePicker, Loader} from "rsuite";
 import {Car, CarEvents, User} from "./types";
 import {ThunkDispatch} from "@reduxjs/toolkit";
 import {connect} from "react-redux";
@@ -16,12 +16,28 @@ interface CalendarProps {
 }
 
 interface CalendarState {
+    startDate: Date;
 }
 
 export class Calendar extends React.Component<CalendarProps, CalendarState> {
     constructor(props) {
         super(props);
-        this.props.dispatch(getThreeDays({start: (new Date()).toString(), interval: this.props.interval}));
+        this.state = {
+            startDate: new Date()
+        }
+        this.handleStartChange = this.handleStartChange.bind(this);
+        this.props.dispatch(getThreeDays({start: this.state.startDate.toString(), interval: this.props.interval}));
+    }
+
+    handleStartChange(event) {
+        let newDate = new Date();
+        if (event) {
+            newDate = new Date(event);
+        }
+        this.setState({
+            startDate: newDate
+        });
+        this.props.dispatch(getThreeDays({start: this.state.startDate.toString(), interval: this.props.interval}));
     }
 
     render() {
@@ -43,6 +59,16 @@ export class Calendar extends React.Component<CalendarProps, CalendarState> {
         }
         return (
             <div className="calendar">
+                <p>Display car bookings for the three days starting from:</p>
+                <div className="date-select">
+                    <DatePicker
+                        className="selector"
+                        size="sm"
+                        format="YYYY-MM-DD"
+                        onChange={this.handleStartChange}
+                        value={this.state.startDate}
+                    />
+                </div>
                 {events}
             </div>
         );
@@ -84,10 +110,10 @@ export class Calendar extends React.Component<CalendarProps, CalendarState> {
             <div className={class_name}>
                 <table className={`${class_name}-header`}>
                     {colgroups}
-                    {thead}
+                    <tbody>{thead}</tbody>
                 </table>
                 <table className={`${class_name}-body`}>
-                    {colgroups}{tbody}
+                    {colgroups}<tbody>{tbody}</tbody>
                 </table>
             </div>
         );
