@@ -101,17 +101,7 @@ export const getThreeDays = createAsyncThunk<CarEvents, {start: string, interval
 export const requestSlice = createSlice({
     name: 'requests',
     initialState: {
-        entries: [
-            {
-                "threadId": "1759168e6f62e313",
-                "vehicle": "ELEMENT",
-                "requester": "pwcottle@gmail.com",
-                "start": "2021-03-10T05:00:00-0800",
-                "end": "2021-03-10T14:00:00-0800",
-                "eventId": "o106pbpmlcap5t6a4oc16b335g",
-                "confirmed": "TRUE"
-            }
-        ] as CarRequest[],
+        entries: [] as CarRequest[],
         status: "idle",
         error: "",
         newest: null,
