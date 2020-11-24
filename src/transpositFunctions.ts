@@ -9,7 +9,7 @@ export const transposit = new Transposit(
 interface AvailableCars {
     "start": string;
     "end": string;
-    "cars": Car[];
+    "cars": string[];
 }
 
 export async function getAvailableCars(pendingRequest :CarRequest) {
@@ -23,7 +23,8 @@ export async function getAvailableCars(pendingRequest :CarRequest) {
             end: pendingRequest.end
         })
         .then(results => {
-            response.response = results.results as string[];
+            let res = results.results[0] as AvailableCars;
+            response.response = res.cars as string[];
             return response;
         })
         .catch(response => {
