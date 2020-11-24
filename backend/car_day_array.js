@@ -38,8 +38,10 @@
 
     // hours += `${freespan},`;
     hours += ",".repeat(freespan) + ",";
+    console.log(hours);
     // replace 1-char blocks:
     hours = hours.replace(/,1,/g,",o,");
+    console.log(hours);
 
     // replace 2-char blocks:
     hours = hours.replace(/,11,/g,",<>,");
