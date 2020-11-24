@@ -134,6 +134,7 @@ export async function getThreeDaysEvents(start: string, interval: number) {
         error: "",
         response: null as CarEvents | null
     };
+    console.log("getThreeDaysEvents");
     return await transposit
         .run("three_day_array", {start: start, interval: interval.toString()})
         .then(x => {

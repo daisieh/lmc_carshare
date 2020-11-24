@@ -79,9 +79,10 @@ export const carSlice = createSlice({
         builder.addCase(loadAvailableCars.fulfilled, (state, action) => {
             let licenceMap = state.entries.map(x => {return x.Licence;});
             state.available = action.payload.map(x => {
+                console.log(`hi ${x}`);
                 return state.entries[licenceMap.indexOf(x)] as Car;
             });
-            console.log(`available is ${state.available[0].Description}`);
+//            console.log(`available is ${state.available[0].Description}`);
             state.status = "idle";
         })
         builder.addCase(loadAvailableCars.pending, (state) => {
