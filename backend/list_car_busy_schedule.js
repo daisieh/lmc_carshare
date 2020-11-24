@@ -19,8 +19,8 @@
     let e = api.run('google_calendar.get_calendar_events', parameters).map(x => {
       let start, end;
       if ("date" in x.start) {
-        start = moment.tz(x.start.date,"Americas/Vancouver");
-        end = moment.tz(x.end.date,"Americas/Vancouver").endOf('day');
+        start = moment.tz(x.start.date,"America/Vancouver");
+        end = moment.tz(x.end.date,"America/Vancouver");
       } else {
         start = x.start.dateTime;
         end = x.end.dateTime;
@@ -39,7 +39,7 @@
     // console.log(fb.calendars[i.id]);
     // }
     busy.push(...e);
-    freebusy.calendars[i.id] = {busy: e};
+    freebusy.calendars[i.id] = {busy: busy};
   }
   // return freebusy;
   let events = {};
@@ -81,8 +81,39 @@
     let this_events = [];
     for (var i in events[car]) {
       if (!moment(events[car][i].start).isSame(events[car][i].end)) {
+        // console.log(`pushing ${events[car][i].start} ${events[car][i].end}`)
         this_events.push(events[car][i]);
       }
+    }
+    // merge events that overlap
+    if (this_events.length > 1) {
+      let final_events = [];
+      while (this_events.length > 1) {
+        // look at the first two events
+        // if the curr and next overlap, they're just one event.
+        // make a new event and unshift that back onto the array.
+        // otherwise, unshift the second.
+        let curr_event = this_events.shift();
+        let next_event = this_events.shift();
+        console.log(`comparing ${curr_event.start},${curr_event.end} to ${next_event.start},${next_event.end}`)
+        if (moment(next_event.start).isSameOrBefore(curr_event.end)) {
+          let overlap_event = {start: curr_event.start, end: next_event.end};
+          // but if next_event is wholly inside curr_event, 
+          // make the end the same as curr
+          if (moment(next_event.end).isSameOrBefore(curr_event.end)) {
+            overlap_event.end = curr_event.end;
+          }
+          console.log(`overlap event is ${overlap_event.start},${overlap_event.end}`);
+          // final_events.push(overlap_event);
+          this_events.unshift(overlap_event);
+        } else {
+          final_events.push(curr_event);
+          this_events.unshift(next_event);
+        }
+      }
+      final_events.push(this_events.shift());
+      
+      this_events = final_events;
     }
     car_keys.push(car);
     car_events.push(this_events);
