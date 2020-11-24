@@ -16,7 +16,8 @@
       let event = events.shift();
       let this_start = parseInt(moment(event.start).format('X')/interval);
       let this_end = parseInt(moment(event.end).format('X')/interval);
-  console.log(`start ${this_start} end ${this_end}`);
+      console.log(event);
+      console.log(`start ${this_start} end ${this_end}`);
       let freespan = this_start - current;
       let busyspan = this_end - this_start;
       console.log(`busyspan ${busyspan} freespan ${freespan}`);
