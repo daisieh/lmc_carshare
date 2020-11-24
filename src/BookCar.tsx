@@ -1,6 +1,6 @@
 import * as React from "react";
 import moment from "moment";
-import {Button, DatePicker, Modal, Radio, TagPicker} from "rsuite";
+import {Button, DatePicker, Loader, Modal, Radio, TagPicker} from "rsuite";
 import {Car, CarRequest, User} from "./types";
 import {connect} from "react-redux";
 import {clearAvailable, loadAvailableCars} from "./redux/reducers/carSlice";
@@ -14,6 +14,7 @@ interface BookCarProps {
     available: Car[];
     carStatus: string;
     requestStatus: string;
+    featureStatus: string;
     error: string;
     dispatch: ThunkDispatch<any, any, any>;
     bookedRequest: CarRequest | null;
@@ -103,7 +104,6 @@ export class BookCar extends React.Component<BookCarProps, BookCarState> {
     }
 
     updateTimes(startTime: string, endTime: string) :[string, string]{
-        let currentRequest = makeEmptyRequest(this.props.user);
         let newEnd, newStart;
 
         // if both start and end are blank, we're resetting both
@@ -138,9 +138,7 @@ export class BookCar extends React.Component<BookCarProps, BookCarState> {
                 console.log(`...too soon, so set end to ${newEnd}`);
             }
         }
-        currentRequest.start = newStart.format();
-        currentRequest.end = newEnd.format();
-        return [currentRequest.start, currentRequest.end];
+        return [newStart.format(), newEnd.format()];
     }
 
     bookCar() {
@@ -153,7 +151,10 @@ export class BookCar extends React.Component<BookCarProps, BookCarState> {
     resetPicker() {
         this.props.dispatch(resetNewest({}));
         this.props.dispatch(clearAvailable({}));
+        let times = this.updateTimes("", "");
         this.setState({
+            startDate: new Date(times[0]),
+            endDate: new Date(times[1]),
             pendingRequest: makeEmptyRequest(this.props.user)
         });
     }
@@ -202,7 +203,7 @@ export class BookCar extends React.Component<BookCarProps, BookCarState> {
                 <Button
                     appearance="ghost"
                     className="selector"
-                    loading={false}
+                    loading={this.props.carStatus === "loading"}
                     size="sm"
                     onClick={this.onLookForCars}
                     disabled={disabled}
@@ -213,7 +214,7 @@ export class BookCar extends React.Component<BookCarProps, BookCarState> {
             </div>
         );
 
-        let available_cars = <div/>;
+        let available_cars = <div></div>;
 
         if (this.props.available) {
             available_cars = (
@@ -286,21 +287,30 @@ export class BookCar extends React.Component<BookCarProps, BookCarState> {
             </div>
         );
 
-        return (
-            <div>
+            if (this.props.featureStatus === "loading") {
+                return (
+                    <div><Loader/></div>
+                )
+            } else {
+                return (
                 <div>
-                    {search_form}
-                    {available_cars}
-                    {booking_status}
+                    <div>
+                        {search_form}
+                        {available_cars}
+                        {booking_status}
+                    </div>
+                    <div>
+                    <Button
+                        appearance="ghost"
+                        size="sm"
+                        onClick={this.resetPicker}
+                    >
+                        Reset form
+                    </Button>
+                    </div>
                 </div>
-                <Button
-                    appearance="ghost"
-                    size="sm"
-                    onClick={this.resetPicker}
-                >
-                    Reset form
-                </Button>
-            </div>);
+                );
+            }
     }
 }
 
@@ -325,6 +335,7 @@ const mapStateToProps = (state) => {
         available: state.cars.available,
         carStatus: state.cars.status,
         requestStatus: state.requests.status,
+        featureStatus: state.allFeatures.status,
         error: state.cars.error,
         bookedRequest: state.requests.newest
     };
