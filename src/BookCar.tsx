@@ -159,7 +159,7 @@ export class BookCar extends React.Component<BookCarProps, BookCarState> {
     }
 
     render() {
-        let disabled = (this.props.available !== null) || (this.props.carStatus === "processing");
+        let disabled = (this.props.available === null) || (this.props.carStatus === "processing");
         let inThePast = "";
         if (moment(this.state.startDate).isBefore(moment())) {
             inThePast = "WARNING! The selected time slot is in the past.";
