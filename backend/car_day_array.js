@@ -17,6 +17,7 @@
       let this_end = parseInt(moment(event.end).format('X')/interval);
       let freespan = this_start - current;
       let busyspan = this_end - this_start;
+      console.log(`busyspan ${busyspan}`);
      hours += `${",".repeat(freespan)}${"1".repeat(busyspan)}`;
       // hours += `${freespan} ${busyspan} `;
 
@@ -24,6 +25,8 @@
     }
     let this_end = parseInt(moment(end).format('X')/interval);
     let freespan = this_end - current;
+    console.log(`freespan ${freespan}`);
+
     // hours += `${freespan},`;
     hours += ",".repeat(freespan) + ",";
     // replace 1-char blocks:
