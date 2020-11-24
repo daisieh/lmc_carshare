@@ -4,6 +4,7 @@ import {Car, CarEvents, User} from "./types";
 import {ThunkDispatch} from "@reduxjs/toolkit";
 import {connect} from "react-redux";
 import {getThreeDays} from "./redux/reducers/requestSlice";
+import moment from "moment";
 
 interface CalendarProps {
     threeDays: CarEvents | null;
@@ -26,7 +27,7 @@ export class Calendar extends React.Component<CalendarProps, CalendarState> {
             startDate: new Date()
         }
         this.handleStartChange = this.handleStartChange.bind(this);
-        this.props.dispatch(getThreeDays({start: this.state.startDate.toString(), interval: this.props.interval}));
+        this.props.dispatch(getThreeDays({start: moment(this.state.startDate).format(), interval: this.props.interval}));
     }
 
     handleStartChange(event) {
