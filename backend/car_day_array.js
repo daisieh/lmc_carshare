@@ -12,7 +12,6 @@
     let events = car_events.car_events[i];
     let hours = ',';
     let current = parseInt(moment(start).format('X')/interval);
-      console.log(events);
 
     while (events.length > 0) {
       let event = events.shift();
@@ -36,7 +35,6 @@
     }
     let this_end = parseInt(moment(end).format('X')/interval);
     let freespan = this_end - current;
-    console.log(`freespan ${freespan}`);
 
     // hours += `${freespan},`;
     hours += ",".repeat(freespan) + ",";
