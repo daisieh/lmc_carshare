@@ -15,7 +15,8 @@ interface BookCarProps {
     carStatus: string;
     requestStatus: string;
     featureStatus: string;
-    error: string;
+    carError: string;
+    requestError: string;
     dispatch: ThunkDispatch<any, any, any>;
     bookedRequest: CarRequest | null;
 }
@@ -210,11 +211,11 @@ export class BookCar extends React.Component<BookCarProps, BookCarState> {
                 >
                     Look for cars
                 </Button>
-                <div className="error">{inThePast}</div>
+                <div className="error">{[inThePast,this.props.requestError,this.props.carError].join("\n")}</div>
             </div>
         );
 
-        let available_cars = <div></div>;
+        let available_cars = <div/>;
 
         if (this.props.available) {
             available_cars = (
@@ -336,7 +337,8 @@ const mapStateToProps = (state) => {
         carStatus: state.cars.status,
         requestStatus: state.requests.status,
         featureStatus: state.allFeatures.status,
-        error: state.cars.error,
+        carError: state.cars.error,
+        requestError: state.requests.error,
         bookedRequest: state.requests.newest
     };
 }
