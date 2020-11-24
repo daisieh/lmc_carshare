@@ -92,6 +92,7 @@ export const getThreeDays = createAsyncThunk<CarEvents, {start: string, interval
 }>(
     'requests/getThreeDays',
     async (req :{start: string, interval: number}) => {
+        console.log(`getThreeDays ${req.start} ${req.interval}`);
         const response = await getThreeDaysEvents(req.start, req.interval);
         return response.response as CarEvents;
     }
