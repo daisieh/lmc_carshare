@@ -6,23 +6,30 @@
   let car_lines = [];
   let car_events = api.run("this.list_car_busy_schedule", {start: start, end: end})[0];
   car_events.interval = interval;
-  console.log(`start ${start} end ${end}`);
+  // console.log(`start ${start} end ${end}`);
   for (var i in car_events.cars) {
     let car = car_events.cars[i];
     let events = car_events.car_events[i];
     let hours = ',';
     let current = parseInt(moment(start).format('X')/interval);
+      console.log(events);
+
     while (events.length > 0) {
       let event = events.shift();
       let this_start = parseInt(moment(event.start).format('X')/interval);
       let this_end = parseInt(moment(event.end).format('X')/interval);
-      console.log(event);
-      console.log(`start ${this_start} end ${this_end}`);
+      if (this_start < current) {
+        // this event starts within the last one
+        if (this_end > current ) {
+          // if it ends after the current one, though, 
+          // current = this_end;
+        }
+        continue;
+      }
       let freespan = this_start - current;
       let busyspan = this_end - this_start;
-      console.log(`busyspan ${busyspan} freespan ${freespan}`);
 
-     hours += `${",".repeat(freespan)}${"1".repeat(busyspan)}`;
+      hours += `${",".repeat(freespan)}${"1".repeat(busyspan)}`;
       // hours += `${freespan} ${busyspan} `;
 
       current = this_end;
