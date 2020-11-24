@@ -48,7 +48,7 @@ export const carSlice = createSlice({
     name: 'cars',
     initialState: {
         entries: [] as Car[],
-        available: [] as Car[],
+        available: null,
         status: "idle",
         error: ""
     } as CarState,
@@ -94,6 +94,7 @@ export const carSlice = createSlice({
         })
         builder.addCase(clearAvailable.fulfilled, (state) => {
             state.available = null;
+            console.log(`state.available is null? ${state.available === null}`)
             state.status = "idle";
         })
         builder.addCase(clearAvailable.pending, (state) => {

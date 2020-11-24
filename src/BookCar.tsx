@@ -159,7 +159,8 @@ export class BookCar extends React.Component<BookCarProps, BookCarState> {
     }
 
     render() {
-        let disabled = (this.props.available === null) || (this.props.carStatus === "processing");
+        console.log(`available is null? ${this.props.available === null} carStatus is ${this.props.carStatus}, reqStatus is ${this.props.requestStatus}`);
+        let disabled = (this.props.available !== null) || (this.props.carStatus === "loading");
         let inThePast = "";
         if (moment(this.state.startDate).isBefore(moment())) {
             inThePast = "WARNING! The selected time slot is in the past.";
@@ -250,7 +251,7 @@ export class BookCar extends React.Component<BookCarProps, BookCarState> {
                             size="sm"
                             onClick={this.onReserveCar}
                             disabled={chosenCar == null}
-                            loading={this.props.requestStatus === "processing"}
+                            loading={this.props.requestStatus === "loading"}
                         >
                             Book it!
                         </Button>
@@ -287,9 +288,18 @@ export class BookCar extends React.Component<BookCarProps, BookCarState> {
 
         return (
             <div>
-                {search_form}
-                {available_cars}
-                {booking_status}
+                <div>
+                    {search_form}
+                    {available_cars}
+                    {booking_status}
+                </div>
+                <Button
+                    appearance="ghost"
+                    size="sm"
+                    onClick={this.resetPicker}
+                >
+                    Reset form
+                </Button>
             </div>);
     }
 }
