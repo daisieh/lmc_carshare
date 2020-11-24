@@ -95,7 +95,6 @@
         // otherwise, unshift the second.
         let curr_event = this_events.shift();
         let next_event = this_events.shift();
-        console.log(`comparing ${curr_event.start},${curr_event.end} to ${next_event.start},${next_event.end}`)
         if (moment(next_event.start).isSameOrBefore(curr_event.end)) {
           let overlap_event = {start: curr_event.start, end: next_event.end};
           // but if next_event is wholly inside curr_event, 
@@ -103,7 +102,6 @@
           if (moment(next_event.end).isSameOrBefore(curr_event.end)) {
             overlap_event.end = curr_event.end;
           }
-          console.log(`overlap event is ${overlap_event.start},${overlap_event.end}`);
           // final_events.push(overlap_event);
           this_events.unshift(overlap_event);
         } else {
