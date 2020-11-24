@@ -5,7 +5,7 @@ import {AppDispatch} from "../store";
 
 interface CarState {
     entries: Car[],
-    available: Car[],
+    available: Car[] | null,
     status: 'idle' | 'loading' | 'succeeded' | 'failed',
     error: string | null
 }
@@ -93,7 +93,7 @@ export const carSlice = createSlice({
             state.error = action.error.toString();
         })
         builder.addCase(clearAvailable.fulfilled, (state) => {
-            state.available = [] as Car[];
+            state.available = null;
             state.status = "idle";
         })
         builder.addCase(clearAvailable.pending, (state) => {

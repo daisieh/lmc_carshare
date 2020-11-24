@@ -12,7 +12,8 @@ interface BookCarProps {
     features: string[];
     cars: Car[];
     available: Car[];
-    status: string;
+    carStatus: string;
+    requestStatus: string;
     error: string;
     dispatch: ThunkDispatch<any, any, any>;
     bookedRequest: CarRequest | null;
@@ -158,7 +159,7 @@ export class BookCar extends React.Component<BookCarProps, BookCarState> {
     }
 
     render() {
-        let disabled = false;//(booker.state.availableCars && booker.state.availableCars.length > 0) || (booker.state.pendingRequest !== null);
+        let disabled = (this.props.available !== null) || (this.props.carStatus === "processing");
         let inThePast = "";
         if (moment(this.state.startDate).isBefore(moment())) {
             inThePast = "WARNING! The selected time slot is in the past.";
@@ -211,48 +212,52 @@ export class BookCar extends React.Component<BookCarProps, BookCarState> {
             </div>
         );
 
-        let available_cars = (
-            <div className="available-form">
-                No cars available at this time
-            </div>
-        );
-        let chosenCar = null as Car | null;
-        let email = "";
-        if (this.props.available.length > 0) {
-            chosenCar = this.props.cars.filter(car => {
-                return (car.Licence === this.state.pendingRequest.vehicle);
-            })[0];
-            if (chosenCar != null) {
-                email = chosenCar.Email;
-            }
-            console.log(`there are ${this.props.available.length} cars, chosen car is ${email}`);
-            let rows = this.props.available.map((car) => {
-                let isChosenCar = (email === car.Email);
-                let needsConfirm = car.Confirm ? "(requires approval)" : "";
-                return (
-                    <Radio checked={isChosenCar} onChange={this.onClickCarRadio} value={car.Licence} key={car.Licence}>
-                        {car.Description} {needsConfirm}
-                    </Radio>
-                )
-            });
+        let available_cars = <div/>;
+
+        if (this.props.available) {
             available_cars = (
                 <div className="available-form">
-                    <p>Cars available for booking:</p>
-                    {rows}
-                    <br/>
-                    <Button
-                        appearance="ghost"
-                        size="sm"
-                        onClick={this.onReserveCar}
-                        disabled={chosenCar == null}
-                        loading={this.props.status === "processing"}
-                    >
-                        Book it!
-                    </Button>
+                    No cars available at this time
                 </div>
             );
+            let chosenCar = null as Car | null;
+            let email = "";
+            if (this.props.available.length > 0) {
+                chosenCar = this.props.cars.filter(car => {
+                    return (car.Licence === this.state.pendingRequest.vehicle);
+                })[0];
+                if (chosenCar != null) {
+                    email = chosenCar.Email;
+                }
+                console.log(`there are ${this.props.available.length} cars, chosen car is ${email}`);
+                let rows = this.props.available.map((car) => {
+                    let isChosenCar = (email === car.Email);
+                    let needsConfirm = car.Confirm ? "(requires approval)" : "";
+                    return (
+                        <Radio checked={isChosenCar} onChange={this.onClickCarRadio} value={car.Licence}
+                               key={car.Licence}>
+                            {car.Description} {needsConfirm}
+                        </Radio>
+                    )
+                });
+                available_cars = (
+                    <div className="available-form">
+                        <p>Cars available for booking:</p>
+                        {rows}
+                        <br/>
+                        <Button
+                            appearance="ghost"
+                            size="sm"
+                            onClick={this.onReserveCar}
+                            disabled={chosenCar == null}
+                            loading={this.props.requestStatus === "processing"}
+                        >
+                            Book it!
+                        </Button>
+                    </div>
+                );
+            }
         }
-
         let message = "";
         let bookedReq = this.props.bookedRequest;
         if (bookedReq) {
@@ -308,7 +313,8 @@ const mapStateToProps = (state) => {
         features: state.allFeatures.entries,
         cars: state.cars.entries,
         available: state.cars.available,
-        status: state.cars.status,
+        carStatus: state.cars.status,
+        requestStatus: state.requests.status,
         error: state.cars.error,
         bookedRequest: state.requests.newest
     };
