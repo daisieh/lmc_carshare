@@ -17,12 +17,16 @@ export interface TranspositResponse {
     response: any;
 }
 
+function sleep(ms) {
+    return new Promise(resolve => setTimeout(resolve, ms));
+}
+
 export async function listRequests() {
     let response = {
         error: "",
         response: fakeRequests as CarRequest[]
     };
-    return Promise.resolve(response);
+    return await sleep(5000).then(() => {return response;});
 }
 
 export async function listFeatures() {
@@ -37,7 +41,7 @@ export async function listFeatures() {
         "cargo",
         "camping"
     ];
-    return Promise.resolve(response);
+    return await sleep(5000).then(() => {return response;});
 }
 
 export async function listAllCars() {
@@ -45,7 +49,7 @@ export async function listAllCars() {
         error: "",
         response: fakeCars as Car[]
     };
-    return Promise.resolve(response);
+    return await sleep(5000).then(() => {return response;});
 }
 
 export async function getAvailableCars(pendingRequest :CarRequest) {
@@ -58,7 +62,7 @@ export async function getAvailableCars(pendingRequest :CarRequest) {
         error: "",
         response: fakeResponse.cars
     };
-    return Promise.resolve(response);
+    return await sleep(5000).then(() => {return response;});
 }
 
 export async function deleteRequests(eventIds :string[]) {
@@ -76,7 +80,7 @@ export async function deleteRequests(eventIds :string[]) {
         error: "",
         response: deleted
     };
-    return Promise.resolve(response);
+    return await sleep(5000).then(() => {return response;});
 }
 
 export async function sendReminderToOwner(eventId: string) {
@@ -84,7 +88,7 @@ export async function sendReminderToOwner(eventId: string) {
         error: "",
         response: `sendReminderToOwner of ${eventId}`
     };
-    return Promise.resolve(response);
+    return await sleep(5000).then(() => {return response;});
 }
 
 export async function createBooking(pendingRequest: CarRequest) {
@@ -93,7 +97,7 @@ export async function createBooking(pendingRequest: CarRequest) {
         error: "",
         response: pendingRequest as CarRequest | null
     };
-    return Promise.resolve(response);
+    return await sleep(5000).then(() => {return response;});
 }
 
 export async function getThreeDaysEvents(start: string, interval: number) {
@@ -102,7 +106,7 @@ export async function getThreeDaysEvents(start: string, interval: number) {
         error: "",
         response: fakeCarEvent
     };
-    return Promise.resolve(response);
+    return await sleep(5000).then(() => {return response;});
 }
 
 
