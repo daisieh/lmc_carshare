@@ -16,6 +16,7 @@
       request_params.message += `\nThe requester would like to remind you to reply to this email to approve the request. Ignore this message if you don't want to approve it.`
 
       let message = api.run('google_mail.send_message', request_params)[0];
+      return message;
     }
   }
 }
