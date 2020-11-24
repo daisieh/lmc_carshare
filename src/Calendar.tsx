@@ -60,6 +60,7 @@ export class Calendar extends React.Component<CalendarProps, CalendarState> {
         }
         return (
             <div className="calendar">
+                <div className="error">{this.props.error}</div>
                 <p>Display car bookings for the three days starting from:</p>
                 <div className="date-select">
                     <DatePicker
