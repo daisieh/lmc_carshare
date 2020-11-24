@@ -18,7 +18,7 @@ export const loadFeatures = createAsyncThunk(
 export const featureSlice = createSlice({
     name: 'features',
     initialState: {
-        entries: ["foo"],
+        entries: [],
         status: "idle",
         error: ""
     } as FeatureState,
