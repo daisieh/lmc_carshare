@@ -1,7 +1,7 @@
 (params) => {
   const momenttz = require('moment-timezone-with-data.js');
   const moment = require('moment.js');
-  let car = api.run("this.get_car", {owner: params.vehicle})[0];
+  let car = api.run("this.get_car", {licence: params.vehicle})[0];
   let calendar_id = api.run("this.list_calendars")[0][car.Licence];
   let request = { vehicle: car.Licence,
                   requester: params.requester,
