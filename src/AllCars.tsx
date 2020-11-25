@@ -3,7 +3,7 @@ import {Car, User} from "./types";
 import {ThunkDispatch} from "@reduxjs/toolkit";
 import {connect} from "react-redux";
 
-interface AvailableCarsProps {
+interface AllCarsProps {
     user: User;
     cars: Car[];
     status: string;
@@ -11,10 +11,10 @@ interface AvailableCarsProps {
     dispatch: ThunkDispatch<any, any, any>;
 }
 
-interface AvailableCarsState {
+interface AllCarsState {
 }
 
-export class AvailableCars extends React.Component<AvailableCarsProps, AvailableCarsState> {
+export class AllCars extends React.Component<AllCarsProps, AllCarsState> {
     render() {
         return (
             <div className="calendar">
@@ -32,4 +32,4 @@ const mapStateToProps = (state) => {
         error: state.requests.error,
     };
 }
-export default connect(mapStateToProps)(AvailableCars)
+export default connect(mapStateToProps)(AllCars)
