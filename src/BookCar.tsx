@@ -115,8 +115,6 @@ export class BookCar extends React.Component<BookCarProps, BookCarState> {
             newStart = moment(this.state.startDate);
             newEnd = moment(this.state.endDate);
         }
-        console.log(`was ${newStart.format()} ${newEnd.format()}`);
-        console.log(`asking for ${startTime} ${endTime}`);
 
         if (endTime !== "") {
             // we're setting the endTime,
@@ -161,7 +159,6 @@ export class BookCar extends React.Component<BookCarProps, BookCarState> {
     }
 
     render() {
-        console.log(`available is null? ${this.props.available === null} carStatus is ${this.props.carStatus}, reqStatus is ${this.props.requestStatus}`);
         let disabled = (this.props.available !== null) || (this.props.carStatus === "loading");
         let inThePast = "";
         if (moment(this.state.startDate).isBefore(moment())) {
@@ -215,9 +212,9 @@ export class BookCar extends React.Component<BookCarProps, BookCarState> {
             </div>
         );
 
-        let available_cars = <div/>;
+        let available_cars = <div className="available-form"/>;
 
-        if (this.props.available) {
+        if (this.props.available && this.props.carStatus !== "loading") {
             available_cars = (
                 <div className="available-form">
                     No cars available at this time
@@ -302,6 +299,7 @@ export class BookCar extends React.Component<BookCarProps, BookCarState> {
                     </div>
                     <div>
                     <Button
+                        className="reset-button"
                         appearance="ghost"
                         size="sm"
                         onClick={this.resetPicker}
