@@ -42,8 +42,15 @@ export class Calendar extends React.Component<CalendarProps, CalendarState> {
     }
 
     render() {
-        let events;
-        if ((this.props.status !== "loading") && (this.props.threeDays !== null)) {
+        if (this.props.status === "loading") {
+            return (
+                    <div>
+                        <Loader size="lg" center content="Loading" vertical/>
+                    </div>
+            );
+        }
+        if (this.props.threeDays !== null) {
+            let events;
             let time_labels = this.makeTimeIntervals(this.props.threeDays.interval);
             let row_data = [] as string[][];
             for (let i in this.props.threeDays.busy_segments) {
@@ -55,25 +62,23 @@ export class Calendar extends React.Component<CalendarProps, CalendarState> {
             console.log(car_labels);
             console.log(time_labels);
             events = this.makeRotatedTable(time_labels, car_labels, row_data, "calendar-table");
-        } else {
-            events = <Loader size="lg" center content="Loading" vertical/>
-        }
-        return (
-            <div className="calendar">
-                <div className="error">{this.props.error}</div>
-                <p>Display car bookings for the three days starting from:</p>
-                <div className="date-select">
-                    <DatePicker
-                        className="selector"
-                        size="sm"
-                        format="YYYY-MM-DD"
-                        onChange={this.handleStartChange}
-                        value={this.state.startDate}
-                    />
+            return (
+                <div className="calendar">
+                    <div className="error">{this.props.error}</div>
+                    <p>Display car bookings for the three days starting from:</p>
+                    <div className="date-select">
+                        <DatePicker
+                            className="selector"
+                            size="sm"
+                            format="YYYY-MM-DD"
+                            onChange={this.handleStartChange}
+                            value={this.state.startDate}
+                        />
+                    </div>
+                    {events}
                 </div>
-                {events}
-            </div>
-        );
+            );
+        }
     }
 
     makeTable (column_names :string[], row_names :string[], row_data :string[][], class_name :string) {

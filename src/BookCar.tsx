@@ -159,6 +159,14 @@ export class BookCar extends React.Component<BookCarProps, BookCarState> {
     }
 
     render() {
+        if (this.props.featureStatus === "loading") {
+            return (
+                <div>
+                    <Loader size="lg" center content="Loading" vertical/>
+                </div>
+            )
+        }
+
         let disabled = (this.props.available !== null) || (this.props.carStatus === "loading");
         let inThePast = "";
         if (moment(this.state.startDate).isBefore(moment())) {
@@ -285,11 +293,6 @@ export class BookCar extends React.Component<BookCarProps, BookCarState> {
             </div>
         );
 
-            if (this.props.featureStatus === "loading") {
-                return (
-                    <div><Loader/></div>
-                )
-            } else {
                 return (
                 <div>
                     <div>
@@ -310,7 +313,7 @@ export class BookCar extends React.Component<BookCarProps, BookCarState> {
                 </div>
                 );
             }
-    }
+
 }
 
 function makeEmptyRequest(user: User) :CarRequest {
