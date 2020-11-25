@@ -21212,6 +21212,9 @@ p {
   height: 40px;
   width: 500px;
 }
+.car_item {
+  padding: 10px;
+}
 .requests {
   margin: 10px;
 }

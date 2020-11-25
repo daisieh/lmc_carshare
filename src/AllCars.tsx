@@ -24,11 +24,29 @@ export class AllCars extends React.Component<AllCarsProps, AllCarsState> {
                 </div>
             );
         }
+
+        // "Description": string;
+        // "Features": string[];
+        // "Email": string;
+        // "Confirm": boolean;
+
         let car_list = this.props.cars.map(car => {
-            return (<li>{car.Description}</li>);
+            let feat_list = car.Features.map(feat => {
+                return (<li key={feat}>{feat}</li>);
+            });
+            return (
+                <div key={car.Licence} className="car_item">
+                    <h4 className="car_name">{car.Description}</h4>
+                    <div className="car_features">
+                        Features:
+                        <ul>{feat_list}</ul>
+                    </div>
+                    <div className="car_confirm">{car.Confirm? "Requires owner approval for requests": ""}</div>
+                    <div className="car_owner">Owner email: {car.Email}</div>
+                </div>);
         })
         return (
-            <div className="calendar">
+            <div>
                 <ul>
                     {car_list}
                 </ul>
