@@ -197,7 +197,7 @@ const fakeCars = [
             "eco friendly"
         ],
         "Licence": "AL675T",
-        "Email": "lmc.blue.prius.2009@gmail.com",
+        "Email": "test@test.com",
         "AlwaysAvailable": true,
         "Confirm": false,
         "Description": "Blue Toyota Prius AL675T"
