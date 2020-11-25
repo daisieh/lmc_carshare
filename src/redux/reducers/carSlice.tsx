@@ -6,6 +6,7 @@ import {AppDispatch} from "../store";
 interface CarState {
     entries: Car[],
     available: Car[] | null,
+    availableRequestId: string,
     status: 'idle' | 'loading' | 'succeeded' | 'failed',
     error: string | null
 }
@@ -50,7 +51,8 @@ export const carSlice = createSlice({
         entries: [] as Car[],
         available: null,
         status: "idle",
-        error: ""
+        error: "",
+        availableRequestId: ""
     } as CarState,
     reducers: {
         add: (state, action :PayloadAction<Car>) => {
@@ -77,33 +79,45 @@ export const carSlice = createSlice({
             state.error = action.error.toString();
         })
         builder.addCase(loadAvailableCars.fulfilled, (state, action) => {
-            let licenceMap = state.entries.map(x => {return x.Licence;});
-            state.available = action.payload.map(x => {
-                return state.entries[licenceMap.indexOf(x)] as Car;
-            });
-            if (action.meta.arg.features.length > 0) {
-                state.available = state.available.filter(car => {
-                    return action.meta.arg.features.every(feature => {
-                        return car.Features.some(feat => {
-                            return feat === feature;
-                        });
+            console.log(`fulfilling ${action.meta.requestId}`);
+            if (state.availableRequestId === action.meta.requestId) {
+                let licenceMap = state.entries.map(x => {
+                    return x.Licence;
+                });
+                state.available = action.payload.map(x => {
+                    return state.entries[licenceMap.indexOf(x)] as Car;
+                });
+                if (action.meta.arg.features.length > 0) {
+                    state.available = state.available.filter(car => {
+                        return action.meta.arg.features.every(feature => {
+                            return car.Features.some(feat => {
+                                return feat === feature;
+                            });
+                        })
                     })
-                })
+                }
+            } else {
+                console.log("must've been reset");
             }
+            state.availableRequestId = "";
             state.status = "idle";
         })
-        builder.addCase(loadAvailableCars.pending, (state) => {
+        builder.addCase(loadAvailableCars.pending, (state, action) => {
+            console.log(`loading ${action.meta.requestId}`);
+            state.availableRequestId = action.meta.requestId;
             state.status = "loading";
         })
         builder.addCase(loadAvailableCars.rejected, (state, action) => {
             state.status = "failed";
+            state.availableRequestId = "";
             state.error = action.error.toString();
         })
         builder.addCase(clearAvailable.fulfilled, (state) => {
-            state.available = null;
             state.status = "idle";
         })
         builder.addCase(clearAvailable.pending, (state) => {
+            state.available = null;
+            state.availableRequestId = "";
             state.status = "loading";
         })
         builder.addCase(clearAvailable.rejected, (state, action) => {
