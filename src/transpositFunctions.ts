@@ -56,7 +56,7 @@ export async function getAvailableCars(pendingRequest :CarRequest) {
     let fakeResponse = {
         start: pendingRequest.start,
         end: pendingRequest.end,
-        cars: [fakeCars[1].Licence]
+        cars: [fakeCars[0].Licence, fakeCars[2].Licence]
     } as AvailableCars;
     let response = {
         error: "",
