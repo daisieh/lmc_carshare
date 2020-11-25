@@ -148,7 +148,8 @@ export const requestSlice = createSlice({
             state.status = "idle";
         })
         builder.addCase(sendReminderForRequest.pending, (state) => {
-            state.status = "loading";
+            // we don't need to worry about this pending; just pretend it's not happening
+            state.status = "idle";
         })
         builder.addCase(sendReminderForRequest.rejected, (state, action) => {
             state.status = "failed";
