@@ -1,5 +1,5 @@
 import * as React from "react";
-import {Button, Checkbox, Loader, Table} from "rsuite";
+import {Button, Checkbox, Table} from "rsuite";
 import {Car, CarRequest} from "./types";
 import {connect} from "react-redux";
 import {deleteRequest, sendReminderForRequest} from "./redux/reducers/requestSlice";
@@ -59,14 +59,6 @@ export class RequestList extends React.Component<RequestListProps, RequestListSt
     }
 
     render() {
-        if (this.props.status === "loading") {
-            return (
-                <div>
-                    <Loader size="lg" center content="Loading" vertical/>
-                </div>
-            );
-        }
-
         let licenceMap = this.props.cars.map(x => {return x.Licence;});
         let cars = this.props.cars;
         let requests = this.props.requests.map(
@@ -85,12 +77,14 @@ export class RequestList extends React.Component<RequestListProps, RequestListSt
                     confirmed: x.confirmed
                 }
             });
+        let loading = (this.props.status === "loading");
         return (
             <div className="requests">
                 <div className="error">{this.props.error}</div>
                 <p className="request-table-caption">
                     <Button
                         appearance="ghost"
+                        loading={loading}
                         size="sm"
                         onClick={this.handleDelete}
                     >
