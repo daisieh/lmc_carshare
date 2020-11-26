@@ -100,6 +100,15 @@ export async function createBooking(pendingRequest: CarRequest) {
     return await sleep(5000).then(() => {return response;});
 }
 
+export async function createUpdateCar(newCar: Car) {
+    console.log(`createUpdateCar with ${newCar.Licence}`);
+    let response = {
+        error: "",
+        response: [...fakeCars, newCar]
+    };
+    return await sleep(5000).then(() => {return response;});
+}
+
 export async function getThreeDaysEvents(start: string, interval: number) {
     console.log(`getThreeDaysEvents with ${start} and ${interval}`);
     let response = {
