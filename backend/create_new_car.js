@@ -66,5 +66,5 @@
   if (result[0].updatedColumns != 7) {
     throw "couldn't update requests";
   }
-  return new_car;
+  return cars;
 }
