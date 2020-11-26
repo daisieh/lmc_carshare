@@ -1,10 +1,10 @@
+import {Transposit, User} from "transposit";
 import {Car, CarEvents, CarRequest} from "./types";
 import * as React from "react";
 
-interface User {
-    "name": string,
-    "email": string
-}
+export const transposit = new Transposit(
+    "https://lmc-carshare-89gbj.transposit.io"
+);
 
 interface AvailableCars {
     "start": string;
@@ -12,21 +12,112 @@ interface AvailableCars {
     "cars": string[];
 }
 
-export interface TranspositResponse {
-    error: string;
-    response: any;
-}
-
-function sleep(ms) {
-    return new Promise(resolve => setTimeout(resolve, ms));
-}
-
-export async function listRequests() {
+export async function getAvailableCars(pendingRequest :CarRequest) {
     let response = {
         error: "",
-        response: fakeRequests as CarRequest[]
+        response: [] as string[]
     };
-    return await sleep(5000).then(() => {return response;});
+    return await transposit
+        .run("get_cars_available_for_time", {
+            start: pendingRequest.start,
+            end: pendingRequest.end
+        })
+        .then(results => {
+            let res = results.results[0] as AvailableCars;
+            response.response = res.cars as string[];
+            return response;
+        })
+        .catch(response => {
+            response.error = response.toString();
+            return response;
+        });
+}
+
+export async function deleteRequests(eventIds :string[]) {
+    let response = {
+        error: "",
+        response: [] as CarRequest[]
+    };
+    return transposit
+        .run("delete_requests", {
+            eventIds: eventIds.toString()
+        })
+        .then(x => {
+            response.response = x.results as CarRequest[];
+            return response;
+        })
+        .catch(response => {
+            response.error = response.toString();
+            return response;
+        });
+}
+
+export async function sendReminderToOwner(eventId: string) {
+    let response = {
+        error: "",
+        response: ""
+    };
+    return await transposit
+        .run("send_reminder", {
+            eventId: eventId
+        })
+        .then(x => {
+            console.log(x);
+            response.response = x.toString();
+            return response;
+        })
+        .catch(response => {
+            response.error = response.toString();
+            return response;
+        })
+}
+
+export async function createBooking(pendingRequest: CarRequest) {
+    let response = {
+        error: "",
+        response: null as CarRequest | null
+    };
+    return await transposit
+        .run("create_reservation", {
+            start: pendingRequest.start,
+            end: pendingRequest.end,
+            requester: pendingRequest.requester,
+            vehicle: pendingRequest.vehicle
+        })
+        .then(results => {
+            response.response = results.results[0] as CarRequest;
+            return response;
+        })
+        .catch(results => {
+            response.error = results.toString();
+            return response;
+        });
+}
+
+export async function createUpdateCar(newCar: Car) {
+    let response = {
+        error: "",
+        response: [] as Car[]
+    };
+    return await transposit
+        .run("create_update_car", {
+            "Make": newCar.Make,
+            "Model": newCar.Model,
+            "Color": newCar.Color,
+            "Features": newCar.Features.toString(),
+            "Email": newCar.Email,
+            "Licence": newCar.Licence,
+            "AlwaysAvailable": newCar.AlwaysAvailable.toString(),
+            "Confirm": newCar.Confirm.toString()
+        })
+        .then(results => {
+            response.response = results.results as Car[];
+            return response;
+        })
+        .catch(results => {
+            response.error = results.toString();
+            return response;
+        });
 }
 
 export async function listFeatures() {
@@ -34,88 +125,72 @@ export async function listFeatures() {
         error: "",
         response: [] as string[]
     };
-    response.response = [
-        "pet friendly",
-        "child friendly",
-        "eco friendly",
-        "cargo",
-        "camping"
-    ];
-    return await sleep(5000).then(() => {return response;});
+    return await transposit
+        .run("list_features", {})
+        .then(x => {
+            console.log("features listed");
+            response.response = x.results as string[];
+            return response;
+        })
+        .catch(x => {
+            console.log("features error");
+            response.error = x.toString();
+            return response;
+        });
 }
 
 export async function listAllCars() {
     let response = {
         error: "",
-        response: fakeCars as Car[]
+        response: [] as Car[]
     };
-    return await sleep(5000).then(() => {return response;});
-}
-
-export async function getAvailableCars(pendingRequest :CarRequest) {
-    let fakeResponse = {
-        start: pendingRequest.start,
-        end: pendingRequest.end,
-        cars: [fakeCars[0].Licence, fakeCars[2].Licence]
-    } as AvailableCars;
-    let response = {
-        error: "",
-        response: fakeResponse.cars
-    };
-    return await sleep(5000).then(() => {return response;});
-}
-
-export async function deleteRequests(eventIds :string[]) {
-    let reqs = fakeRequests;
-    let deleted = [] as CarRequest[];
-    console.log(`deleteRequests ${eventIds}`);
-    let eventMap = reqs.map(y => {return y.eventId;});
-    eventIds.forEach(x => {
-        let index = eventMap.indexOf(x);
-        if (index >= 0) {
-            deleted.push(fakeRequests[index] as CarRequest);
-        }
-    });
-    let response = {
-        error: "",
-        response: deleted
-    };
-    return await sleep(5000).then(() => {return response;});
-}
-
-export async function sendReminderToOwner(eventId: string) {
-    let response = {
-        error: "",
-        response: `sendReminderToOwner of ${eventId}`
-    };
-    return await sleep(5000).then(() => {return response;});
-}
-
-export async function createBooking(pendingRequest: CarRequest) {
-    console.log(`createBooking with ${pendingRequest.vehicle}`);
-    let response = {
-        error: "",
-        response: pendingRequest as CarRequest | null
-    };
-    return await sleep(5000).then(() => {return response;});
-}
-
-export async function createUpdateCar(newCar: Car) {
-    console.log(`createUpdateCar with ${newCar.Licence}`);
-    let response = {
-        error: "",
-        response: [...fakeCars, newCar]
-    };
-    return await sleep(5000).then(() => {return response;});
+    return await transposit
+        .run("list_cars", {})
+        .then(x => {
+            response.response = Object.keys(x.results[0]).map(key => x.results[0][key]) as Car[];
+            return response;
+        })
+        .catch(x => {
+            response.error = x.toString();
+            return response;
+        });
 }
 
 export async function getThreeDaysEvents(start: string, interval: number) {
-    console.log(`getThreeDaysEvents with ${start} and ${interval}`);
     let response = {
         error: "",
-        response: fakeCarEvent
+        response: null as CarEvents | null
     };
-    return await sleep(5000).then(() => {return response;});
+    console.log("getThreeDaysEvents");
+    return await transposit
+        .run("three_day_array", {start: start, interval: interval.toString()})
+        .then(x => {
+            response.response = x.results[0] as CarEvents
+            return response;
+        })
+        .catch(x => {
+            response.error = x.toString();
+            return response;
+        });
+}
+
+export async function listRequests() {
+    let response = {
+        error: "",
+        response: [] as CarRequest[]
+    };
+    return transposit
+        .run("list_requests", {})
+        .then(results => {
+            // shift off the labels
+            results.results.shift();
+            response.response = results.results as CarRequest[];
+            return response;
+        })
+        .catch(x => {
+            response.error = x.toString();
+            return response;
+        });
 }
 
 
@@ -125,6 +200,10 @@ export async function getThreeDaysEvents(start: string, interval: number) {
 export function useSignedIn(): boolean {
     const [isSignedIn, setIsSignedIn] = React.useState<boolean>(false);
     React.useEffect(() => {
+        if (!transposit.isSignedIn()) {
+            window.location.href = "/signin";
+            return;
+        }
         setIsSignedIn(true);
     }, []);
     return isSignedIn;
@@ -139,7 +218,10 @@ export function useUser(isSignedIn: boolean): User | null {
         if (!isSignedIn) {
             return;
         }
-    setUser({name: "Testy McTest", email: "test@test.com"})
+        transposit
+            .loadUser()
+            .then(u => setUser(u))
+            .catch(response => console.log(response));
     }, [isSignedIn]);
     return user;
 }
@@ -148,7 +230,19 @@ export function useIsValidMember(user: User | null): number {
     const [isValid, setValid] = React.useState<number>(0);
     React.useEffect(() => {
         if (user) {
-            setValid(1);
+            transposit
+                .run("is_valid_member", {email: user.email})
+                .then(x => {
+                    if (x.results[0]) {
+                        setValid(1);
+                    } else {
+                        setValid(-1);
+                    }
+                })
+                .catch(response => {
+                    console.log(response.toString());
+                    setValid(-1);
+                });
         }
     }, [user, isValid]);
 
@@ -159,10 +253,20 @@ export function useIsValidMember(user: User | null): number {
  * Handle sign-in page
  */
 export async function signIn() {
+    await transposit.signIn(
+        `${window.location.origin}/signin/handle-redirect`
+    );
 }
 
 export function SignInHandleRedirect() {
-    window.location.href = "/bookings";
+    transposit.handleSignIn().then(
+        () => {
+            window.location.href = "/bookings";
+        },
+        () => {
+            window.location.href = "/signin";
+        }
+    );
     return null;
 }
 
@@ -170,93 +274,6 @@ export function SignInHandleRedirect() {
  * Handle sign-out page
  */
 export function SignOut() {
+    transposit.signOut(`${window.location.origin}/signin`);
     return null;
 }
-
-const fakeRequests = [
-    {
-        "threadId": "175916c0d4bbe0ec",
-        "vehicle": "AL675T",
-        "requester": "pwcottle@gmail.com",
-        "start": "2021-01-01T04:00:00-0800",
-        "end": "2021-01-01T13:00:00-0800",
-        "eventId": "qs7eb1proc33bgal7jrv431rak",
-        "confirmed": "TRUE"
-    },
-    {
-        "threadId": "1759168e6f62e313",
-        "vehicle": "NLEAF",
-        "requester": "pwcottle@gmail.com",
-        "start": "2021-03-10T05:00:00-0800",
-        "end": "2021-03-10T14:00:00-0800",
-        "eventId": "o106pbpmlcap5t6a4oc16b335g",
-        "confirmed": "FALSE"
-    }
-];
-
-const fakeCars = [
-    {
-        "Timestamp": "20/01/2020 16:21:11",
-        "Make": "Toyota",
-        "Model": "Prius",
-        "Color": "Blue",
-        "Features": [
-            "pet friendly",
-            "child friendly",
-            "eco friendly"
-        ],
-        "Licence": "AL675T",
-        "Email": "test@test.com",
-        "AlwaysAvailable": true,
-        "Confirm": false,
-        "Description": "Blue Toyota Prius AL675T"
-    },
-    {
-        "Timestamp": "20/01/2020 16:20:52",
-        "Make": "Nissan",
-        "Model": "Leaf",
-        "Color": "Orange",
-        "Features": [
-            "child friendly",
-            "eco friendly"
-        ],
-        "Licence": "NLEAF",
-        "Email": "lmc.orange.leaf.2017@gmail.com",
-        "AlwaysAvailable": true,
-        "Confirm": true,
-        "Description": "Orange Nissan Leaf NLEAF"
-    },
-    {
-        "Timestamp": "20/01/2020 16:24:21",
-        "Make": "Honda",
-        "Model": "Element",
-        "Color": "Orange",
-        "Features": [
-            "pet friendly",
-            "cargo",
-            "camping"
-        ],
-        "Licence": "ELEMENT",
-        "Email": "mutantdaisies@gmail.com",
-        "AlwaysAvailable": false,
-        "Confirm": true,
-        "Description": "Orange Honda Element ELEMENT"
-    }
-];
-
-const fakeCarEvent =
-    {
-        "start": "2020-11-20T00:00:00-08:00",
-        "end": "2020-11-23T00:00:00-08:00",
-        "cars": [
-            "AL675T",
-            "NLEAF",
-            "ELEMENT"
-        ],
-        "interval": 900,
-        "busy_segments": [
-            ",,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,<------------------------------------>,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,<-->,,,,,,,,,,,,,,,,",
-            "<---------------------------------->,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,<---------------------------------->,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,",
-            ",,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,o,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,"
-        ]
-    } as CarEvents;
