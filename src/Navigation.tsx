@@ -6,7 +6,8 @@ import {SignOut} from "./transpositFunctions";
 import {Pages, User} from "./types";
 import {connect} from "react-redux";
 import Calendar from "./Calendar";
-import AvailableCars from "./AvailableCars";
+import AllCars from "./AllCars";
+import MyCar from "./MyCar";
 
 interface NavigationProps {
     user: User;
@@ -44,7 +45,7 @@ export class Navigation extends React.Component<NavigationProps, NavigationState
                 } else if (this.state.mode === "/my_car") {
                     main =
                         <main className="container main">
-                            car
+                            <MyCar/>
                         </main>
                 } else if (this.state.mode === "/calendar") {
                     main =
@@ -54,7 +55,7 @@ export class Navigation extends React.Component<NavigationProps, NavigationState
                 } else if (this.state.mode === "/cars") {
                     main =
                         <main className="container main">
-                            <AvailableCars/>
+                            <AllCars/>
                         </main>
                 }
         }

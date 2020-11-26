@@ -1,6 +1,6 @@
 import * as React from "react";
 import moment from "moment";
-import {Button, DatePicker, Modal, Radio, TagPicker} from "rsuite";
+import {Button, DatePicker, Loader, Modal, Radio, TagPicker} from "rsuite";
 import {Car, CarRequest, User} from "./types";
 import {connect} from "react-redux";
 import {clearAvailable, loadAvailableCars} from "./redux/reducers/carSlice";
@@ -14,7 +14,9 @@ interface BookCarProps {
     available: Car[];
     carStatus: string;
     requestStatus: string;
-    error: string;
+    featureStatus: string;
+    carError: string;
+    requestError: string;
     dispatch: ThunkDispatch<any, any, any>;
     bookedRequest: CarRequest | null;
 }
@@ -103,7 +105,6 @@ export class BookCar extends React.Component<BookCarProps, BookCarState> {
     }
 
     updateTimes(startTime: string, endTime: string) :[string, string]{
-        let currentRequest = makeEmptyRequest(this.props.user);
         let newEnd, newStart;
 
         // if both start and end are blank, we're resetting both
@@ -114,8 +115,6 @@ export class BookCar extends React.Component<BookCarProps, BookCarState> {
             newStart = moment(this.state.startDate);
             newEnd = moment(this.state.endDate);
         }
-        console.log(`was ${newStart.format()} ${newEnd.format()}`);
-        console.log(`asking for ${startTime} ${endTime}`);
 
         if (endTime !== "") {
             // we're setting the endTime,
@@ -138,9 +137,7 @@ export class BookCar extends React.Component<BookCarProps, BookCarState> {
                 console.log(`...too soon, so set end to ${newEnd}`);
             }
         }
-        currentRequest.start = newStart.format();
-        currentRequest.end = newEnd.format();
-        return [currentRequest.start, currentRequest.end];
+        return [newStart.format(), newEnd.format()];
     }
 
     bookCar() {
@@ -153,13 +150,23 @@ export class BookCar extends React.Component<BookCarProps, BookCarState> {
     resetPicker() {
         this.props.dispatch(resetNewest({}));
         this.props.dispatch(clearAvailable({}));
+        let times = this.updateTimes("", "");
         this.setState({
+            startDate: new Date(times[0]),
+            endDate: new Date(times[1]),
             pendingRequest: makeEmptyRequest(this.props.user)
         });
     }
 
     render() {
-        console.log(`available is null? ${this.props.available === null} carStatus is ${this.props.carStatus}, reqStatus is ${this.props.requestStatus}`);
+        if (this.props.featureStatus === "loading") {
+            return (
+                <div>
+                    <Loader size="lg" center content="Loading" vertical/>
+                </div>
+            )
+        }
+
         let disabled = (this.props.available !== null) || (this.props.carStatus === "loading");
         let inThePast = "";
         if (moment(this.state.startDate).isBefore(moment())) {
@@ -202,20 +209,20 @@ export class BookCar extends React.Component<BookCarProps, BookCarState> {
                 <Button
                     appearance="ghost"
                     className="selector"
-                    loading={false}
+                    loading={this.props.carStatus === "loading"}
                     size="sm"
                     onClick={this.onLookForCars}
                     disabled={disabled}
                 >
                     Look for cars
                 </Button>
-                <div className="error">{inThePast}</div>
+                <div className="error">{[inThePast,this.props.requestError,this.props.carError].join("\n")}</div>
             </div>
         );
 
-        let available_cars = <div/>;
+        let available_cars = <div className="available-form"/>;
 
-        if (this.props.available) {
+        if (this.props.available && this.props.carStatus !== "loading") {
             available_cars = (
                 <div className="available-form">
                     No cars available at this time
@@ -286,22 +293,26 @@ export class BookCar extends React.Component<BookCarProps, BookCarState> {
             </div>
         );
 
-        return (
-            <div>
+                return (
                 <div>
-                    {search_form}
-                    {available_cars}
-                    {booking_status}
+                    <div>
+                        {search_form}
+                        {available_cars}
+                        {booking_status}
+                    </div>
+                    <div>
+                    <Button
+                        className="reset-button"
+                        appearance="ghost"
+                        size="sm"
+                        onClick={this.resetPicker}
+                    >
+                        Reset form
+                    </Button>
+                    </div>
                 </div>
-                <Button
-                    appearance="ghost"
-                    size="sm"
-                    onClick={this.resetPicker}
-                >
-                    Reset form
-                </Button>
-            </div>);
-    }
+                );
+            }
 }
 
 function makeEmptyRequest(user: User) :CarRequest {
@@ -325,7 +336,9 @@ const mapStateToProps = (state) => {
         available: state.cars.available,
         carStatus: state.cars.status,
         requestStatus: state.requests.status,
-        error: state.cars.error,
+        featureStatus: state.allFeatures.status,
+        carError: state.cars.error,
+        requestError: state.requests.error,
         bookedRequest: state.requests.newest
     };
 }

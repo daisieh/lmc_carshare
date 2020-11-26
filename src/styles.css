@@ -21212,11 +21212,17 @@ p {
   height: 40px;
   width: 500px;
 }
+.car_item {
+  padding: 10px;
+}
 .requests {
   margin: 10px;
 }
 .reset-button {
   margin-top: 16px;
+}
+.save-button {
+  margin-bottom: 16px;
 }
 .request-table {
   height: 20px;
