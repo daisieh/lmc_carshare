@@ -2,7 +2,8 @@ import * as React from "react";
 import {Car, User} from "./types";
 import {ThunkDispatch} from "@reduxjs/toolkit";
 import {connect} from "react-redux";
-import {Checkbox, ControlLabel, Form, FormControl, FormGroup, HelpBlock, Loader} from "rsuite";
+import {Button, Checkbox, CheckboxGroup, ControlLabel, Form, FormControl, FormGroup, Loader} from "rsuite";
+import {updateCar} from "./redux/reducers/carSlice";
 
 interface MyCarProps {
     user: User;
@@ -10,51 +11,66 @@ interface MyCarProps {
     status: string;
     error: string;
     dispatch: ThunkDispatch<any, any, any>;
-    myCar: Car | null;
+    myCar: Car;
+    allFeatures: string[];
 }
 
 interface MyCarState {
-    modifiedCar: Car;
+    carForm: any;
 }
 
 export class MyCar extends React.Component<MyCarProps, MyCarState> {
     constructor(props) {
         super(props);
         this.state = {
-            modifiedCar: {
-                Make: "",
-                Model: "",
-                Timestamp: "",
-                Description: "",
-                Features: [] as string[],
-                Confirm: false,
-                Email: "",
-                AlwaysAvailable: true
-            } as Car
+            carForm: {}
         }
         this.setFormValue = this.setFormValue.bind(this);
+        this.handleSave = this.handleSave.bind(this);
     }
 
     componentDidUpdate(prevProps) {
         if (this.props.myCar && (prevProps.myCar === null)) {
+            let checkboxes = ["Confirm", "AlwaysAvailable"].filter(x => {return this.props.myCar[x]});
             this.setState({
-                modifiedCar: {
+                carForm: {
                     Make: this.props.myCar.Make,
                     Model: this.props.myCar.Model,
                     Licence: this.props.myCar.Licence,
                     Email: this.props.myCar.Email,
                     Features: this.props.myCar.Features,
-                    Confirm: this.props.myCar.Confirm,
-                    Color: this.props.myCar.Color,
-                    AlwaysAvailable: this.props.myCar.AlwaysAvailable
-                } as Car
-            })
+                    Checkboxes: checkboxes,
+                    Color: this.props.myCar.Color
+                }
+            });
         }
+    }
+    handleSave() {
+        let newCar = {
+            Make: this.state.carForm.Make,
+            Model: this.state.carForm.Model,
+            Licence: this.state.carForm.Licence,
+            Email: this.state.carForm.Email,
+            Features: this.state.carForm.Features,
+            Color: this.state.carForm.Color,
+            Confirm: this.state.carForm.Checkboxes.filter(x => {return x === "Confirm"}).length > 0,
+            AlwaysAvailable: this.state.carForm.Checkboxes.filter(x => {return x === "AlwaysAvailable"}).length > 0
+        } as Car;
+        console.log(`Confirm is ${newCar.Confirm}`);
+        this.props.dispatch(updateCar(newCar));
     }
 
     setFormValue(event) {
-        console.log(event);
-        this.setState({modifiedCar: event as Car});
+        let newCar = {
+            Model: event.Model,
+            Make: event.Make,
+            Color: event.Color,
+            Email: event.Email,
+            Features: event.Features,
+            Licence: event.Licence,
+            Checkboxes: event.Checkboxes
+        };
+        this.setState({carForm: newCar});
     }
 
     render() {
@@ -72,13 +88,23 @@ export class MyCar extends React.Component<MyCarProps, MyCarState> {
             </div>
         )
         if (this.props.myCar) {
-            let car = this.props.myCar;
-            let feat_list = car.Features.map(feat => {
-                return (<li key={feat}>{feat}</li>);
-            });
+            let features = this.props.allFeatures.map(x => {
+                return (<Checkbox value={x} key={x}>{x}</Checkbox>);
+            })
             car_div = (
-                <div key={car.Licence} className="car_item">
-                    <Form formValue={this.state.modifiedCar} onChange={formValue => this.setFormValue(formValue)}>
+                <div key={this.props.myCar.Licence} className="car_item">
+                    <div className="save-button">
+                    <Button
+                        appearance="ghost"
+                        loading={this.props.status === "loading"}
+                        size="sm"
+                        onClick={this.handleSave}
+                    >
+                        Save my changes
+                    </Button>
+                    </div>
+
+                    <Form layout="inline" formValue={this.state.carForm} onChange={formValue => this.setFormValue(formValue)}>
                         <FormGroup>
                             <ControlLabel>Licence</ControlLabel>
                             <FormControl
@@ -110,35 +136,29 @@ export class MyCar extends React.Component<MyCarProps, MyCarState> {
                             />
                         </FormGroup>
                         <FormGroup>
-                            <ControlLabel>Licence</ControlLabel>
                             <FormControl
-                                name="Licence"
-                            />
+                                name="Checkboxes"
+                                inline
+                                accepter={CheckboxGroup}
+                            >
+                                <Checkbox value="Confirm">Require approval of all requests</Checkbox>
+                                <Checkbox value="AlwaysAvailable">Car is available by default</Checkbox>
+                            </FormControl>
                         </FormGroup>
                         <FormGroup>
-                            <ControlLabel>Require approval of all requests</ControlLabel>
+                            <ControlLabel>Available Features:</ControlLabel>
                             <FormControl
-                                name="Confirm"
+                                name="Features"
                                 inline
+                                accepter={CheckboxGroup}
                             >
-                                <Checkbox/>
+                                {features}
                             </FormControl>
                         </FormGroup>
 
                     </Form>
-                    <div className="car_features">
-                        Features:
-                        <ul>{feat_list}</ul>
-                    </div>
-                    <div className="car_confirm">{car.Confirm? "Requires owner approval for requests": ""}</div>
-                    <div className="car_owner">Owner email: {car.Email}</div>
                 </div>);
         }
-
-        // "Description": string;
-        // "Features": string[];
-        // "Email": string;
-        // "Confirm": boolean;
 
         return (
             <div>
@@ -163,6 +183,7 @@ const mapStateToProps = (state) => {
         cars: state.cars.entries,
         status: state.cars.status,
         error: state.cars.error,
+        allFeatures: state.allFeatures.entries,
         myCar: my_car
     };
 }

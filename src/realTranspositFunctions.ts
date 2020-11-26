@@ -94,6 +94,32 @@ export async function createBooking(pendingRequest: CarRequest) {
         });
 }
 
+export async function createUpdateCar(newCar: Car) {
+    let response = {
+        error: "",
+        response: [] as Car[]
+    };
+    return await transposit
+        .run("create_update_car", {
+            "Make": newCar.Make,
+            "Model": newCar.Model,
+            "Color": newCar.Color,
+            "Features": newCar.Features.toString(),
+            "Email": newCar.Email,
+            "Licence": newCar.Licence,
+            "AlwaysAvailable": newCar.AlwaysAvailable.toString(),
+            "Confirm": newCar.Confirm.toString()
+        })
+        .then(results => {
+            response.response = results.results as Car[];
+            return response;
+        })
+        .catch(results => {
+            response.error = results.toString();
+            return response;
+        });
+}
+
 export async function listFeatures() {
     let response = {
         error: "",

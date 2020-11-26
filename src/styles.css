@@ -21221,6 +21221,9 @@ p {
 .reset-button {
   margin-top: 16px;
 }
+.save-button {
+  margin-bottom: 16px;
+}
 .request-table {
   height: 20px;
 }

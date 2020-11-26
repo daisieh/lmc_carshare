@@ -1,6 +1,6 @@
 import {createAsyncThunk, createSlice, PayloadAction} from '@reduxjs/toolkit'
 import {Car, CarRequest} from "../../types";
-import {getAvailableCars, listAllCars} from "../../transpositFunctions";
+import {createUpdateCar, getAvailableCars, listAllCars} from "../../transpositFunctions";
 import {AppDispatch} from "../store";
 
 interface CarState {
@@ -42,6 +42,20 @@ export const clearAvailable = createAsyncThunk<any, any, {
     'cars/clearAvailable',
     async () => {
         return "";
+    }
+)
+
+export const updateCar = createAsyncThunk<Car[], Car, {
+    dispatch: AppDispatch
+    state: CarState
+    extra: {
+        jwt: string
+    }
+}>(
+    'cars/updateCar',
+    async (newCar :Car) => {
+        const response = await createUpdateCar(newCar);
+        return response.response as Car[];
     }
 )
 
@@ -121,6 +135,17 @@ export const carSlice = createSlice({
             state.status = "loading";
         })
         builder.addCase(clearAvailable.rejected, (state, action) => {
+            state.status = "failed";
+            state.error = action.error.toString();
+        })
+        builder.addCase(updateCar.fulfilled, (state, action) => {
+            state.entries = action.payload;
+            state.status = "idle";
+        })
+        builder.addCase(updateCar.pending, (state) => {
+            state.status = "loading";
+        })
+        builder.addCase(updateCar.rejected, (state, action) => {
             state.status = "failed";
             state.error = action.error.toString();
         })
