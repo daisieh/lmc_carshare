@@ -3,6 +3,8 @@ import {render} from "react-dom";
 import {BrowserRouter as Router, Redirect, Route, Switch} from "react-router-dom";
 import {Button} from 'rsuite';
 import "./styles.css";
+import 'react-widgets/dist/css/react-widgets.css';
+import momentLocalizer from 'react-widgets-moment';
 import Navigation from "./Navigation";
 import {signIn, SignInHandleRedirect, useIsValidMember, useSignedIn, useUser} from "./transpositFunctions";
 import store from './redux/store';
@@ -12,6 +14,7 @@ import {loadFeatures} from "./redux/reducers/featureSlice";
 import {Pages} from "./types";
 import {userSlice} from "./redux/reducers/userSlice";
 import {loadCars} from "./redux/reducers/carSlice";
+import moment from "moment";
 
 /**
  * Sign-in page
@@ -47,6 +50,8 @@ function Index(props) {
     if (!isSignedIn || !user) {
         return null;
     }
+    moment.locale('en')
+    momentLocalizer()
 
     if (isValid === -1) {
         return (<main className="container main">

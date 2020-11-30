@@ -1,6 +1,7 @@
 import * as React from "react";
 import moment from "moment";
-import {Button, DatePicker, Loader, Modal, Radio, TagPicker} from "rsuite";
+import {Button, Loader, Modal, Radio, TagPicker} from "rsuite";
+import {DateTimePicker} from "react-widgets";
 import {Car, CarRequest, User} from "./types";
 import {connect} from "react-redux";
 import {clearAvailable, loadAvailableCars} from "./redux/reducers/carSlice";
@@ -120,22 +121,20 @@ export class BookCar extends React.Component<BookCarProps, BookCarState> {
             // we're setting the endTime,
             // so if the existing start is less than an hour before,
             // set the start to an hour before the end
-            console.log(`comparing new end ${endTime} to ${newStart.format()}`);
             newEnd = moment(endTime);
-            if (newStart.add(1, "hour").isAfter(newEnd)) {
-                newStart = newEnd.clone().subtract(1, "hour");
-                console.log(`...too soon, so set start to ${newStart}`);
-            }
+            // if (newStart.add(1, "hour").isAfter(newEnd)) {
+            //     newStart = newEnd.clone().subtract(1, "hour");
+            //     console.log(`...too soon, so set start to ${newStart}`);
+            // }
         } else if (startTime !== "") {
             // we're setting the startTime,
             // so if the existing end is less than an hour after,
             // set the end to an hour after the end
-            console.log(`comparing new start ${startTime} to ${newEnd.format()}`);
             newStart = moment(startTime);
-            if (newEnd.subtract(1, "hour").isBefore(newStart)) {
-                newEnd = newStart.clone().add(1, "hour");
-                console.log(`...too soon, so set end to ${newEnd}`);
-            }
+            // if (newEnd.subtract(1, "hour").isBefore(newStart)) {
+            //     newEnd = newStart.clone().add(1, "hour");
+            //     console.log(`...too soon, so set end to ${newEnd}`);
+            // }
         }
         return [newStart.format(), newEnd.format()];
     }
@@ -166,7 +165,7 @@ export class BookCar extends React.Component<BookCarProps, BookCarState> {
                 </div>
             )
         }
-
+        let times = this.updateTimes("", "");
         let disabled = (this.props.available !== null) || (this.props.carStatus === "loading");
         let inThePast = "";
         if (moment(this.state.startDate).isBefore(moment())) {
@@ -177,21 +176,24 @@ export class BookCar extends React.Component<BookCarProps, BookCarState> {
             <div className="search-form">
                 <p className={disabled?"caption-disabled":"caption"}>Select the date and time you'd like to book.</p>
                 <div className="date-select">
-                    <DatePicker
-                        className="selector"
-                        size="sm"
+                    <DateTimePicker
                         format="YYYY-MM-DD HH:mm"
+                        timeFormat={"HH:mm"}
                         onChange={this.handleStartChange}
                         value={this.state.startDate}
+                        min={new Date(times[0])}
                         disabled={disabled}
+                        step={15}
                     />
-                    <DatePicker
+                    <DateTimePicker
                         className="selector"
-                        size="sm"
                         format="YYYY-MM-DD HH:mm"
+                        timeFormat={"HH:mm"}
                         onChange={this.handleEndChange}
                         value={this.state.endDate}
+                        min={this.state.startDate}
                         disabled={disabled}
+                        step={15}
                     />
                 </div>
                 <p className={disabled?"caption-disabled":"caption"}>Only select cars with all of these features:</p>
