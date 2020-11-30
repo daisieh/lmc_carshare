@@ -66,15 +66,12 @@ export class Navigation extends React.Component<NavigationProps, NavigationState
         return (
             <>
                 <Navbar className="navbar">
-                    <Navbar.Header className="navbar-welcome">
-                        Welcome, {this.props.user.name}
-                    </Navbar.Header>
                     <Navbar.Body>
                         <Nav appearance="tabs">
                             {navitems}
                         </Nav>
                         <Nav pullRight>
-                            <Nav.Item onClick={SignOut}>Sign Out</Nav.Item>
+                            <Nav.Item onClick={SignOut}>Sign out {this.props.user.name}</Nav.Item>
                         </Nav>
                     </Navbar.Body>
                 </Navbar>
