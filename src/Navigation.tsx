@@ -1,5 +1,5 @@
 import * as React from "react";
-import {Loader, Nav, Navbar} from "rsuite";
+import {Loader} from "rsuite";
 import BookCar from "./BookCar";
 import RequestList from "./RequestList";
 import {SignOut} from "./transpositFunctions";
@@ -8,6 +8,8 @@ import {connect} from "react-redux";
 import Calendar from "./Calendar";
 import AllCars from "./AllCars";
 import MyCar from "./MyCar";
+import Navbar from 'react-bootstrap/Navbar';
+import Nav from 'react-bootstrap/Nav';
 
 interface NavigationProps {
     user: User;
@@ -60,20 +62,19 @@ export class Navigation extends React.Component<NavigationProps, NavigationState
                 }
         }
         let navitems = Object.keys(Pages).map(x => {
-            return <Nav.Item key={x} href={x} active={this.state.mode === x}>{Pages[x]}</Nav.Item>
+            // return <Nav.Item key={x} href={x} active={this.state.mode === x}>{Pages[x]}</Nav.Item>
+            return <Nav.Link href={x}>{Pages[x]}</Nav.Link>
         });
 
         return (
             <>
-                <Navbar className="navbar">
-                    <Navbar.Body>
-                        <Nav appearance="tabs">
+                <Navbar>
+                        <Nav className="tabs">
                             {navitems}
                         </Nav>
-                        <Nav pullRight>
-                            <Nav.Item onClick={SignOut}>Sign out {this.props.user.name}</Nav.Item>
+                        <Nav>
+                            <Nav.Link className="row justify-content-end" onClick={SignOut}>Sign out {this.props.user.name}</Nav.Link>
                         </Nav>
-                    </Navbar.Body>
                 </Navbar>
                 {main}
             </>

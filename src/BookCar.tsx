@@ -1,6 +1,7 @@
 import * as React from "react";
 import moment from "moment";
-import {Button, Loader, Modal, Radio, TagPicker} from "rsuite";
+import {Loader, Modal, Radio, TagPicker} from "rsuite";
+import Button from 'react-bootstrap/Button';
 import {DateTimePicker} from "react-widgets";
 import {Car, CarRequest, User} from "./types";
 import {connect} from "react-redux";
@@ -209,9 +210,7 @@ export class BookCar extends React.Component<BookCarProps, BookCarState> {
                     />
                 </div>
                 <Button
-                    appearance="ghost"
                     className="selector"
-                    loading={this.props.carStatus === "loading"}
                     size="sm"
                     onClick={this.onLookForCars}
                     disabled={disabled}
@@ -256,11 +255,10 @@ export class BookCar extends React.Component<BookCarProps, BookCarState> {
                         {rows}
                         <br/>
                         <Button
-                            appearance="ghost"
                             size="sm"
                             onClick={this.onReserveCar}
                             disabled={chosenCar == null}
-                            loading={this.props.requestStatus === "loading"}
+                            // loading={this.props.requestStatus === "loading"}
                         >
                             Book it!
                         </Button>
@@ -287,7 +285,7 @@ export class BookCar extends React.Component<BookCarProps, BookCarState> {
                         <p>{message}</p>
                     </Modal.Body>
                     <Modal.Footer>
-                        <Button onClick={() => {this.resetPicker();}} appearance="primary">
+                        <Button onClick={() => {this.resetPicker();}}>
                             Ok
                         </Button>
                     </Modal.Footer>
@@ -305,7 +303,6 @@ export class BookCar extends React.Component<BookCarProps, BookCarState> {
                     <div>
                     <Button
                         className="reset-button"
-                        appearance="ghost"
                         size="sm"
                         onClick={this.resetPicker}
                     >
