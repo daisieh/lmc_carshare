@@ -1,12 +1,12 @@
 import * as React from "react";
 import BookCar from "./BookCar";
-import RequestList from "./RequestList";
-import {SignOut} from "./transpositFunctions";
-import {Pages, User} from "./types";
-import {connect} from "react-redux";
+import Requests from "./Requests";
 import Calendar from "./Calendar";
 import AllCars from "./AllCars";
 import MyCar from "./MyCar";
+import {SignOut} from "./transpositFunctions";
+import {Pages, User} from "./types";
+import {connect} from "react-redux";
 import Navbar from 'react-bootstrap/Navbar';
 import Nav from 'react-bootstrap/Nav';
 import Spinner from "react-bootstrap/Spinner";
@@ -32,30 +32,15 @@ export class Navigation extends React.Component<NavigationProps, NavigationState
         let main = <Spinner className="main-spinner" animation="border" role="status"/>
         if (this.props.user) {
                 if (this.state.mode === "/bookings") {
-                    main =
-                        <main className="container-fluid">
-                            <BookCar/>
-                        </main>
+                    main = <BookCar/>
                 } else if (this.state.mode === "/requests") {
-                    main =
-                        <main className="container-fluid">
-                            <RequestList/>
-                        </main>
+                    main = <Requests/>
                 } else if (this.state.mode === "/my_car") {
-                    main =
-                        <main className="container-fluid">
-                            <MyCar/>
-                        </main>
+                    main = <MyCar/>
                 } else if (this.state.mode === "/calendar") {
-                    main =
-                        <main className="container-fluid">
-                            <Calendar/>
-                        </main>
+                    main = <Calendar/>
                 } else if (this.state.mode === "/cars") {
-                    main =
-                        <main className="container-fluid">
-                            <AllCars/>
-                        </main>
+                    main = <AllCars/>
                 }
         }
         let navitems = Object.keys(Pages).map(x => {
@@ -65,12 +50,14 @@ export class Navigation extends React.Component<NavigationProps, NavigationState
         return (
             <>
                 <Navbar>
-                        <Nav className="tabs" activeKey={this.props.mode}>
-                            {navitems}
-                            <Nav.Link key="signout" onClick={SignOut}>Sign out</Nav.Link>
-                        </Nav>
+                    <Nav className="tabs" activeKey={this.props.mode}>
+                        {navitems}
+                        <Nav.Link key="signout" onClick={SignOut}>Sign out</Nav.Link>
+                    </Nav>
                 </Navbar>
-                {main}
+                <main className="container-fluid">
+                    {main}
+                </main>
             </>
         );
     };
