@@ -30,50 +30,47 @@ export class Navigation extends React.Component<NavigationProps, NavigationState
 
     render() {
         let main =
-            <main className="container main">
+            <main className="container-fluid">
                 <Loader size="lg" center content="Loading" vertical/>
             </main>
         if (this.props.user) {
                 if (this.state.mode === "/bookings") {
                     main =
-                        <main className="container main">
+                        <main className="container-fluid">
                             <BookCar/>
                         </main>
                 } else if (this.state.mode === "/requests") {
                     main =
-                        <main className="container main">
+                        <main className="container-fluid">
                             <RequestList/>
                         </main>
                 } else if (this.state.mode === "/my_car") {
                     main =
-                        <main className="container main">
+                        <main className="container-fluid">
                             <MyCar/>
                         </main>
                 } else if (this.state.mode === "/calendar") {
                     main =
-                        <main className="container main">
+                        <main className="container-fluid">
                             <Calendar/>
                         </main>
                 } else if (this.state.mode === "/cars") {
                     main =
-                        <main className="container main">
+                        <main className="container-fluid">
                             <AllCars/>
                         </main>
                 }
         }
         let navitems = Object.keys(Pages).map(x => {
-            // return <Nav.Item key={x} href={x} active={this.state.mode === x}>{Pages[x]}</Nav.Item>
-            return <Nav.Link href={x}>{Pages[x]}</Nav.Link>
+            return <Nav.Link key={x} href={x}>{Pages[x]}</Nav.Link>
         });
 
         return (
             <>
                 <Navbar>
-                        <Nav className="tabs">
+                        <Nav className="tabs" activeKey={this.props.mode}>
                             {navitems}
-                        </Nav>
-                        <Nav>
-                            <Nav.Link className="row justify-content-end" onClick={SignOut}>Sign out {this.props.user.name}</Nav.Link>
+                            <Nav.Link key="signout" onClick={SignOut}>Sign out</Nav.Link>
                         </Nav>
                 </Navbar>
                 {main}
