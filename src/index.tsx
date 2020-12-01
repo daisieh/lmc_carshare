@@ -4,6 +4,7 @@ import {BrowserRouter as Router, Redirect, Route, Switch} from "react-router-dom
 import {Button} from 'rsuite';
 import './custom-rw.scss';
 import './custom-bootstrap.scss';
+import './styles.css';
 import 'react-widgets/dist/css/react-widgets.css';
 import momentLocalizer from 'react-widgets-moment';
 import Navigation from "./Navigation";
