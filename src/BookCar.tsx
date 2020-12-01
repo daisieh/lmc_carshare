@@ -1,14 +1,17 @@
 import * as React from "react";
 import moment from "moment";
-import {Modal, Radio, TagPicker} from "rsuite";
+import {Modal} from "rsuite";
 import Button from 'react-bootstrap/Button';
 import Spinner from 'react-bootstrap/Spinner';
+import Container from "react-bootstrap/Container";
+import {Multiselect} from 'react-widgets';
 import {DateTimePicker} from "react-widgets";
 import {Car, CarRequest, User} from "./types";
 import {connect} from "react-redux";
 import {clearAvailable, loadAvailableCars} from "./redux/reducers/carSlice";
 import {ThunkDispatch} from "@reduxjs/toolkit";
 import {createRequest, resetNewest} from "./redux/reducers/requestSlice";
+import {Form} from "react-bootstrap";
 
 interface BookCarProps {
     user: User;
@@ -51,7 +54,7 @@ export class BookCar extends React.Component<BookCarProps, BookCarState> {
 
     onClickCarRadio(value) {
         let req = this.state.pendingRequest;
-        req.vehicle = value;
+        req.vehicle = value.target.id;
         this.setState({pendingRequest: req});
     }
 
@@ -173,10 +176,9 @@ export class BookCar extends React.Component<BookCarProps, BookCarState> {
         if (moment(this.state.startDate).isBefore(moment())) {
             inThePast = "WARNING! The selected time slot is in the past.";
         }
-        let feat_array:{label: string, value: string}[] = this.props.features.map(x => { return {"value": x, "label": x}; });
         let search_form = (
             <div className="search-form">
-                <p className={disabled?"caption-disabled":"caption"}>Select the date and time you'd like to book.</p>
+                <p className={disabled?"caption-disabled":"caption"}>Choose the time period you'd like to book.</p>
                 <div className="date-select">
                     <DateTimePicker
                         format="HH:mm DD MMM YYYY"
@@ -200,11 +202,11 @@ export class BookCar extends React.Component<BookCarProps, BookCarState> {
                 </div>
                 <p className={disabled?"caption-disabled":"caption"}>Only select cars with all of these features:</p>
                 <div className="feature-select">
-                    <TagPicker
+                    <Multiselect
                         className="selector"
                         size="sm"
                         style={{width: 300}}
-                        data={feat_array}
+                        data={this.props.features}
                         value={this.state.pendingRequest.features}
                         onChange={this.onTagPick}
                         disabled={disabled}
@@ -212,11 +214,13 @@ export class BookCar extends React.Component<BookCarProps, BookCarState> {
                 </div>
                 <Button
                     className="selector"
-                    size="sm"
                     onClick={this.onLookForCars}
                     disabled={disabled}
                 >
+                    <Container className="button-spinner" >
+                    <Spinner hidden={this.props.carStatus !== "loading"} animation="border" size="sm" role="loading..."/>
                     Look for cars
+                    </Container>
                 </Button>
                 <div className="error">{[inThePast,this.props.requestError,this.props.carError].join("\n")}</div>
             </div>
@@ -231,37 +235,34 @@ export class BookCar extends React.Component<BookCarProps, BookCarState> {
                 </div>
             );
             let chosenCar = null as Car | null;
-            let email = "";
             if (this.props.available.length > 0) {
                 chosenCar = this.props.cars.filter(car => {
                     return (car.Licence === this.state.pendingRequest.vehicle);
                 })[0];
-                if (chosenCar != null) {
-                    email = chosenCar.Email;
-                }
-                console.log(`there are ${this.props.available.length} cars, chosen car is ${email}`);
                 let rows = this.props.available.map((car) => {
-                    let isChosenCar = (email === car.Email);
-                    let needsConfirm = car.Confirm ? "(requires approval)" : "";
+                    let carDesc = car.Description + (car.Confirm ? " (requires approval)" : "");
                     return (
-                        <Radio checked={isChosenCar} onChange={this.onClickCarRadio} value={car.Licence}
-                               key={car.Licence}>
-                            {car.Description} {needsConfirm}
-                        </Radio>
+                        <Form.Check className="radio" type="radio" checked={car.Licence === this.state.pendingRequest.vehicle} onChange={this.onClickCarRadio} id={car.Licence} key={car.Licence}
+                               label={carDesc}>
+                        </Form.Check>
                     )
                 });
                 available_cars = (
                     <div className="available-form">
-                        <p>Cars available for booking:</p>
-                        {rows}
-                        <br/>
+                        <Form>
+                            <Form.Group>
+                                <Form.Label>Cars available for booking:</Form.Label>
+                                {rows}
+                            </Form.Group>
+                        </Form>
                         <Button
-                            size="sm"
                             onClick={this.onReserveCar}
                             disabled={chosenCar == null}
-                            // loading={this.props.requestStatus === "loading"}
                         >
-                            Book it!
+                            <Container className="button-spinner" >
+                                <Spinner hidden={this.props.requestStatus !== "loading"} className="main-spinner" animation="border" size="sm" role="loading..."/>
+                                Book it!
+                            </Container>
                         </Button>
                     </div>
                 );
@@ -296,7 +297,7 @@ export class BookCar extends React.Component<BookCarProps, BookCarState> {
 
                 return (
                 <div>
-                    <div>
+                    <div className="search-form">
                         {search_form}
                         {available_cars}
                         {booking_status}
@@ -304,7 +305,6 @@ export class BookCar extends React.Component<BookCarProps, BookCarState> {
                     <div>
                     <Button
                         className="reset-button"
-                        size="sm"
                         onClick={this.resetPicker}
                     >
                         Reset form

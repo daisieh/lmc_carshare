@@ -2,6 +2,14 @@
     align-content: center;
 }
 
+.button-spinner {
+    display: flex;
+    padding:0;
+    justify-content: space-between;
+    align-items: center;
+    column-gap: 4px;
+}
+
 .main-head {
     background-color: #005cbf;
     color: #7abaff;
@@ -19,4 +27,21 @@
 .date-select {
     display: inline-flex;
     padding-bottom: 1em;
+}
+
+.feature-select {
+    padding-bottom: 1em;
+}
+
+.search-form {
+    padding: 4px;
+}
+
+.reset-button {
+    padding-top: 4px;
+}
+
+.radio {
+    display: flex;
+    align-items: center;
 }
