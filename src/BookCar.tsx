@@ -1,7 +1,8 @@
 import * as React from "react";
 import moment from "moment";
-import {Loader, Modal, Radio, TagPicker} from "rsuite";
+import {Modal, Radio, TagPicker} from "rsuite";
 import Button from 'react-bootstrap/Button';
+import Spinner from 'react-bootstrap/Spinner';
 import {DateTimePicker} from "react-widgets";
 import {Car, CarRequest, User} from "./types";
 import {connect} from "react-redux";
@@ -162,7 +163,7 @@ export class BookCar extends React.Component<BookCarProps, BookCarState> {
         if (this.props.featureStatus === "loading") {
             return (
                 <div>
-                    <Loader size="lg" center content="Loading" vertical/>
+                    <Spinner className="main-spinner" animation="border" role="status"/>
                 </div>
             )
         }
