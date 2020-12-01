@@ -1,5 +1,4 @@
 import * as React from "react";
-import {Loader} from "rsuite";
 import BookCar from "./BookCar";
 import RequestList from "./RequestList";
 import {SignOut} from "./transpositFunctions";
@@ -10,6 +9,7 @@ import AllCars from "./AllCars";
 import MyCar from "./MyCar";
 import Navbar from 'react-bootstrap/Navbar';
 import Nav from 'react-bootstrap/Nav';
+import Spinner from "react-bootstrap/Spinner";
 
 interface NavigationProps {
     user: User;
@@ -29,10 +29,7 @@ export class Navigation extends React.Component<NavigationProps, NavigationState
     };
 
     render() {
-        let main =
-            <main className="container-fluid">
-                <Loader size="lg" center content="Loading" vertical/>
-            </main>
+        let main = <Spinner className="main-spinner" animation="border" role="status"/>
         if (this.props.user) {
                 if (this.state.mode === "/bookings") {
                     main =

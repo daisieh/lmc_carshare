@@ -7,7 +7,7 @@ import {ThunkDispatch} from "@reduxjs/toolkit";
 
 const { Column, HeaderCell, Cell } = Table;
 
-interface RequestListProps {
+interface RequestsProps {
     requests: CarRequest[],
     status: string,
     cars: Car[],
@@ -15,12 +15,12 @@ interface RequestListProps {
     dispatch: ThunkDispatch<any, any, any>;
 }
 
-interface RequestListState {
+interface RequestsState {
     requestsToDelete: string[];
     activeRow: CarRequest | null;
 }
 
-export class RequestList extends React.Component<RequestListProps, RequestListState> {
+export class Requests extends React.Component<RequestsProps, RequestsState> {
     constructor(props) {
         super(props);
         this.state = {
@@ -156,4 +156,4 @@ const mapStateToProps = (state) => {
     };
 }
 
-export default connect(mapStateToProps)(RequestList)
+export default connect(mapStateToProps)(Requests)
