@@ -1,0 +1,17 @@
+.main-spinner {
+    align-content: center;
+}
+
+.main-head {
+    background-color: #005cbf;
+    color: #7abaff;
+    font-size: 32px;
+    font-weight: bold;
+    padding-left: 0.5em;
+}
+
+.user-head {
+    background-color: #7abaff;
+    color: #343a40;
+    padding-left: 1em;
+}
