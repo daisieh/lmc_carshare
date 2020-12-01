@@ -10,6 +10,7 @@ import {connect} from "react-redux";
 import Navbar from 'react-bootstrap/Navbar';
 import Nav from 'react-bootstrap/Nav';
 import Spinner from "react-bootstrap/Spinner";
+import Container from "react-bootstrap/Container";
 
 interface NavigationProps {
     user: User;
@@ -49,15 +50,17 @@ export class Navigation extends React.Component<NavigationProps, NavigationState
 
         return (
             <>
+                <div className="main-head">LMC Carshare</div>
+                <div className="user-head">Welcome, {this.props.user.name}</div>
                 <Navbar>
-                    <Nav className="tabs" activeKey={this.props.mode}>
+                    <Nav variant="tabs" activeKey={this.props.mode}>
                         {navitems}
                         <Nav.Link key="signout" onClick={SignOut}>Sign out</Nav.Link>
                     </Nav>
                 </Navbar>
-                <main className="container-fluid">
+                <Container>
                     {main}
-                </main>
+                </Container>
             </>
         );
     };
