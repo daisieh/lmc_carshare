@@ -170,6 +170,7 @@ export function SignInHandleRedirect() {
  * Handle sign-out page
  */
 export function SignOut() {
+    console.log("signing out");
     return null;
 }
 
