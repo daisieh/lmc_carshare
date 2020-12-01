@@ -179,7 +179,7 @@ export class BookCar extends React.Component<BookCarProps, BookCarState> {
                 <p className={disabled?"caption-disabled":"caption"}>Select the date and time you'd like to book.</p>
                 <div className="date-select">
                     <DateTimePicker
-                        format="YYYY-MM-DD HH:mm"
+                        format="HH:mm DD MMM YYYY"
                         timeFormat={"HH:mm"}
                         onChange={this.handleStartChange}
                         value={this.state.startDate}
@@ -189,7 +189,7 @@ export class BookCar extends React.Component<BookCarProps, BookCarState> {
                     />
                     <DateTimePicker
                         className="selector"
-                        format="YYYY-MM-DD HH:mm"
+                        format="HH:mm DD MMM YYYY"
                         timeFormat={"HH:mm"}
                         onChange={this.handleEndChange}
                         value={this.state.endDate}

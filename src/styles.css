@@ -15,3 +15,8 @@
     color: #343a40;
     padding-left: 1em;
 }
+
+.date-select {
+    display: inline-flex;
+    padding-bottom: 1em;
+}

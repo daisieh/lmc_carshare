@@ -69,7 +69,7 @@ export class Calendar extends React.Component<CalendarProps, CalendarState> {
                     <p>Display car bookings for the three days starting from:</p>
                     <div className="date-select">
                         <DatePicker
-                            format="YYYY-MM-DD"
+                            format="DD MMM YYYY"
                             onChange={this.handleStartChange}
                             value={this.state.startDate}
                         />
