@@ -1,17 +1,12 @@
 import * as React from "react";
 import moment from "moment";
-import {Modal} from "rsuite";
-import Button from 'react-bootstrap/Button';
-import Spinner from 'react-bootstrap/Spinner';
-import Container from "react-bootstrap/Container";
-import {Multiselect} from 'react-widgets';
-import {DateTimePicker} from "react-widgets";
+import {Multiselect, DateTimePicker} from 'react-widgets';
 import {Car, CarRequest, User} from "./types";
 import {connect} from "react-redux";
 import {clearAvailable, loadAvailableCars} from "./redux/reducers/carSlice";
 import {ThunkDispatch} from "@reduxjs/toolkit";
 import {createRequest, resetNewest} from "./redux/reducers/requestSlice";
-import {Form} from "react-bootstrap";
+import {Button, Spinner, Container, Form, Modal} from "react-bootstrap";
 
 interface BookCarProps {
     user: User;
@@ -278,11 +273,7 @@ export class BookCar extends React.Component<BookCarProps, BookCarState> {
             }
         }
         let booking_status = (
-            <div className="modal-container">
-                <Modal show={message !== ""} onHide={() => {this.resetPicker();}}>
-                    <Modal.Header>
-                        <Modal.Title>Booking request sent!</Modal.Title>
-                    </Modal.Header>
+                <Modal show={message !== ""}>
                     <Modal.Body>
                         <p>{message}</p>
                     </Modal.Body>
@@ -292,7 +283,6 @@ export class BookCar extends React.Component<BookCarProps, BookCarState> {
                         </Button>
                     </Modal.Footer>
                 </Modal>
-            </div>
         );
 
                 return (
