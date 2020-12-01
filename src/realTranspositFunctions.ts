@@ -147,7 +147,8 @@ export async function listAllCars() {
     return await transposit
         .run("list_cars", {})
         .then(x => {
-            response.response = Object.keys(x.results[0]).map(key => x.results[0][key]) as Car[];
+            console.log(x.results);
+//            response.response = //Object.keys(x.results[0]).map(key => x.results[0][key]) as Car[];
             return response;
         })
         .catch(x => {
