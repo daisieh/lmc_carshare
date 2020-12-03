@@ -70,6 +70,7 @@ export class AllCars extends React.Component<AllCarsProps, AllCarsState> {
                     </div>
                     <div className="car_confirm">{car.Confirm? "Requires owner approval for requests": ""}</div>
                     <div className="car_owner">Owner email: {car.Email}</div>
+                    <div className="car_notes">Notes: {car.Notes}</div>
                 </Container>);
         })
         return (

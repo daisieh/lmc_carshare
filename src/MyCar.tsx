@@ -21,6 +21,7 @@ interface MyCarState {
     Make: string;
     Model: string;
     Color: string;
+    Notes: string;
     Features: string[];
     Confirm: boolean;
     AlwaysAvailable: boolean;
@@ -34,6 +35,7 @@ export class MyCar extends React.Component<MyCarProps, MyCarState> {
             Make: "",
             Model: "",
             Color: "",
+            Notes: "",
             Features: [] as string[],
             Confirm: true,
             AlwaysAvailable: true,
@@ -54,6 +56,7 @@ export class MyCar extends React.Component<MyCarProps, MyCarState> {
                 Confirm: this.props.myCar.Confirm,
                 AlwaysAvailable: this.props.myCar.AlwaysAvailable,
                 Color: this.props.myCar.Color,
+                Notes: this.props.myCar.Notes
             });
         }
     }
@@ -65,6 +68,7 @@ export class MyCar extends React.Component<MyCarProps, MyCarState> {
             Email: this.props.myCar.Email, // this can't change
             Features: this.state.Features,
             Color: this.state.Color,
+            Notes: this.state.Notes,
             Confirm: this.state.Confirm,
             AlwaysAvailable: this.state.AlwaysAvailable
         } as Car;
@@ -121,6 +125,10 @@ export class MyCar extends React.Component<MyCarProps, MyCarState> {
                         <Form.Group controlId="Color">
                             <Form.Label>Color</Form.Label>
                             <Form.Control value={this.state.Color} onChange={this.setFormValue}/>
+                        </Form.Group>
+                        <Form.Group controlId="Notes">
+                            <Form.Label>Notes</Form.Label>
+                            <Form.Control value={this.state.Notes} onChange={this.setFormValue}/>
                         </Form.Group>
                         <Form.Group>
                             <Form.Check type="checkbox" checked={this.state.Confirm} onChange={this.setCheckbox} id="Confirm" key="Confirm"

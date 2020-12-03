@@ -14,6 +14,7 @@ export interface Car {
     "AlwaysAvailable": boolean;
     "Confirm": boolean;
     "Description": string;
+    "Notes": string;
 }
 
 export interface CarRequest {
