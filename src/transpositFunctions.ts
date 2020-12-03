@@ -148,7 +148,7 @@ export async function listAllCars() {
         .run("list_cars", {})
         .then(x => {
             console.log(x.results);
-//            response.response = //Object.keys(x.results[0]).map(key => x.results[0][key]) as Car[];
+            response.response = x.results as Car[];
             return response;
         })
         .catch(x => {
