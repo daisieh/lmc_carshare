@@ -145,7 +145,7 @@ export async function listAllCars() {
         response: [] as Car[]
     };
     return await transposit
-        .run("list_cars", {})
+        .run("get_all_cars", {})
         .then(x => {
             console.log(x.results);
             response.response = x.results as Car[];
