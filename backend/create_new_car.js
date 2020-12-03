@@ -29,11 +29,9 @@
     }
   }
   
-  if (is_new_car == true) {
-    cars.push(new_car);
-    console.log("new car");
+  let parameters = {};
+  if (new_car.BookingCalendar == null || new_car.BookingCalendar === "") {
     // create calendar for bookings:
-    let parameters = {};
     parameters.$body = {
       summary : new_car.Licence,
       timeZone : 'America/Vancouver'
@@ -44,6 +42,8 @@
     } catch (e) {
       console.log(e);
     }
+  }
+  if (new_car.AvailableCalendar == null || new_car.AvailableCalendar === "") {
     parameters.$body.summary = `${new_car.Licence}_available`;
     try {
       let cal = api.run('google_calendar.create_calendar', parameters)[0];
@@ -51,10 +51,14 @@
     } catch (e) {
       console.log(e);
     }
+  }
 
-    if (!new_car.AlwaysAvailable) {
-      // set permissions for the calendar
-    }
+  if (!new_car.AlwaysAvailable) {
+    // set permissions for the calendar
+  }
+  if (is_new_car == true) {
+    cars.push(new_car);
+    console.log("new car");
   }
   
   // convert back to array for sheet:

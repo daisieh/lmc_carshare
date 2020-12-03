@@ -368,12 +368,17 @@
           "requireUser": true
         }
       }, {
-        "id": "untitled_1",
+        "id": "set_calendar_access",
         "function": {
           "parameters": [{
-            "name": "context",
-            "description": "The \u0027context\u0027 parameter is often essential to operations published to Mission Control",
-            "type": "OBJECT"
+            "name": "calendarId",
+            "type": "STRING"
+          }, {
+            "name": "user",
+            "type": "STRING"
+          }, {
+            "name": "canWrite",
+            "type": "BOOLEAN"
           }],
           "js": "untitled_1.js",
           "lang": "js"
