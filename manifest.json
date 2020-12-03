@@ -261,6 +261,9 @@
           }, {
             "name": "Licence",
             "type": "STRING"
+          }, {
+            "name": "Notes",
+            "type": "STRING"
           }],
           "js": "create_new_car.js",
           "lang": "js"

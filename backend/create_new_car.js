@@ -8,6 +8,7 @@
     "Make": params.Make,
     "Model": params.Model,
     "Color": params.Color,
+    "Notes": params.Notes,
     "Features": params.Features,
     "Licence": params.Licence,
     "Email": params.Email,
@@ -41,14 +42,14 @@
     } catch (e) {
       console.log(e);
     }
-    
+    parameters.$body.summary = `${new_car.Licence}_available`;
+    try {
+      api.run('google_calendar.create_calendar', parameters)[0];
+    } catch (e) {
+      console.log(e);
+    }
+
     if (!new_car.AlwaysAvailable) {
-      parameters.$body.summary = `${new_car.Licence}_available`;
-      try {
-        api.run('google_calendar.create_calendar', parameters)[0];
-      } catch (e) {
-        console.log(e);
-      }
     }
   }
   
@@ -57,6 +58,8 @@
   parameters.range = 'Cars!A:J';
   parameters.spreadsheetId = env.get("spreadsheet_id");
   parameters.valueInputOption = "RAW";
+  return values;
+
   for (var i in cars) {
     let val = api.run("this.car_object_to_sheet_row", {car_object: cars[i]});
     values.push(val);
