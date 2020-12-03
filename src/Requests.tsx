@@ -68,6 +68,7 @@ export class Requests extends React.Component<RequestsProps, RequestsState> {
     render() {
         let licenceMap = this.props.cars.map(x => {return x.Licence;});
         let cars = this.props.cars;
+        console.log(`cars ${cars.length}`);
         let requests = this.props.requests.map(
             x => {
                 let index = licenceMap.indexOf(x.vehicle);
