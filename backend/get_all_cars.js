@@ -8,7 +8,7 @@
     cars[car["Licence"]] = car;
   }
   
-  return {keys: Object.keys(cars), cars: Object.values(cars)};
+  return Object.values(cars);
 }
 
 /*
