@@ -413,7 +413,8 @@
         "default": "Label_3087422522999134978"
       }, {
         "name": "spreadsheet_id",
-        "type": "STRING"
+        "type": "STRING",
+        "default": "1kyd3g0xuPYoyDuT6joT0gkl29YCFE56E2ktv6haRong"
       }]
     }
   }
