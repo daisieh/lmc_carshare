@@ -10,7 +10,7 @@
 
       return features;
   }
-  let cars = api.run("this.list_cars");
+  let cars = api.run("this.list_cars")[0];
   for (var i in cars) {
     let this_feat = cars[i].Features;
     for (var j in this_feat) {
