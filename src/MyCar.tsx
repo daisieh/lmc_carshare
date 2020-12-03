@@ -100,64 +100,60 @@ export class MyCar extends React.Component<MyCarProps, MyCarState> {
                 </div>
             );
         }
-
         let car_div = (
-            <div>
-                You don't own a car in the carshare!
-            </div>
-        )
-        if (this.props.myCar) {
-            car_div = (
-                <Container fluid="md" key={this.props.myCar.Licence} className="car-form">
-                    <Form>
-                        <Form.Group controlId="Licence">
-                            <Form.Label>Licence</Form.Label>
-                            <Form.Control value={this.state.Licence} onChange={this.setFormValue}/>
-                        </Form.Group>
-                        <Form.Group controlId="Make">
-                            <Form.Label>Make</Form.Label>
-                            <Form.Control value={this.state.Make} onChange={this.setFormValue}/>
-                        </Form.Group>
-                        <Form.Group controlId="Model">
-                            <Form.Label>Model</Form.Label>
-                            <Form.Control value={this.state.Model} onChange={this.setFormValue}/>
-                        </Form.Group>
-                        <Form.Group controlId="Color">
-                            <Form.Label>Color</Form.Label>
-                            <Form.Control value={this.state.Color} onChange={this.setFormValue}/>
-                        </Form.Group>
-                        <Form.Group controlId="Notes">
-                            <Form.Label>Notes</Form.Label>
-                            <Form.Control value={this.state.Notes} onChange={this.setFormValue}/>
-                        </Form.Group>
-                        <Form.Group>
-                            <Form.Check type="checkbox" checked={this.state.Confirm} onChange={this.setCheckbox} id="Confirm" key="Confirm"
-                                        label="Require approval of all requests"/>
-                            <Form.Check type="checkbox" checked={this.state.AlwaysAvailable} onChange={this.setCheckbox} id="AlwaysAvailable" key="AlwaysAvailable"
-                                        label="Vehicle is available by default"/>
-                        </Form.Group>
-                        <Form.Group>
-                            <Form.Label>Features</Form.Label>
-                            <Multiselect
-                                className="selector"
-                                data={this.props.allFeatures}
-                                value={this.state.Features}
-                                onChange={this.onTagPick}
-                            />
-                        </Form.Group>
-                    </Form>
-                    <div className="save-button">
-                        <Button
+            <Container fluid="md" key="car" className="car-form">
+                {this.props.myCar ? (<div/>) : (<div className="error">You don't have a car in the carshare!</div>)}
+                <Form>
+                    <Form.Group controlId="Licence">
+                        <Form.Label>Licence</Form.Label>
+                        <Form.Control value={this.state.Licence} onChange={this.setFormValue}/>
+                    </Form.Group>
+                    <Form.Group controlId="Make">
+                        <Form.Label>Make</Form.Label>
+                        <Form.Control value={this.state.Make} onChange={this.setFormValue}/>
+                    </Form.Group>
+                    <Form.Group controlId="Model">
+                        <Form.Label>Model</Form.Label>
+                        <Form.Control value={this.state.Model} onChange={this.setFormValue}/>
+                    </Form.Group>
+                    <Form.Group controlId="Color">
+                        <Form.Label>Color</Form.Label>
+                        <Form.Control value={this.state.Color} onChange={this.setFormValue}/>
+                    </Form.Group>
+                    <Form.Group controlId="Notes">
+                        <Form.Label>Notes</Form.Label>
+                        <Form.Control value={this.state.Notes} onChange={this.setFormValue}/>
+                    </Form.Group>
+                    <Form.Group>
+                        <Form.Check type="checkbox" checked={this.state.Confirm} onChange={this.setCheckbox} id="Confirm" key="Confirm"
+                                    label="Require approval of all requests"/>
+                        <Form.Check type="checkbox" checked={this.state.AlwaysAvailable} onChange={this.setCheckbox} id="AlwaysAvailable" key="AlwaysAvailable"
+                                    label="Vehicle is available by default"/>
+                    </Form.Group>
+                    <Form.Group>
+                        <Form.Label>Features</Form.Label>
+                        <Multiselect
                             className="selector"
-                            onClick={this.handleSave}
-                        >
-                            <Container className="button-spinner" >
-                                <Spinner hidden={this.props.status !== "loading"} animation="border" size="sm" role="loading..."/>
-                                Save my changes
-                            </Container>
-                        </Button>
-                    </div>
-                </Container>);
+                            data={this.props.allFeatures}
+                            value={this.state.Features}
+                            onChange={this.onTagPick}
+                        />
+                    </Form.Group>
+                </Form>
+                <div className="save-button">
+                    <Button
+                        className="selector"
+                        onClick={this.handleSave}
+                    >
+                        <Container className="button-spinner" >
+                            <Spinner hidden={this.props.status !== "loading"} animation="border" size="sm" role="loading..."/>
+                            {this.props.myCar ? "Save my changes" : "Add new car"}
+                        </Container>
+                    </Button>
+                </div>
+            </Container>
+        );
+        if (this.props.myCar) {
         }
 
         return (
