@@ -1,5 +1,5 @@
 (params) => {
-  let role = params.canWrite ? "writer" : "user";
+  let role = params.canWrite ? "writer" : "none";
   let ruleId = `user:${params.user}`;
   let rule = null;
   try {

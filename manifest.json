@@ -254,10 +254,10 @@
             "type": "ARRAY"
           }, {
             "name": "AlwaysAvailable",
-            "type": "BOOLEAN"
+            "type": "STRING"
           }, {
             "name": "Confirm",
-            "type": "BOOLEAN"
+            "type": "STRING"
           }, {
             "name": "Licence",
             "type": "STRING"

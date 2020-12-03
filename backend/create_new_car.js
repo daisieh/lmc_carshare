@@ -12,8 +12,8 @@
     "Features": params.Features,
     "Licence": params.Licence,
     "Email": params.Email,
-    "AlwaysAvailable": params.AlwaysAvailable,
-    "Confirm": params.Confirm,
+    "AlwaysAvailable": (params.AlwaysAvailable.toLowerCase() === "true"),
+    "Confirm": (params.Confirm.toLowerCase() === "true"),
     "AvailableCalendar": params.AvailableCalendar,
     "BookingCalendar": params.BookingCalendar
   }
@@ -44,7 +44,10 @@
     }
   }
   if (new_car.AvailableCalendar == null || new_car.AvailableCalendar === "") {
-    parameters.$body.summary = `${new_car.Licence}_available`;
+    parameters.$body = {
+      summary : `${new_car.Licence}_available`,
+      timeZone : 'America/Vancouver'
+    };
     try {
       let cal = api.run('google_calendar.create_calendar', parameters)[0];
       new_car.AvailableCalendar = cal.id;
@@ -52,17 +55,16 @@
       console.log(e);
     }
   }
+  api.run("this.set_calendar_access", {calendarId: new_car.BookingCalendar, user: new_car.Email, canWrite: true});
+  api.run("this.set_calendar_access", {calendarId: new_car.BookingCalendar, user: new_car.Email, canWrite: !new_car.AlwaysAvailable});
 
-  if (!new_car.AlwaysAvailable) {
-    // set permissions for the calendar
-  }
   if (is_new_car == true) {
     cars.push(new_car);
     console.log("new car");
   }
   
   // convert back to array for sheet:
-  let parameters = {};
+  parameters = {};
   parameters.range = 'Cars!A:Z';
   parameters.spreadsheetId = env.get("spreadsheet_id");
   parameters.valueInputOption = "RAW";
