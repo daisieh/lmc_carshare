@@ -15,6 +15,8 @@ export interface Car {
     "Confirm": boolean;
     "Description": string;
     "Notes": string;
+    "AvailableCalendar": string;
+    "BookingCalendar": string;
 }
 
 export interface CarRequest {
