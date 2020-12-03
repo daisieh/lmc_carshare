@@ -17,7 +17,7 @@
       "operations": [{
         "id": "list_cars",
         "function": {
-          "js": "get_all_cars.js",
+          "js": "list_cars.js",
           "lang": "js"
         },
         "access": {
