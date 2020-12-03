@@ -55,7 +55,7 @@
   // convert back to array for sheet:
   let parameters = {};
   parameters.range = 'Cars!A:I';
-  parameters.spreadsheetId = '1kyd3g0xuPYoyDuT6joT0gkl29YCFE56E2ktv6haRong';
+  parameters.spreadsheetId = env.get("spreadsheet_id");
   parameters.valueInputOption = "RAW";
   for (var i in cars) {
     let val = api.run("this.car_object_to_sheet_row", {car_object: cars[i]});

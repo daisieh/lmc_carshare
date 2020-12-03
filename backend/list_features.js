@@ -2,7 +2,7 @@
   let features = [];
 
   if (params.all_features) {
-      const parameters = { range: 'Tags!A1:A30', spreadsheetId: '1kyd3g0xuPYoyDuT6joT0gkl29YCFE56E2ktv6haRong' };
+      const parameters = { range: 'Features!A1:A30', spreadsheetId: env.get("spreadsheet_id") };
       let sheet_rows = api.run('google_sheets.get_sheet_values', parameters)[0].values;
       for (var i in sheet_rows) {
         features.push(...sheet_rows[i]);
