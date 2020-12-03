@@ -19,9 +19,6 @@
         "function": {
           "js": "list_cars.js",
           "lang": "js"
-        },
-        "access": {
-          "requireUser": true
         }
       }, {
         "id": "request_received",
@@ -360,6 +357,9 @@
         "function": {
           "js": "get_all_cars.js",
           "lang": "js"
+        },
+        "access": {
+          "requireUser": true
         }
       }],
       "dataConnections": [{
