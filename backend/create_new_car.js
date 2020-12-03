@@ -8,16 +8,17 @@
     "Make": params.Make,
     "Model": params.Model,
     "Color": params.Color,
+    "Notes": params.Notes,
     "Features": params.Features,
     "Licence": params.Licence,
     "Email": params.Email,
-    "AlwaysAvailable": params.Availability,
-    "Confirm": params.Confirm
+    "AlwaysAvailable": params.AlwaysAvailable,
+    "Confirm": params.Confirm,
+    "AvailableCalendar": params.AvailableCalendar,
+    "BookingCalendar": params.BookingCalendar
   }
   
-  let cars = api.run("this.list_cars");
-  let values = [];
-  values.push(cars.shift());
+  let cars = api.run("this.get_all_cars");
   // look for the car to see if it needs to be updated
   let is_new_car = true;
   for (var i in cars) {
@@ -30,6 +31,7 @@
   
   if (is_new_car == true) {
     cars.push(new_car);
+    console.log("new car");
     // create calendar for bookings:
     let parameters = {};
     parameters.$body = {
@@ -37,33 +39,40 @@
       timeZone : 'America/Vancouver'
     };
     try {
-      api.run('google_calendar.create_calendar', parameters)[0];
+      let cal = api.run('google_calendar.create_calendar', parameters)[0];
+      new_car.BookingCalendar = cal.id;
     } catch (e) {
       console.log(e);
     }
-    
+    parameters.$body.summary = `${new_car.Licence}_available`;
+    try {
+      let cal = api.run('google_calendar.create_calendar', parameters)[0];
+      new_car.AvailableCalendar = cal.id;
+    } catch (e) {
+      console.log(e);
+    }
+
     if (!new_car.AlwaysAvailable) {
-      parameters.$body.summary = `${new_car.Licence}_available`;
-      try {
-        api.run('google_calendar.create_calendar', parameters)[0];
-      } catch (e) {
-        console.log(e);
-      }
+      // set permissions for the calendar
     }
   }
   
   // convert back to array for sheet:
   let parameters = {};
-  parameters.range = 'Cars!A:I';
+  parameters.range = 'Cars!A:Z';
   parameters.spreadsheetId = env.get("spreadsheet_id");
   parameters.valueInputOption = "RAW";
+  let values = [];
+  let keys = api.run("this.car_object_to_sheet_row", {});
+  values.push(keys);
+  
   for (var i in cars) {
     let val = api.run("this.car_object_to_sheet_row", {car_object: cars[i]});
     values.push(val);
   }
   parameters.$body = { values : values };
   let result = api.run('google_sheets.update_sheet_values', parameters);
-  if (result[0].updatedColumns != 7) {
+  if (result[0].updatedColumns != 12) {
     throw "couldn't update requests";
   }
   return cars;
