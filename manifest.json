@@ -354,6 +354,13 @@
           "js": "untitled.js",
           "lang": "js"
         }
+      }, {
+        "id": "get_all_cars",
+        "description": "Use either licence plate or owner\u0027s email to get a car",
+        "function": {
+          "js": "get_all_cars.js",
+          "lang": "js"
+        }
       }],
       "dataConnections": [{
         "ref": "slack_identify.raw",
