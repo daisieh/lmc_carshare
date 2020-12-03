@@ -1,82 +1,82 @@
 .not-valid {
-    padding: 16px;
-    font-size: medium;
-    max-width: 800px;
+  padding: 16px;
+  font-size: medium;
+  max-width: 800px;
 }
 
 .main-spinner {
-    align-content: center;
+  align-content: center;
 }
 
 .button-spinner {
-    display: flex;
-    padding:0;
-    justify-content: space-between;
-    align-items: center;
-    column-gap: 4px;
+  display: flex;
+  padding:0;
+  justify-content: space-between;
+  align-items: center;
+  column-gap: 4px;
 }
 
 .main-head {
-    background-color: #005cbf;
-    color: #7abaff;
-    font-size: 32px;
-    font-weight: bold;
-    padding-left: 0.5em;
+  background-color: #005cbf;
+  color: #7abaff;
+  font-size: 32px;
+  font-weight: bold;
+  padding-left: 0.5em;
 }
 
 .user-head {
-    background-color: #7abaff;
-    color: #343a40;
-    padding-left: 1em;
+  background-color: #7abaff;
+  color: #343a40;
+  padding-left: 1em;
 }
 
 .date-select {
-    display: flex;
-    flex-wrap: wrap;
-    padding-bottom: 1em;
+  display: flex;
+  flex-wrap: wrap;
+  padding-bottom: 1em;
 }
 
 .feature-select {
-    padding-bottom: 1em;
+  padding-bottom: 1em;
 }
 
 .search-form {
-    max-width: 450px;
-    padding: 4px;
+  max-width: 450px;
+  padding: 4px;
 }
 
 .reset-button {
-    padding-top: 4px;
+  padding-top: 4px;
 }
 
 .radio {
-    display: flex;
-    align-items: center;
+  display: flex;
+  align-items: center;
 }
 
 .request {
-    margin-bottom: 16px;
+  margin-bottom: 16px;
 }
 
 .link-button {
-    background-color: transparent;
-    border: none;
-    cursor: pointer;
-    text-decoration: underline;
-    display: inline;
-    margin-left: 16px;
-    padding: 0;
+  background-color: transparent;
+  border: none;
+  cursor: pointer;
+  text-decoration: underline;
+  display: inline;
+  margin-left: 16px;
+  padding: 0;
 }
 
 .link-button:hover,
 .link-button:focus {
-    text-decoration: none;
+  text-decoration: none;
 }
 
 .car_item {
-    margin-bottom: 16px;
+  margin-bottom: 16px;
 }
 
 .car-form {
-    max-width: 300px;
+  max-width: 300px;
 }

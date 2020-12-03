@@ -375,8 +375,8 @@ fieldset[disabled] .rw-btn-primary {
   cursor: pointer;
   height: calc(1.25em - 1px);
   /** ie8 fallback **/
-  margin-top: -1px\9;
-  height: 1.25em\9;
+  margin-top: -1px\9 ;
+  height: 1.25em\9 ;
   /** --- **/
   line-height: 1.25em;
   line-height: calc(1.25em - 1px);
@@ -553,8 +553,8 @@ input.rw-select-list-input {
   .rw-multiselect .rw-input-reset, .rw-multiselect .rw-input, .rw-multiselect .rw-dropdown-list-autofill, .rw-multiselect .rw-filter-input {
     height: calc(2.5em - 2px);
     /** ie8 fallback **/
-    margin-top: -2px\9;
-    height: 2.5em\9;
+    margin-top: -2px\9 ;
+    height: 2.5em\9 ;
     /** --- **/
     border-width: 0;
     width: auto;
