@@ -19,9 +19,6 @@
         "function": {
           "js": "list_cars.js",
           "lang": "js"
-        },
-        "access": {
-          "requireUser": true
         }
       }, {
         "id": "request_received",
@@ -354,6 +351,16 @@
           "js": "untitled.js",
           "lang": "js"
         }
+      }, {
+        "id": "get_all_cars",
+        "description": "Use either licence plate or owner\u0027s email to get a car",
+        "function": {
+          "js": "get_all_cars.js",
+          "lang": "js"
+        },
+        "access": {
+          "requireUser": true
+        }
       }],
       "dataConnections": [{
         "ref": "slack_identify.raw",
@@ -404,6 +411,10 @@
         "name": "request_label",
         "type": "STRING",
         "default": "Label_3087422522999134978"
+      }, {
+        "name": "spreadsheet_id",
+        "type": "STRING",
+        "default": "1kyd3g0xuPYoyDuT6joT0gkl29YCFE56E2ktv6haRong"
       }]
     }
   }
