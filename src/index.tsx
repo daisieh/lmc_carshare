@@ -1,7 +1,6 @@
 import * as React from "react";
 import {render} from "react-dom";
 import {BrowserRouter as Router, Redirect, Route, Switch} from "react-router-dom";
-import {Button} from 'rsuite';
 import './custom-rw.scss';
 import './custom-bootstrap.scss';
 import './styles.css';
@@ -17,6 +16,7 @@ import {Pages} from "./types";
 import {userSlice} from "./redux/reducers/userSlice";
 import {loadCars} from "./redux/reducers/carSlice";
 import moment from "moment";
+import {Button, Container} from "react-bootstrap";
 
 /**
  * Sign-in page
@@ -24,16 +24,17 @@ import moment from "moment";
 function SignIn() {
     return (
         <>
-            <main className="container center sign-in">
-                <Button appearance="ghost"
-                    onClick={async e => {
-                        e.preventDefault();
-                        await signIn();
-                    }}
-                >
-                    Sign In
-                </Button>
-            </main>
+            <div className="main-head">LMC Carshare</div>
+            <Container className="not-valid">
+            <Button
+                onClick={async e => {
+                    e.preventDefault();
+                    await signIn();
+                }}
+            >
+                Sign In
+            </Button>
+            </Container>
         </>
     );
 }
@@ -56,13 +57,16 @@ function Index(props) {
     momentLocalizer()
 
     if (isValid === -1) {
-        return (<main className="container main">
+        return (
             <div>
+            <div className="main-head">LMC Carshare</div>
+            <Container className="not-valid">
                 {user.name}, your address {user.email} is
                 not registered as a carshare member.
                 Please contact the LMC Carshare team to register your account.
+            </Container>
             </div>
-        </main>);
+        );
     }
 
     // load data store
