@@ -13,6 +13,13 @@
   car.Email = car["Email address"];
   delete car["Email address"];
 
+  car.BookingCalendar = car["Booking calendar"];
+  delete car["Booking calendar"];
+
+  car.AvailableCalendar = car["Availability calendar"];
+  delete car["Availability calendar"];
+
+
   if (car["Availability"] === "Only available at specified times") {
     car.AlwaysAvailable = false;
   } else {
@@ -31,11 +38,11 @@
     car.Notes = "";
   }
   
-  if (car["Availability calendar"] == null) {
+  if (car["AvailableCalendar"] == null) {
     car.AvailableCalendar = "";
   }
 
-  if (car["Booking calendar"] == null) {
+  if (car["BookingCalendar"] == null) {
     car.BookingCalendar = "";
   }
 

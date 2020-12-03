@@ -264,6 +264,12 @@
           }, {
             "name": "Notes",
             "type": "STRING"
+          }, {
+            "name": "AvailableCalendar",
+            "type": "STRING"
+          }, {
+            "name": "BookingCalendar",
+            "type": "STRING"
           }],
           "js": "create_new_car.js",
           "lang": "js"

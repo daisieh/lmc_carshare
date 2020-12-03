@@ -13,7 +13,9 @@
     "Licence": params.Licence,
     "Email": params.Email,
     "AlwaysAvailable": params.AlwaysAvailable,
-    "Confirm": params.Confirm
+    "Confirm": params.Confirm,
+    "AvailableCalendar": params.AvailableCalendar,
+    "BookingCalendar": params.BookingCalendar
   }
   
   let cars = api.run("this.get_all_cars");
@@ -29,6 +31,7 @@
   
   if (is_new_car == true) {
     cars.push(new_car);
+    console.log("new car");
     // create calendar for bookings:
     let parameters = {};
     parameters.$body = {
@@ -36,24 +39,27 @@
       timeZone : 'America/Vancouver'
     };
     try {
-      api.run('google_calendar.create_calendar', parameters)[0];
+      let cal = api.run('google_calendar.create_calendar', parameters)[0];
+      new_car.BookingCalendar = cal.id;
     } catch (e) {
       console.log(e);
     }
     parameters.$body.summary = `${new_car.Licence}_available`;
     try {
-      api.run('google_calendar.create_calendar', parameters)[0];
+      let cal = api.run('google_calendar.create_calendar', parameters)[0];
+      new_car.AvailableCalendar = cal.id;
     } catch (e) {
       console.log(e);
     }
 
     if (!new_car.AlwaysAvailable) {
+      // set permissions for the calendar
     }
   }
   
   // convert back to array for sheet:
   let parameters = {};
-  parameters.range = 'Cars!A:J';
+  parameters.range = 'Cars!A:Z';
   parameters.spreadsheetId = env.get("spreadsheet_id");
   parameters.valueInputOption = "RAW";
   let values = [];
@@ -66,7 +72,7 @@
   }
   parameters.$body = { values : values };
   let result = api.run('google_sheets.update_sheet_values', parameters);
-  if (result[0].updatedColumns != 10) {
+  if (result[0].updatedColumns != 12) {
     throw "couldn't update requests";
   }
   return cars;
