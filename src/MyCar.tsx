@@ -2,8 +2,9 @@ import * as React from "react";
 import {Car, User} from "./types";
 import {ThunkDispatch} from "@reduxjs/toolkit";
 import {connect} from "react-redux";
-import {Button, Checkbox, CheckboxGroup, ControlLabel, Form, FormControl, FormGroup, Loader} from "rsuite";
+import {Multiselect} from 'react-widgets';
 import {updateCar} from "./redux/reducers/carSlice";
+import {Button, Spinner, Form, Container} from "react-bootstrap";
 
 interface MyCarProps {
     user: User;
@@ -16,68 +17,82 @@ interface MyCarProps {
 }
 
 interface MyCarState {
-    carForm: any;
+    Licence: string;
+    Make: string;
+    Model: string;
+    Color: string;
+    Features: string[];
+    Confirm: boolean;
+    AlwaysAvailable: boolean;
 }
 
 export class MyCar extends React.Component<MyCarProps, MyCarState> {
     constructor(props) {
         super(props);
         this.state = {
-            carForm: {}
+            Licence: "",
+            Make: "",
+            Model: "",
+            Color: "",
+            Features: [] as string[],
+            Confirm: true,
+            AlwaysAvailable: true,
         }
         this.setFormValue = this.setFormValue.bind(this);
         this.handleSave = this.handleSave.bind(this);
+        this.setCheckbox = this.setCheckbox.bind(this);
+        this.onTagPick = this.onTagPick.bind(this);
     }
 
     componentDidUpdate(prevProps) {
         if (this.props.myCar && (prevProps.myCar === null)) {
-            let checkboxes = ["Confirm", "AlwaysAvailable"].filter(x => {return this.props.myCar[x]});
             this.setState({
-                carForm: {
-                    Make: this.props.myCar.Make,
-                    Model: this.props.myCar.Model,
-                    Licence: this.props.myCar.Licence,
-                    Email: this.props.myCar.Email,
-                    Features: this.props.myCar.Features,
-                    Checkboxes: checkboxes,
-                    Color: this.props.myCar.Color
-                }
+                Licence: this.props.myCar.Licence,
+                Make: this.props.myCar.Make,
+                Model: this.props.myCar.Model,
+                Features: this.props.myCar.Features,
+                Confirm: this.props.myCar.Confirm,
+                AlwaysAvailable: this.props.myCar.AlwaysAvailable,
+                Color: this.props.myCar.Color,
             });
         }
     }
     handleSave() {
         let newCar = {
-            Make: this.state.carForm.Make,
-            Model: this.state.carForm.Model,
-            Licence: this.state.carForm.Licence,
-            Email: this.state.carForm.Email,
-            Features: this.state.carForm.Features,
-            Color: this.state.carForm.Color,
-            Confirm: this.state.carForm.Checkboxes.filter(x => {return x === "Confirm"}).length > 0,
-            AlwaysAvailable: this.state.carForm.Checkboxes.filter(x => {return x === "AlwaysAvailable"}).length > 0
+            Make: this.state.Make,
+            Model: this.state.Model,
+            Licence: this.state.Licence,
+            Email: this.props.myCar.Email, // this can't change
+            Features: this.state.Features,
+            Color: this.state.Color,
+            Confirm: this.state.Confirm,
+            AlwaysAvailable: this.state.AlwaysAvailable
         } as Car;
         console.log(`Confirm is ${newCar.Confirm}`);
         this.props.dispatch(updateCar(newCar));
     }
 
     setFormValue(event) {
-        let newCar = {
-            Model: event.Model,
-            Make: event.Make,
-            Color: event.Color,
-            Email: event.Email,
-            Features: event.Features,
-            Licence: event.Licence,
-            Checkboxes: event.Checkboxes
-        };
-        this.setState({carForm: newCar});
+        let newState = this.state;
+        newState[event.currentTarget.id] = event.currentTarget.value;
+        this.setState(newState);
+    }
+
+    setCheckbox(event) {
+        let newState = this.state;
+        newState[event.currentTarget.id] = event.currentTarget.checked;
+        this.setState(newState);
+    }
+
+    onTagPick(event) {
+        this.setState({Features: event as string[]});
     }
 
     render() {
         if (this.props.status === "loading") {
             return (
                 <div>
-                    <Loader size="lg" center content="Loading" vertical/>
+                    <Spinner className="main-spinner" animation="border" role="status"/>
                 </div>
             );
         }
@@ -88,76 +103,53 @@ export class MyCar extends React.Component<MyCarProps, MyCarState> {
             </div>
         )
         if (this.props.myCar) {
-            let features = this.props.allFeatures.map(x => {
-                return (<Checkbox value={x} key={x}>{x}</Checkbox>);
-            })
             car_div = (
-                <div key={this.props.myCar.Licence} className="car_item">
-                    <div className="save-button">
-                    <Button
-                        appearance="ghost"
-                        loading={this.props.status === "loading"}
-                        size="sm"
-                        onClick={this.handleSave}
-                    >
-                        Save my changes
-                    </Button>
-                    </div>
-
-                    <Form layout="inline" formValue={this.state.carForm} onChange={formValue => this.setFormValue(formValue)}>
-                        <FormGroup>
-                            <ControlLabel>Licence</ControlLabel>
-                            <FormControl
-                                name="Licence"
+                <Container fluid="md" key={this.props.myCar.Licence} className="car-form">
+                    <Form>
+                        <Form.Group controlId="Licence">
+                            <Form.Label>Licence</Form.Label>
+                            <Form.Control value={this.state.Licence} onChange={this.setFormValue}/>
+                        </Form.Group>
+                        <Form.Group controlId="Make">
+                            <Form.Label>Make</Form.Label>
+                            <Form.Control value={this.state.Make} onChange={this.setFormValue}/>
+                        </Form.Group>
+                        <Form.Group controlId="Model">
+                            <Form.Label>Model</Form.Label>
+                            <Form.Control value={this.state.Model} onChange={this.setFormValue}/>
+                        </Form.Group>
+                        <Form.Group controlId="Color">
+                            <Form.Label>Color</Form.Label>
+                            <Form.Control value={this.state.Color} onChange={this.setFormValue}/>
+                        </Form.Group>
+                        <Form.Group>
+                            <Form.Check type="checkbox" checked={this.state.Confirm} onChange={this.setCheckbox} id="Confirm" key="Confirm"
+                                        label="Require approval of all requests"/>
+                            <Form.Check type="checkbox" checked={this.state.AlwaysAvailable} onChange={this.setCheckbox} id="AlwaysAvailable" key="AlwaysAvailable"
+                                        label="Vehicle is available by default"/>
+                        </Form.Group>
+                        <Form.Group>
+                            <Form.Label>Features</Form.Label>
+                            <Multiselect
+                                className="selector"
+                                data={this.props.allFeatures}
+                                value={this.state.Features}
+                                onChange={this.onTagPick}
                             />
-                        </FormGroup>
-                        <FormGroup>
-                            <ControlLabel>Make</ControlLabel>
-                            <FormControl
-                                name="Make"
-                            />
-                        </FormGroup>
-                        <FormGroup>
-                            <ControlLabel>Model</ControlLabel>
-                            <FormControl
-                                name="Model"
-                            />
-                        </FormGroup>
-                        <FormGroup>
-                            <ControlLabel>Color</ControlLabel>
-                            <FormControl
-                                name="Color"
-                            />
-                        </FormGroup>
-                        <FormGroup>
-                            <ControlLabel>Email</ControlLabel>
-                            <FormControl
-                                name="Email"
-                            />
-                        </FormGroup>
-                        <FormGroup>
-                            <FormControl
-                                name="Checkboxes"
-                                inline
-                                accepter={CheckboxGroup}
-                            >
-                                <Checkbox value="Confirm">Require approval of all requests</Checkbox>
-                                <Checkbox value="AlwaysAvailable">Car is available by default</Checkbox>
-                            </FormControl>
-                        </FormGroup>
-                        <FormGroup>
-                            <ControlLabel>Available Features:</ControlLabel>
-                            <FormControl
-                                name="Features"
-                                inline
-                                accepter={CheckboxGroup}
-                            >
-                                {features}
-                            </FormControl>
-                        </FormGroup>
-
+                        </Form.Group>
                     </Form>
-                </div>);
+                    <div className="save-button">
+                        <Button
+                            className="selector"
+                            onClick={this.handleSave}
+                        >
+                            <Container className="button-spinner" >
+                                <Spinner hidden={this.props.status !== "loading"} animation="border" size="sm" role="loading..."/>
+                                Save my changes
+                            </Container>
+                        </Button>
+                    </div>
+                </Container>);
         }
 
         return (

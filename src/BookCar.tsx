@@ -1,11 +1,12 @@
 import * as React from "react";
 import moment from "moment";
-import {Button, DatePicker, Loader, Modal, Radio, TagPicker} from "rsuite";
+import {Multiselect, DateTimePicker} from 'react-widgets';
 import {Car, CarRequest, User} from "./types";
 import {connect} from "react-redux";
 import {clearAvailable, loadAvailableCars} from "./redux/reducers/carSlice";
 import {ThunkDispatch} from "@reduxjs/toolkit";
 import {createRequest, resetNewest} from "./redux/reducers/requestSlice";
+import {Button, Spinner, Container, Form, Modal} from "react-bootstrap";
 
 interface BookCarProps {
     user: User;
@@ -48,7 +49,7 @@ export class BookCar extends React.Component<BookCarProps, BookCarState> {
 
     onClickCarRadio(value) {
         let req = this.state.pendingRequest;
-        req.vehicle = value;
+        req.vehicle = value.target.id;
         this.setState({pendingRequest: req});
     }
 
@@ -120,22 +121,20 @@ export class BookCar extends React.Component<BookCarProps, BookCarState> {
             // we're setting the endTime,
             // so if the existing start is less than an hour before,
             // set the start to an hour before the end
-            console.log(`comparing new end ${endTime} to ${newStart.format()}`);
             newEnd = moment(endTime);
-            if (newStart.add(1, "hour").isAfter(newEnd)) {
-                newStart = newEnd.clone().subtract(1, "hour");
-                console.log(`...too soon, so set start to ${newStart}`);
-            }
+            // if (newStart.add(1, "hour").isAfter(newEnd)) {
+            //     newStart = newEnd.clone().subtract(1, "hour");
+            //     console.log(`...too soon, so set start to ${newStart}`);
+            // }
         } else if (startTime !== "") {
             // we're setting the startTime,
             // so if the existing end is less than an hour after,
             // set the end to an hour after the end
-            console.log(`comparing new start ${startTime} to ${newEnd.format()}`);
             newStart = moment(startTime);
-            if (newEnd.subtract(1, "hour").isBefore(newStart)) {
-                newEnd = newStart.clone().add(1, "hour");
-                console.log(`...too soon, so set end to ${newEnd}`);
-            }
+            // if (newEnd.subtract(1, "hour").isBefore(newStart)) {
+            //     newEnd = newStart.clone().add(1, "hour");
+            //     console.log(`...too soon, so set end to ${newEnd}`);
+            // }
         }
         return [newStart.format(), newEnd.format()];
     }
@@ -162,62 +161,64 @@ export class BookCar extends React.Component<BookCarProps, BookCarState> {
         if (this.props.featureStatus === "loading") {
             return (
                 <div>
-                    <Loader size="lg" center content="Loading" vertical/>
+                    <Spinner className="main-spinner" animation="border" role="status"/>
                 </div>
             )
         }
-
+        let times = this.updateTimes("", "");
         let disabled = (this.props.available !== null) || (this.props.carStatus === "loading");
         let inThePast = "";
         if (moment(this.state.startDate).isBefore(moment())) {
             inThePast = "WARNING! The selected time slot is in the past.";
         }
-        let feat_array:{label: string, value: string}[] = this.props.features.map(x => { return {"value": x, "label": x}; });
         let search_form = (
-            <div className="search-form">
-                <p className={disabled?"caption-disabled":"caption"}>Select the date and time you'd like to book.</p>
-                <div className="date-select">
-                    <DatePicker
-                        className="selector"
-                        size="sm"
-                        format="YYYY-MM-DD HH:mm"
+            <Container className="search-form">
+                <Container fluid className="date-select">
+                    <p className={disabled?"caption-disabled":"caption"}>Choose the time period you'd like to book.</p>
+                    <DateTimePicker
+                        format="HH:mm DD MMM YYYY"
+                        timeFormat={"HH:mm"}
                         onChange={this.handleStartChange}
                         value={this.state.startDate}
+                        min={new Date(times[0])}
                         disabled={disabled}
+                        step={15}
                     />
-                    <DatePicker
+                    <DateTimePicker
                         className="selector"
-                        size="sm"
-                        format="YYYY-MM-DD HH:mm"
+                        format="HH:mm DD MMM YYYY"
+                        timeFormat={"HH:mm"}
                         onChange={this.handleEndChange}
                         value={this.state.endDate}
+                        min={this.state.startDate}
                         disabled={disabled}
+                        step={15}
                     />
-                </div>
-                <p className={disabled?"caption-disabled":"caption"}>Only select cars with all of these features:</p>
-                <div className="feature-select">
-                    <TagPicker
+                </Container>
+                <Container className="feature-select">
+                    <p className={disabled?"caption-disabled":"caption"}>Only select cars with all of these features:</p>
+                    <Multiselect
                         className="selector"
                         size="sm"
-                        style={{width: 300}}
-                        data={feat_array}
+                        data={this.props.features}
                         value={this.state.pendingRequest.features}
                         onChange={this.onTagPick}
                         disabled={disabled}
+                        placeholder="any features"
                     />
-                </div>
+                </Container>
                 <Button
-                    appearance="ghost"
                     className="selector"
-                    loading={this.props.carStatus === "loading"}
-                    size="sm"
                     onClick={this.onLookForCars}
                     disabled={disabled}
                 >
+                    <Container className="button-spinner" >
+                    <Spinner hidden={this.props.carStatus !== "loading"} animation="border" size="sm" role="loading..."/>
                     Look for cars
+                    </Container>
                 </Button>
                 <div className="error">{[inThePast,this.props.requestError,this.props.carError].join("\n")}</div>
-            </div>
+            </Container>
         );
 
         let available_cars = <div className="available-form"/>;
@@ -229,38 +230,34 @@ export class BookCar extends React.Component<BookCarProps, BookCarState> {
                 </div>
             );
             let chosenCar = null as Car | null;
-            let email = "";
             if (this.props.available.length > 0) {
                 chosenCar = this.props.cars.filter(car => {
                     return (car.Licence === this.state.pendingRequest.vehicle);
                 })[0];
-                if (chosenCar != null) {
-                    email = chosenCar.Email;
-                }
-                console.log(`there are ${this.props.available.length} cars, chosen car is ${email}`);
                 let rows = this.props.available.map((car) => {
-                    let isChosenCar = (email === car.Email);
-                    let needsConfirm = car.Confirm ? "(requires approval)" : "";
+                    let carDesc = car.Description + (car.Confirm ? " (requires approval)" : "");
                     return (
-                        <Radio checked={isChosenCar} onChange={this.onClickCarRadio} value={car.Licence}
-                               key={car.Licence}>
-                            {car.Description} {needsConfirm}
-                        </Radio>
+                        <Form.Check className="radio" type="radio" checked={car.Licence === this.state.pendingRequest.vehicle} onChange={this.onClickCarRadio} id={car.Licence} key={car.Licence}
+                               label={carDesc}>
+                        </Form.Check>
                     )
                 });
                 available_cars = (
                     <div className="available-form">
-                        <p>Cars available for booking:</p>
-                        {rows}
-                        <br/>
+                        <Form>
+                            <Form.Group>
+                                <Form.Label>Cars available for booking:</Form.Label>
+                                {rows}
+                            </Form.Group>
+                        </Form>
                         <Button
-                            appearance="ghost"
-                            size="sm"
                             onClick={this.onReserveCar}
                             disabled={chosenCar == null}
-                            loading={this.props.requestStatus === "loading"}
                         >
-                            Book it!
+                            <Container className="button-spinner" >
+                                <Spinner hidden={this.props.requestStatus !== "loading"} className="main-spinner" animation="border" size="sm" role="loading..."/>
+                                Book it!
+                            </Container>
                         </Button>
                     </div>
                 );
@@ -276,26 +273,21 @@ export class BookCar extends React.Component<BookCarProps, BookCarState> {
             }
         }
         let booking_status = (
-            <div className="modal-container">
-                <Modal show={message !== ""} onHide={() => {this.resetPicker();}}>
-                    <Modal.Header>
-                        <Modal.Title>Booking request sent!</Modal.Title>
-                    </Modal.Header>
+                <Modal show={message !== ""}>
                     <Modal.Body>
                         <p>{message}</p>
                     </Modal.Body>
                     <Modal.Footer>
-                        <Button onClick={() => {this.resetPicker();}} appearance="primary">
+                        <Button onClick={() => {this.resetPicker();}}>
                             Ok
                         </Button>
                     </Modal.Footer>
                 </Modal>
-            </div>
         );
 
                 return (
                 <div>
-                    <div>
+                    <div className="search-form">
                         {search_form}
                         {available_cars}
                         {booking_status}
@@ -303,8 +295,6 @@ export class BookCar extends React.Component<BookCarProps, BookCarState> {
                     <div>
                     <Button
                         className="reset-button"
-                        appearance="ghost"
-                        size="sm"
                         onClick={this.resetPicker}
                     >
                         Reset form
@@ -313,6 +303,7 @@ export class BookCar extends React.Component<BookCarProps, BookCarState> {
                 </div>
                 );
             }
+
 }
 
 function makeEmptyRequest(user: User) :CarRequest {

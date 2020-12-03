@@ -39,6 +39,6 @@ export const Pages = {
     "/bookings": "Book Car",
     "/requests": "Requests",
     "/my_car": "My Car",
-    "/cars": "Available Cars",
+    "/cars": "All Cars",
     "/calendar": "Calendar"
 }

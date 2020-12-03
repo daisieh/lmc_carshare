@@ -1,10 +1,11 @@
 import * as React from "react";
-import {DatePicker, Loader} from "rsuite";
+import {DatePicker} from "react-widgets";
 import {Car, CarEvents, User} from "./types";
 import {ThunkDispatch} from "@reduxjs/toolkit";
 import {connect} from "react-redux";
 import {getThreeDays} from "./redux/reducers/requestSlice";
 import moment from "moment";
+import {Spinner} from "react-bootstrap";
 
 interface CalendarProps {
     threeDays: CarEvents | null;
@@ -42,14 +43,14 @@ export class Calendar extends React.Component<CalendarProps, CalendarState> {
     }
 
     render() {
-        if (this.props.status === "loading") {
+        if (this.props.status === "loading" || this.props.threeDays === null) {
             return (
-                    <div>
-                        <Loader size="lg" center content="Loading" vertical/>
-                    </div>
-            );
+                <div>
+                    <Spinner className="main-spinner" animation="border" role="status"/>
+                </div>
+            )
         }
-        if (this.props.threeDays !== null) {
+        if (this.props.threeDays) {
             let events;
             let time_labels = this.makeTimeIntervals(this.props.threeDays.interval);
             let row_data = [] as string[][];
@@ -68,9 +69,7 @@ export class Calendar extends React.Component<CalendarProps, CalendarState> {
                     <p>Display car bookings for the three days starting from:</p>
                     <div className="date-select">
                         <DatePicker
-                            className="selector"
-                            size="sm"
-                            format="YYYY-MM-DD"
+                            format="DD MMM YYYY"
                             onChange={this.handleStartChange}
                             value={this.state.startDate}
                         />

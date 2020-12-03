@@ -1,13 +1,16 @@
 import * as React from "react";
-import {Loader, Nav, Navbar} from "rsuite";
 import BookCar from "./BookCar";
-import RequestList from "./RequestList";
-import {SignOut} from "./transpositFunctions";
-import {Pages, User} from "./types";
-import {connect} from "react-redux";
+import Requests from "./Requests";
 import Calendar from "./Calendar";
 import AllCars from "./AllCars";
 import MyCar from "./MyCar";
+import {SignOut} from "./transpositFunctions";
+import {Pages, User} from "./types";
+import {connect} from "react-redux";
+import Navbar from 'react-bootstrap/Navbar';
+import Nav from 'react-bootstrap/Nav';
+import Spinner from "react-bootstrap/Spinner";
+import Container from "react-bootstrap/Container";
 
 interface NavigationProps {
     user: User;
@@ -27,58 +30,37 @@ export class Navigation extends React.Component<NavigationProps, NavigationState
     };
 
     render() {
-        let main =
-            <main className="container main">
-                <Loader size="lg" center content="Loading" vertical/>
-            </main>
+        let main = <Spinner className="main-spinner" animation="border" role="status"/>
         if (this.props.user) {
                 if (this.state.mode === "/bookings") {
-                    main =
-                        <main className="container main">
-                            <BookCar/>
-                        </main>
+                    main = <BookCar/>
                 } else if (this.state.mode === "/requests") {
-                    main =
-                        <main className="container main">
-                            <RequestList/>
-                        </main>
+                    main = <Requests/>
                 } else if (this.state.mode === "/my_car") {
-                    main =
-                        <main className="container main">
-                            <MyCar/>
-                        </main>
+                    main = <MyCar/>
                 } else if (this.state.mode === "/calendar") {
-                    main =
-                        <main className="container main">
-                            <Calendar/>
-                        </main>
+                    main = <Calendar/>
                 } else if (this.state.mode === "/cars") {
-                    main =
-                        <main className="container main">
-                            <AllCars/>
-                        </main>
+                    main = <AllCars/>
                 }
         }
         let navitems = Object.keys(Pages).map(x => {
-            return <Nav.Item key={x} href={x} active={this.state.mode === x}>{Pages[x]}</Nav.Item>
+            return <Nav.Link key={x} href={x}>{Pages[x]}</Nav.Link>
         });
 
         return (
             <>
-                <Navbar className="navbar">
-                    <Navbar.Header className="navbar-welcome">
-                        Welcome, {this.props.user.name}
-                    </Navbar.Header>
-                    <Navbar.Body>
-                        <Nav appearance="tabs">
-                            {navitems}
-                        </Nav>
-                        <Nav pullRight>
-                            <Nav.Item onClick={SignOut}>Sign Out</Nav.Item>
-                        </Nav>
-                    </Navbar.Body>
+                <div className="main-head">LMC Carshare</div>
+                <div className="user-head">Welcome, {this.props.user.name}</div>
+                <Navbar>
+                    <Nav variant="tabs" activeKey={this.props.mode}>
+                        {navitems}
+                        <Nav.Link key="signout" onClick={SignOut}>Sign out</Nav.Link>
+                    </Nav>
                 </Navbar>
-                {main}
+                <Container>
+                    {main}
+                </Container>
             </>
         );
     };
