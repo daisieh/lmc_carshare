@@ -1,11 +1,10 @@
 import * as React from "react";
-import {Button, Checkbox, Table} from "rsuite";
-import {Car, CarRequest} from "./types";
+import moment from "moment";
+import {Car, CarRequest, User} from "./types";
 import {connect} from "react-redux";
 import {deleteRequest, sendReminderForRequest} from "./redux/reducers/requestSlice";
 import {ThunkDispatch} from "@reduxjs/toolkit";
-
-const { Column, HeaderCell, Cell } = Table;
+import {Button, Container, Form, Spinner} from "react-bootstrap";
 
 interface RequestsProps {
     requests: CarRequest[],
@@ -13,6 +12,7 @@ interface RequestsProps {
     cars: Car[],
     error: string,
     dispatch: ThunkDispatch<any, any, any>;
+    user: User;
 }
 
 interface RequestsState {
@@ -33,17 +33,24 @@ export class Requests extends React.Component<RequestsProps, RequestsState> {
     }
 
 
-    setToDelete(value, checked) {
+    setToDelete(val) {
+        console.log(val.target);
+        let value = val.target.id;
         let index = this.state.requestsToDelete.indexOf(value);
+        let checked = val.target.checked;
         if (checked) {
             // add to the array, if it's not there
             if (index < 0) {
-                this.state.requestsToDelete.push(value);
+                console.log(`adding ${value} to ${this.state.requestsToDelete}`);
+                this.setState({requestsToDelete: [...this.state.requestsToDelete, value]})
             }
         } else {
             // remove from the array, if it's there
+            console.log(`removing ${value} from ${this.state.requestsToDelete}`);
             if (index >= 0) {
-                this.state.requestsToDelete.splice(index, 1);
+                let newReqs = this.state.requestsToDelete;
+                newReqs.splice(index, 1);
+                this.setState({requestsToDelete: newReqs});
             }
         }
     }
@@ -69,90 +76,64 @@ export class Requests extends React.Component<RequestsProps, RequestsState> {
                     desc = cars[index].Description;
                 }
                 return {
-                    eventId: x.eventId,
+                    eventId: x.eventId as string,
                     vehicle: x.vehicle,
                     description: desc,
-                    start: x.start,
-                    end: x.end,
+                    start: moment(x.start).format("HH:mm DD MMM YYYY"),
+                    end: moment(x.end).format("HH:mm DD MMM YYYY"),
                     confirmed: x.confirmed
                 }
             });
-        let loading = (this.props.status === "loading");
+
+        let requestLines = requests.map(x => {
+            let desc = `${x.start} to ${x.end}: ${x.description}`;
+            let remind = (x.confirmed === "TRUE") ? "" : <button className="link-button" onClick={this.handleReminder}>Not confirmed: send reminder to owner</button>;
+            return (<Container className="request" key={x.eventId}>
+                <Form.Check type="checkbox" checked={this.state.requestsToDelete.indexOf(x.eventId) >= 0} onChange={this.setToDelete} id={x.eventId} key={x.eventId}
+                            label={desc}/>
+                <div>{remind}</div>
+                </Container>
+            );
+        })
+        console.log(this.state.requestsToDelete);
         return (
             <div className="requests">
                 <div className="error">{this.props.error}</div>
                 <p className="request-table-caption">
                     <Button
-                        appearance="ghost"
-                        loading={loading}
-                        size="sm"
+                        className="selector"
                         onClick={this.handleDelete}
                     >
-                        Delete selected bookings
+                        <Container className="button-spinner" >
+                            <Spinner hidden={this.props.status !== "loading"} animation="border" size="sm" role="loading..."/>
+                            Delete selected bookings
+                        </Container>
                     </Button>
                 </p>
-                <Table
-                    height={400}
-                    data={requests}
-                    onRowClick={data => {
-                        this.setState({activeRow: data});
-                    }}
-                >
-                    <Column width={80}>
-                        <HeaderCell>Delete?</HeaderCell>
-                        <Cell>
-                            {rowData => {
-                                return (
-                                    <Checkbox defaultChecked={false} inline value={rowData.eventId} onChange={this.setToDelete}>&nbsp;</Checkbox>
-                                );
-                            }}
-                        </Cell>
-                    </Column>
-                    <Column flexGrow={2}>
-                        <HeaderCell>Vehicle</HeaderCell>
-                        <Cell dataKey="description" />
-                    </Column>
-                    <Column flexGrow={2}>
-                        <HeaderCell>Booking Start</HeaderCell>
-                        <Cell dataKey="start" />
-                    </Column>
-                    <Column flexGrow={2}>
-                        <HeaderCell>Booking End</HeaderCell>
-                        <Cell dataKey="end" />
-                    </Column>
-                    <Column flexGrow={2}>
-                        <HeaderCell>Awaiting approval?</HeaderCell>
-                        <Cell>
-                            {rowData => {
-                                if (rowData.confirmed === "TRUE") {
-                                    return(<div/>);
-                                }
-                                return (
-                                    <Button
-                                        appearance="link"
-                                        disabled={!(this.state.activeRow !== null && this.state.activeRow.eventId === rowData.eventId)}
-                                        size="sm"
-                                        value={rowData}
-                                        onClick={this.handleReminder}
-                                    >
-                                        Send reminder
-                                    </Button>
-                                );
-                            }}
-                        </Cell>
-                    </Column>
-                </Table>
+                <Form>
+                    <Form.Group>
+                        {requestLines}
+                    </Form.Group>
+                </Form>
             </div>
         );
     };
 }
 
 const mapStateToProps = (state) => {
+    let requests = state.requests.entries
+        .filter(x => { return x.requester === state.user.user.email; })
+        .sort((a, b) => {
+            if (moment(a.start).isSame(b.start)) { return 0; }
+            if (moment(a.start).isBefore(b.start)) { return -1; }
+            return 1;
+        });
     return {
-        requests: state.requests.entries,
+        requests: requests,
         cars: state.cars.entries,
         status: state.requests.status,
-        error: state.requests.error
+        error: state.requests.error,
+        user: state.user.user
     };
 }
 
