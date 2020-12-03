@@ -25,7 +25,8 @@
 }
 
 .date-select {
-    display: inline-flex;
+    display: flex;
+    flex-wrap: wrap;
     padding-bottom: 1em;
 }
 
@@ -34,6 +35,7 @@
 }
 
 .search-form {
+    max-width: 450px;
     padding: 4px;
 }
 
@@ -44,4 +46,31 @@
 .radio {
     display: flex;
     align-items: center;
+}
+
+.request {
+    margin-bottom: 16px;
+}
+
+.link-button {
+    background-color: transparent;
+    border: none;
+    cursor: pointer;
+    text-decoration: underline;
+    display: inline;
+    margin-left: 16px;
+    padding: 0;
+}
+
+.link-button:hover,
+.link-button:focus {
+    text-decoration: none;
+}
+
+.car_item {
+    margin-bottom: 16px;
+}
+
+.car-form {
+    max-width: 300px;
 }
