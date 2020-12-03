@@ -1,3 +1,9 @@
+.not-valid {
+    padding: 16px;
+    font-size: medium;
+    max-width: 800px;
+}
+
 .main-spinner {
     align-content: center;
 }
