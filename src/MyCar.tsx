@@ -65,7 +65,7 @@ export class MyCar extends React.Component<MyCarProps, MyCarState> {
             Make: this.state.Make,
             Model: this.state.Model,
             Licence: this.state.Licence,
-            Email: this.props.myCar.Email, // this can't change
+            Email: this.props.user.email, // this can't change
             Features: this.state.Features,
             Color: this.state.Color,
             Notes: this.state.Notes,
