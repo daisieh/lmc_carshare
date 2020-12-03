@@ -8,7 +8,7 @@
     cars[car["Licence"]] = car;
   }
   
-  return Object.values(cars);
+  return cars;
 }
 
 /*
