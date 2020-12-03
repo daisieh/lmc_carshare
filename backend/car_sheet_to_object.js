@@ -1,6 +1,6 @@
 (params) => {
   let car = {};
-  let keys = ["Timestamp", "Email address", "Make", "Model", "Color", "Tags", "Availability", "Confirmation", "Licence plate"];
+  let keys = ["Timestamp", "Email address", "Make", "Model", "Color", "Tags", "Availability", "Confirmation", "Licence plate", "Notes"];
   for (var key in keys) {
     car[keys[key]] = params.sheet_row[key];
   }

@@ -54,7 +54,7 @@
   
   // convert back to array for sheet:
   let parameters = {};
-  parameters.range = 'Cars!A:I';
+  parameters.range = 'Cars!A:J';
   parameters.spreadsheetId = env.get("spreadsheet_id");
   parameters.valueInputOption = "RAW";
   for (var i in cars) {

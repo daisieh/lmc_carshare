@@ -1,5 +1,5 @@
 (params) => {
-  const parameters = { range: 'Cars!A1:I30', spreadsheetId: env.get("spreadsheet_id") };
+  const parameters = { range: 'Cars!A1:J30', spreadsheetId: env.get("spreadsheet_id") };
   let sheet_rows = api.run('google_sheets.get_sheet_values', parameters)[0].values;
   let cars = {};
   let keys = sheet_rows.shift();
