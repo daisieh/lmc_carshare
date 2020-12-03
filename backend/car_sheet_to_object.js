@@ -26,6 +26,10 @@
     car.Confirm = false;
   }
   delete car["Confirmation"];
+  
+  if (car["Notes"] == null) {
+    car.Notes = "";
+  }
 
   car["Description"] = `${car.Color} ${car.Make} ${car.Model} ${car.Licence}`;
   return car;

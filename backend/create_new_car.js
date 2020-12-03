@@ -12,13 +12,11 @@
     "Features": params.Features,
     "Licence": params.Licence,
     "Email": params.Email,
-    "AlwaysAvailable": params.Availability,
+    "AlwaysAvailable": params.AlwaysAvailable,
     "Confirm": params.Confirm
   }
   
-  let cars = api.run("this.list_cars");
-  let values = [];
-  values.push(cars.shift());
+  let cars = api.run("this.get_all_cars");
   // look for the car to see if it needs to be updated
   let is_new_car = true;
   for (var i in cars) {
@@ -58,15 +56,17 @@
   parameters.range = 'Cars!A:J';
   parameters.spreadsheetId = env.get("spreadsheet_id");
   parameters.valueInputOption = "RAW";
-  return values;
-
+  let values = [];
+  let keys = api.run("this.car_object_to_sheet_row", {});
+  values.push(keys);
+  
   for (var i in cars) {
     let val = api.run("this.car_object_to_sheet_row", {car_object: cars[i]});
     values.push(val);
   }
   parameters.$body = { values : values };
   let result = api.run('google_sheets.update_sheet_values', parameters);
-  if (result[0].updatedColumns != 7) {
+  if (result[0].updatedColumns != 10) {
     throw "couldn't update requests";
   }
   return cars;
