@@ -172,9 +172,9 @@ export class BookCar extends React.Component<BookCarProps, BookCarState> {
             inThePast = "WARNING! The selected time slot is in the past.";
         }
         let search_form = (
-            <div className="search-form">
-                <p className={disabled?"caption-disabled":"caption"}>Choose the time period you'd like to book.</p>
-                <div className="date-select">
+            <Container className="search-form">
+                <Container fluid className="date-select">
+                    <p className={disabled?"caption-disabled":"caption"}>Choose the time period you'd like to book.</p>
                     <DateTimePicker
                         format="HH:mm DD MMM YYYY"
                         timeFormat={"HH:mm"}
@@ -194,19 +194,19 @@ export class BookCar extends React.Component<BookCarProps, BookCarState> {
                         disabled={disabled}
                         step={15}
                     />
-                </div>
-                <p className={disabled?"caption-disabled":"caption"}>Only select cars with all of these features:</p>
-                <div className="feature-select">
+                </Container>
+                <Container className="feature-select">
+                    <p className={disabled?"caption-disabled":"caption"}>Only select cars with all of these features:</p>
                     <Multiselect
                         className="selector"
                         size="sm"
-                        style={{width: 300}}
                         data={this.props.features}
                         value={this.state.pendingRequest.features}
                         onChange={this.onTagPick}
                         disabled={disabled}
+                        placeholder="any features"
                     />
-                </div>
+                </Container>
                 <Button
                     className="selector"
                     onClick={this.onLookForCars}
@@ -218,7 +218,7 @@ export class BookCar extends React.Component<BookCarProps, BookCarState> {
                     </Container>
                 </Button>
                 <div className="error">{[inThePast,this.props.requestError,this.props.carError].join("\n")}</div>
-            </div>
+            </Container>
         );
 
         let available_cars = <div className="available-form"/>;
