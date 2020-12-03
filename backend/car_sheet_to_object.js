@@ -1,6 +1,6 @@
 (params) => {
   let car = {};
-  let keys = ["Timestamp", "Email address", "Make", "Model", "Color", "Tags", "Availability", "Confirmation", "Licence plate", "Notes"];
+  let keys = ["Timestamp", "Email address", "Make", "Model", "Color", "Tags", "Availability", "Confirmation", "Licence plate", "Notes", "Booking calendar", "Availability calendar"];
   for (var key in keys) {
     car[keys[key]] = params.sheet_row[key];
   }
@@ -30,6 +30,15 @@
   if (car["Notes"] == null) {
     car.Notes = "";
   }
+  
+  if (car["Availability calendar"] == null) {
+    car.AvailableCalendar = "";
+  }
+
+  if (car["Booking calendar"] == null) {
+    car.BookingCalendar = "";
+  }
+
 
   car["Description"] = `${car.Color} ${car.Make} ${car.Model} ${car.Licence}`;
   return car;
