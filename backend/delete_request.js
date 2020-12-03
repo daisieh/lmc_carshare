@@ -23,7 +23,7 @@
   // convert back to array for sheet:
   let parameters = {};
   parameters.range = 'Requests!A:G';
-  parameters.spreadsheetId = '1kyd3g0xuPYoyDuT6joT0gkl29YCFE56E2ktv6haRong';
+  parameters.spreadsheetId = env.get("spreadsheet_id");
   
   // clear sheet range:
   parameters.$body = { };
