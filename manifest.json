@@ -166,7 +166,7 @@
           "parameters": [{
             "name": "all_features",
             "default": {
-              "text": "false"
+              "text": "true"
             },
             "type": "STRING"
           }],
