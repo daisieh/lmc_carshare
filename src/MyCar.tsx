@@ -60,6 +60,7 @@ export class MyCar extends React.Component<MyCarProps, MyCarState> {
             });
         }
     }
+
     handleSave() {
         let newCar = {
             Make: this.state.Make,
@@ -100,13 +101,27 @@ export class MyCar extends React.Component<MyCarProps, MyCarState> {
                 </div>
             );
         }
+        let booking_url = `https://calendar.google.com/calendar/embed?src=${this.props.myCar.BookingCalendar}&ctz=America%2FVancouver`;
+        let avail_url = `https://calendar.google.com/calendar/embed?src=${this.props.myCar.AvailableCalendar}&ctz=America%2FVancouver`;
         let car_div = (
             <Container fluid="md" key="car" className="car-form">
                 {this.props.myCar ?
                     (<div/>) :
                     (<div className="add-new-car">
                         You don't have a car in the carshare! Fill out the form to add your car:
-                    </div>)}
+                    </div>)
+                }
+                <div className="my-car-message">
+                <div className="calendar-message">
+                    Your car's booking calendar is available <a href={booking_url} target="_blank">here</a>.
+                </div>
+                {this.props.myCar.AlwaysAvailable ?
+                    (<div/>) :
+                    (<div className="calendar-message">
+                        Your car is set to only be available at the times listed on <a href={avail_url} target="_blank">this calendar</a>.
+                    </div>)
+                }
+                </div>
                 <Form>
                     <Form.Group controlId="Licence">
                         <Form.Label>Licence</Form.Label>
@@ -129,9 +144,11 @@ export class MyCar extends React.Component<MyCarProps, MyCarState> {
                         <Form.Control value={this.state.Notes} onChange={this.setFormValue}/>
                     </Form.Group>
                     <Form.Group>
-                        <Form.Check type="checkbox" checked={this.state.Confirm} onChange={this.setCheckbox} id="Confirm" key="Confirm"
+                        <Form.Check type="checkbox" checked={this.state.Confirm} onChange={this.setCheckbox}
+                                    id="Confirm" key="Confirm"
                                     label="Require approval of all requests"/>
-                        <Form.Check type="checkbox" checked={this.state.AlwaysAvailable} onChange={this.setCheckbox} id="AlwaysAvailable" key="AlwaysAvailable"
+                        <Form.Check type="checkbox" checked={this.state.AlwaysAvailable} onChange={this.setCheckbox}
+                                    id="AlwaysAvailable" key="AlwaysAvailable"
                                     label="Vehicle is available by default"/>
                     </Form.Group>
                     <Form.Group>
@@ -149,8 +166,9 @@ export class MyCar extends React.Component<MyCarProps, MyCarState> {
                         className="selector"
                         onClick={this.handleSave}
                     >
-                        <Container className="button-spinner" >
-                            <Spinner hidden={this.props.status !== "loading"} animation="border" size="sm" role="loading..."/>
+                        <Container className="button-spinner">
+                            <Spinner hidden={this.props.status !== "loading"} animation="border" size="sm"
+                                     role="loading..."/>
                             {this.props.myCar ? "Save my changes" : "Add new car"}
                         </Container>
                     </Button>

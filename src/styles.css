@@ -102,3 +102,12 @@
   background-color: #e0a800;
   margin-bottom: 16px;
 }
+
+.calendar-message {
+  margin-bottom: 8px;
+}
+
+.my-car-message {
+  border-bottom: 2px solid #005cbf;
+  margin-bottom: 16px;
+}
