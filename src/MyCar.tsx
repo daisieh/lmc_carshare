@@ -113,12 +113,12 @@ export class MyCar extends React.Component<MyCarProps, MyCarState> {
                 }
                 <div className="my-car-message">
                 <div className="calendar-message">
-                    Your car's booking calendar is available <a href={booking_url} target="_blank">here</a>.
+                    Your car's booking calendar is available <a href={booking_url} target="_blank" rel="noopener noreferrer">here</a>.
                 </div>
                 {this.props.myCar.AlwaysAvailable ?
                     (<div/>) :
                     (<div className="calendar-message">
-                        Your car is set to only be available at the times listed on <a href={avail_url} target="_blank">this calendar</a>.
+                        Your car is set to only be available at the times listed on <a href={avail_url} target="_blank" rel="noopener noreferrer">this calendar</a>.
                     </div>)
                 }
                 </div>
