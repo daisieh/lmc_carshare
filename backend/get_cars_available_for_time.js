@@ -7,7 +7,7 @@
   let schedule = api.run("this.list_car_busy_schedule", {start: params.start, end: params.end})[0];
   for (var i in schedule.car_events) {
     if (schedule.car_events[i].length == 0) {
-      available_cars.push(cars[schedule.cars[i]]);
+      available_cars.push(schedule.cars[i]);
     } 
   }
   return { 
