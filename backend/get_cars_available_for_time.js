@@ -5,6 +5,7 @@
   let available_cars = [];
   let calendar_ids = Object.keys(calendars).map(x => { return {id: calendars[x]}; });
   let schedule = api.run("this.list_car_busy_schedule", {start: params.start, end: params.end})[0];
+  console.log(schedule)
   for (var i in schedule.car_events) {
     if (schedule.car_events[i].length == 0) {
       available_cars.push(schedule.cars[i]);
