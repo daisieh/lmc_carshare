@@ -16,8 +16,8 @@
   row.push(car.Confirm ? "Email me to confirm requests" : "Automatically confirm requests");
   row.push(car.Licence);
   row.push(car.Notes);
-  row.push(car.AvailableCalendar);
   row.push(car.BookingCalendar);
+  row.push(car.AvailableCalendar);
 
   return row;
 }

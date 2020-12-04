@@ -48,6 +48,7 @@
   }
   for (var cal in calendars) {
     if (cal.includes("_available")) {
+
       // looking at an availability calendar
       // every time in the range that is not "busy" is actually
       let free_times = freebusy.calendars[calendars[cal]].busy;
@@ -62,6 +63,9 @@
         }
         busy_times.push({start: this_free.end, end: endTime});
         events[cal.replace("_available", "")].push(...busy_times);
+      } else {
+        // if there are no "busy" times, the whole block is actually busy
+        events[cal.replace("_available", "")].push({start: startTime, end: endTime});
       }
     } else {
       // looking at a regular booking calendar
