@@ -126,7 +126,7 @@ export async function listFeatures() {
         response: [] as string[]
     };
     return await transposit
-        .run("list_features", {})
+        .run("list_features", {all_features: "true"})
         .then(x => {
             console.log("features listed");
             response.response = x.results as string[];

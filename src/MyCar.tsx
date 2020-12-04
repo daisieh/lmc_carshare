@@ -102,7 +102,11 @@ export class MyCar extends React.Component<MyCarProps, MyCarState> {
         }
         let car_div = (
             <Container fluid="md" key="car" className="car-form">
-                {this.props.myCar ? (<div/>) : (<div className="error">You don't have a car in the carshare!</div>)}
+                {this.props.myCar ?
+                    (<div/>) :
+                    (<div className="add-new-car">
+                        You don't have a car in the carshare! Fill out the form to add your car:
+                    </div>)}
                 <Form>
                     <Form.Group controlId="Licence">
                         <Form.Label>Licence</Form.Label>

@@ -80,3 +80,8 @@
 .car-form {
   max-width: 300px;
 }
+
+.add-new-car {
+  background-color: #e0a800;
+  margin-bottom: 16px;
+}
