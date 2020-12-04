@@ -251,7 +251,7 @@
             "type": "STRING"
           }, {
             "name": "Features",
-            "type": "ARRAY"
+            "type": "STRING"
           }, {
             "name": "AlwaysAvailable",
             "type": "STRING"

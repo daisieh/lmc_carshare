@@ -2,6 +2,10 @@
   if (params.Licence == null || params.Licence == "") {
     throw "Licence plate is required"
   }
+  let features = [];
+  if (params.Features != null) {
+    features = params.Features.split(/, */);
+  }
   
   let new_car =   {
     "Timestamp": (new Date()).toString(),
@@ -9,7 +13,7 @@
     "Model": params.Model,
     "Color": params.Color,
     "Notes": params.Notes,
-    "Features": params.Features,
+    "Features": features,
     "Licence": params.Licence,
     "Email": params.Email,
     "AlwaysAvailable": (params.AlwaysAvailable.toLowerCase() === "true"),
