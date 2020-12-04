@@ -131,10 +131,10 @@ export class BookCar extends React.Component<BookCarProps, BookCarState> {
             // so if the existing end is less than an hour after,
             // set the end to an hour after the end
             newStart = moment(startTime);
-            // if (newEnd.subtract(1, "hour").isBefore(newStart)) {
-            //     newEnd = newStart.clone().add(1, "hour");
-            //     console.log(`...too soon, so set end to ${newEnd}`);
-            // }
+            if (newEnd.subtract(1, "hour").isBefore(newStart)) {
+                newEnd = newStart.clone().add(1, "hour");
+                console.log(`...too soon, so set end to ${newEnd}`);
+            }
         }
         return [newStart.format(), newEnd.format()];
     }
@@ -279,7 +279,7 @@ export class BookCar extends React.Component<BookCarProps, BookCarState> {
                     </Modal.Body>
                     <Modal.Footer>
                         <Button onClick={() => {this.resetPicker();}}>
-                            Ok
+                            OK
                         </Button>
                     </Modal.Footer>
                 </Modal>
