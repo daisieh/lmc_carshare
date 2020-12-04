@@ -58,7 +58,7 @@ export class Navigation extends React.Component<NavigationProps, NavigationState
                         <Nav.Link key="signout" onClick={SignOut}>Sign out</Nav.Link>
                     </Nav>
                 </Navbar>
-                <Container>
+                <Container className="main">
                     {main}
                 </Container>
             </>
