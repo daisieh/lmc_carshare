@@ -1,7 +1,7 @@
 (params) => {
   let features = [];
 
-  if (params.all_features) {
+  if (params.all_features.toLowerCase() === "true") {
       const parameters = { range: 'Features!A1:A30', spreadsheetId: env.get("spreadsheet_id") };
       let sheet_rows = api.run('google_sheets.get_sheet_values', parameters)[0].values;
       for (var i in sheet_rows) {

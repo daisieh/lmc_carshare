@@ -168,7 +168,7 @@
             "default": {
               "text": "false"
             },
-            "type": "BOOLEAN"
+            "type": "STRING"
           }],
           "js": "list_features.js",
           "lang": "js"
