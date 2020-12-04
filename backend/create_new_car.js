@@ -60,7 +60,7 @@
     }
   }
   api.run("this.set_calendar_access", {calendarId: new_car.BookingCalendar, user: new_car.Email, canWrite: true});
-  api.run("this.set_calendar_access", {calendarId: new_car.BookingCalendar, user: new_car.Email, canWrite: !new_car.AlwaysAvailable});
+  api.run("this.set_calendar_access", {calendarId: new_car.AvailableCalendar, user: new_car.Email, canWrite: !new_car.AlwaysAvailable});
 
   if (is_new_car == true) {
     cars.push(new_car);
