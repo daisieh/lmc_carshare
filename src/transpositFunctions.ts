@@ -224,41 +224,48 @@ const fakeRequests = [
 
 const fakeCars = [
     {
-        "Timestamp": "20/01/2020 16:21:11",
+        "Timestamp": "Fri Dec 04 2020 08:32:48 GMT+0000 (GMT)",
         "Make": "Toyota",
         "Model": "Prius",
         "Color": "Blue",
+        "Notes": "test test test",
         "Features": [
             "pet friendly",
             "child friendly",
             "eco friendly"
         ],
         "Licence": "AL675T",
-        "Email": "test@test.com",
+        "Email": "lmc.blue.prius.2009@gmail.com",
+        "BookingCalendar": "5fc1dl3ok9ae6efnd7avuf7om8@group.calendar.google.com",
+        "AvailableCalendar": "65r8crdn7e33ni8g35a81bg2o0@group.calendar.google.com",
         "AlwaysAvailable": true,
         "Confirm": false,
         "Description": "Blue Toyota Prius AL675T"
     },
     {
-        "Timestamp": "20/01/2020 16:20:52",
+        "Timestamp": "Fri Dec 04 2020 08:32:50 GMT+0000 (GMT)",
         "Make": "Nissan",
         "Model": "Leaf",
         "Color": "Orange",
+        "Notes": "Electric car",
         "Features": [
             "child friendly",
             "eco friendly"
         ],
         "Licence": "NLEAF",
         "Email": "lmc.orange.leaf.2017@gmail.com",
+        "BookingCalendar": "j0die78henm0memc5pgqstk2kk@group.calendar.google.com",
+        "AvailableCalendar": "dh3erlsrg635lfj7r8l64ei1h4@group.calendar.google.com",
         "AlwaysAvailable": true,
         "Confirm": true,
         "Description": "Orange Nissan Leaf NLEAF"
     },
     {
-        "Timestamp": "20/01/2020 16:24:21",
+        "Timestamp": "Fri Dec 04 2020 08:32:56 GMT+0000 (GMT)",
         "Make": "Honda",
         "Model": "Element",
         "Color": "Orange",
+        "Notes": "",
         "Features": [
             "pet friendly",
             "cargo",
@@ -266,9 +273,41 @@ const fakeCars = [
         ],
         "Licence": "ELEMENT",
         "Email": "mutantdaisies@gmail.com",
+        "BookingCalendar": "tpcdffttfgupjae3s4f36mff6g@group.calendar.google.com",
+        "AvailableCalendar": "5ueikkgeg8lpopmindd37jsnhs@group.calendar.google.com",
         "AlwaysAvailable": false,
         "Confirm": true,
         "Description": "Orange Honda Element ELEMENT"
+    },
+    {
+        "Timestamp": "Fri Dec 04 2020 08:33:00 GMT+0000 (GMT)",
+        "Make": "Toyota",
+        "Model": "Prius",
+        "Color": "Green",
+        "Notes": "test test test",
+        "Features": [],
+        "Licence": "NEWCAR",
+        "Email": "test@test.com",
+        "BookingCalendar": "qbpgldpggb1nn78266hmqnqn04@group.calendar.google.com",
+        "AvailableCalendar": "5fc1dl3ok9ae6efnd7avuf7om8@group.calendar.google.com",
+        "AlwaysAvailable": false,
+        "Confirm": true,
+        "Description": "Green Toyota Prius NEWCAR"
+    },
+    {
+        "Timestamp": "Fri Dec 04 2020 08:33:04 GMT+0000 (GMT)",
+        "Make": "sdfs",
+        "Model": "sdfs",
+        "Color": "sdfsdf",
+        "Notes": "",
+        "Features": [],
+        "Licence": "NewNEW",
+        "Email": "daisieh@gmail.com",
+        "BookingCalendar": "3p2voat0622ellg8impmqqdot4@group.calendar.google.com",
+        "AvailableCalendar": "rvstooff57f3h4t77dqsmclehk@group.calendar.google.com",
+        "AlwaysAvailable": true,
+        "Confirm": true,
+        "Description": "sdfsdf sdfs sdfs NewNEW"
     }
 ];
 
