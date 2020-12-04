@@ -86,7 +86,7 @@ export class AllCars extends React.Component<AllCarsProps, AllCarsState> {
                         placeholder="filter by feature"
                     />
                 </div>
-                <ul>
+                <ul className="car-list">
                     {car_list}
                 </ul>
             </Container>

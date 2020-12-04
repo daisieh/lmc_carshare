@@ -4,6 +4,11 @@
   max-width: 800px;
 }
 
+.main {
+  margin-left: 0;
+  max-width: 600px;
+}
+
 .main-spinner {
   align-content: center;
 }
@@ -38,6 +43,8 @@
 
 .feature-select {
   padding-bottom: 1em;
+  margin-left: 0;
+  max-width: 400px;
 }
 
 .search-form {
@@ -75,11 +82,19 @@
 
 .car_item {
   margin-bottom: 16px;
+  margin-left: 0;
+  padding-left: 0;
+}
+
+.car-list {
+  margin-bottom: 16px;
+  margin-left: 0;
+  padding-left: 0;
 }
 
 .car-form {
   justify-content: flex-start;
-  margin-left: 0px;
+  margin-left: 0;
   max-width: 300px;
 }
 
