@@ -124,6 +124,7 @@ export class Requests extends React.Component<RequestsProps, RequestsState> {
 const mapStateToProps = (state) => {
     let requests = state.requests.entries
         .filter(x => { return x.requester === state.user.user.email; })
+        .filter(x => { return moment().isBefore(x.end); })
         .sort((a, b) => {
             if (moment(a.start).isSame(b.start)) { return 0; }
             if (moment(a.start).isBefore(b.start)) { return -1; }
