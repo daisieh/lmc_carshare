@@ -108,7 +108,9 @@ export async function createUpdateCar(newCar: Car) {
             "Email": newCar.Email,
             "Licence": newCar.Licence,
             "AlwaysAvailable": newCar.AlwaysAvailable.toString(),
-            "Confirm": newCar.Confirm.toString()
+            "Confirm": newCar.Confirm.toString(),
+            "BookingCalendar": newCar.BookingCalendar,
+            "AvailableCalendar": newCar.AvailableCalendar
         })
         .then(results => {
             response.response = results.results as Car[];
