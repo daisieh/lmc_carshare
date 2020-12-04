@@ -5,6 +5,9 @@
     car[keys[key]] = params.sheet_row[key];
   }
   car.Features = car.Tags.split(", ");
+  if (car.Features[0] === "") {
+    car.Features = [];
+  }
   delete car.Tags;
 
   car.Licence = car["Licence plate"];
