@@ -71,7 +71,9 @@ export class MyCar extends React.Component<MyCarProps, MyCarState> {
             Color: this.state.Color,
             Notes: this.state.Notes,
             Confirm: this.state.Confirm,
-            AlwaysAvailable: this.state.AlwaysAvailable
+            AlwaysAvailable: this.state.AlwaysAvailable,
+            BookingCalendar: this.props.myCar.BookingCalendar, // this can't change
+            AvailableCalendar: this.props.myCar.AvailableCalendar //this can't change
         } as Car;
         console.log(`Confirm is ${newCar.Confirm}`);
         this.props.dispatch(updateCar(newCar));
