@@ -37,10 +37,9 @@
 
 .user-foot {
   background-color: #7abaff;
-  width: 100%;
   color: #343a40;
   padding-left: 1em;
-  position:absolute;
+  position: fixed;
   bottom:0;
 }
 
