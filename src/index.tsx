@@ -35,6 +35,7 @@ function SignIn() {
                 Sign In
             </Button>
             </Container>
+            <div className="user-foot"><a href="https://docs.google.com/document/d/1zllbnP-UxmN7UFXLjSo7TsCUkRMtyscnE5PTagYwexs/edit?usp=sharing" target="_blank" rel="noopener noreferrer">Help</a></div>
         </>
     );
 }

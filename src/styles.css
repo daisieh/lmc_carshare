@@ -35,6 +35,15 @@
   padding-left: 1em;
 }
 
+.user-foot {
+  background-color: #7abaff;
+  width: 100%;
+  color: #343a40;
+  padding-left: 1em;
+  position:absolute;
+  bottom:0;
+}
+
 .date-select {
   display: flex;
   flex-wrap: wrap;
