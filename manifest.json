@@ -403,6 +403,9 @@
           }],
           "js": "delete_car.js",
           "lang": "js"
+        },
+        "access": {
+          "requireUser": true
         }
       }],
       "dataConnections": [{

@@ -7,8 +7,8 @@
       to_delete.push(requests[i].eventId);
     }
   }
-  api.run("this.delete_requests", {eventIds: to_delete});
-  
+  let results = api.run("this.delete_requests", {eventIds: to_delete});
+  console.log(results);
   // remove the calendars
   let all_calendars = api.run("this.list_calendars")[0];
   // return all_calendars[`${params.licence}_available`];
