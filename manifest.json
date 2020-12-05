@@ -394,6 +394,16 @@
           "js": "update_all_cars.js",
           "lang": "js"
         }
+      }, {
+        "id": "delete_car",
+        "function": {
+          "parameters": [{
+            "name": "licence",
+            "type": "STRING"
+          }],
+          "js": "delete_car.js",
+          "lang": "js"
+        }
       }],
       "dataConnections": [{
         "ref": "slack_identify.raw",
