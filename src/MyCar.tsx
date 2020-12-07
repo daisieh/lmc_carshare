@@ -103,27 +103,30 @@ export class MyCar extends React.Component<MyCarProps, MyCarState> {
                 </div>
             );
         }
-        let booking_url = `https://calendar.google.com/calendar/embed?src=${this.props.myCar.BookingCalendar}&ctz=America%2FVancouver`;
-        let avail_url = `https://calendar.google.com/calendar/embed?src=${this.props.myCar.AvailableCalendar}&ctz=America%2FVancouver`;
+        let car_links = (
+            <div className="add-new-car">
+                You don't have a car in the carshare! Fill out the form to add your car:
+            </div>
+        );
+        if (this.props.myCar) {
+            let booking_url = `https://calendar.google.com/calendar/embed?src=${this.props.myCar.BookingCalendar}&ctz=America%2FVancouver`;
+            let avail_url = `https://calendar.google.com/calendar/embed?src=${this.props.myCar.AvailableCalendar}&ctz=America%2FVancouver`;
+            car_links = (<div className="my-car-message">
+                    <div className="calendar-message">
+                        Your car's booking calendar is available <a href={booking_url} target="_blank" rel="noopener noreferrer">here</a>.
+                    </div>
+                    {this.props.myCar.AlwaysAvailable ?
+                        (<div/>) :
+                        (<div className="calendar-message">
+                            Your car is set to only be available at the times listed on <a href={avail_url} target="_blank" rel="noopener noreferrer">this calendar</a>.
+                        </div>)
+                    }
+                </div>
+            );
+        }
         let car_div = (
             <Container fluid="md" key="car" className="car-form">
-                {this.props.myCar ?
-                    (<div/>) :
-                    (<div className="add-new-car">
-                        You don't have a car in the carshare! Fill out the form to add your car:
-                    </div>)
-                }
-                <div className="my-car-message">
-                <div className="calendar-message">
-                    Your car's booking calendar is available <a href={booking_url} target="_blank" rel="noopener noreferrer">here</a>.
-                </div>
-                {this.props.myCar.AlwaysAvailable ?
-                    (<div/>) :
-                    (<div className="calendar-message">
-                        Your car is set to only be available at the times listed on <a href={avail_url} target="_blank" rel="noopener noreferrer">this calendar</a>.
-                    </div>)
-                }
-                </div>
+                {car_links}
                 <Form>
                     <Form.Group controlId="Licence">
                         <Form.Label>Licence</Form.Label>
