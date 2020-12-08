@@ -28,10 +28,14 @@
   for (var i in cars) {
     if (cars[i].Licence === new_car.Licence) {
       console.log (`updating ${new_car.Licence}`);
+      // updated cars don't get their BookingCal, or AvailCal updated
+      new_car.BookingCalendar = cars[i].BookingCalendar;
+      new_car.AvailableCalendar = cars[i].AvailableCalendar;
       cars[i] = new_car;
       is_new_car = false;
     }
   }
+  console.log(new_car);
   
   let parameters = {};
   if (new_car.BookingCalendar == null || new_car.BookingCalendar === "") {
