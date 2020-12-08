@@ -32,6 +32,7 @@
       is_new_car = false;
     }
   }
+  console.log(new_car);
   
   let parameters = {};
   if (new_car.BookingCalendar == null || new_car.BookingCalendar === "") {
