@@ -118,9 +118,11 @@ export class Calendar extends React.Component<CalendarProps, CalendarState> {
                     {colgroups}
                     <tbody>{thead}</tbody>
                 </table>
+                <Container className={`${class_name}-body`}>
                 <table className={`${class_name}-body`}>
                     {colgroups}<tbody>{tbody}</tbody>
                 </table>
+                </Container>
             </Container>
         );
     }

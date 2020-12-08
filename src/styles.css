@@ -122,8 +122,15 @@
   margin-bottom: 16px;
 }
 
+.calendar-table-body {
+  padding: 0;
+  overflow: auto;
+  max-height: 100vh;
+}
+
 tr.calendar-table {
   border: 1px solid black;
+  line-height: 1em;
 }
 
 td.calendar-table {
