@@ -123,7 +123,7 @@
 }
 
 tr.calendar-table {
-  border: 1px solid black;
+  border-bottom: 1px solid black;
 }
 
 td.calendar-table {
