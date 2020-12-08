@@ -39,7 +39,7 @@ export class Calendar extends React.Component<CalendarProps, CalendarState> {
         this.setState({
             startDate: newDate
         });
-        this.props.dispatch(getThreeDays({start: this.state.startDate.toString(), interval: this.props.interval}));
+        this.props.dispatch(getThreeDays({start: moment(this.state.startDate).startOf("day").format("YYYY-MM-DDT00:00:00-08:00"), interval: this.props.interval}));
     }
 
     render() {
