@@ -2,13 +2,14 @@
   let role = params.canWrite ? "writer" : "none";
   let ruleId = `user:${params.user}`;
   let rule = null;
-  
+  console.log(`looking for calendar ${params.calendarId}`);
   // look for an existing rule
   try {
     rule = api.run('google_calendar.get_acl_rule', 
                    { calendarId: params.calendarId,
                      ruleId: ruleId
                    })[0];
+    console.log(rule);
   } catch (e) {
     console.log(e.message);
   }
