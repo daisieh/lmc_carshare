@@ -105,6 +105,7 @@ export async function createUpdateCar(newCar: Car) {
             "Model": newCar.Model,
             "Color": newCar.Color,
             "Features": newCar.Features.toString(),
+            "Notes": newCar.Notes,
             "Email": newCar.Email,
             "Licence": newCar.Licence,
             "AlwaysAvailable": newCar.AlwaysAvailable.toString(),
