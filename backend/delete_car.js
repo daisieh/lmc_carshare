@@ -10,19 +10,17 @@
   let results = api.run("this.delete_requests", {eventIds: to_delete});
   console.log(results);
   // remove the calendars
-  let all_calendars = api.run("this.list_calendars")[0];
-  // return all_calendars[`${params.licence}_available`];
-  try {
-    api.run('google_calendar.delete_calendar', {calendarId: all_calendars[params.licence]});
-  } catch (e) {
-    console.log(e.message);
+  let all_calendars = api.run('google_calendar.get_calendarlist');
+  let delete_cals = [];
+  for (var i in all_calendars) {
+    if (all_calendars[i].summary.includes("params.licence") || all_calendars[i].summary.includes(`${params.licence}_available`)) {
+      delete_cals.push(all_calendars[i].id);
+    }
   }
-  try {
-    api.run('google_calendar.delete_calendar', {calendarId: all_calendars[`${params.licence}_available`]});
-  } catch (e) {
-    console.log(e.message);
+  console.log(delete_cals);
+  for (var i in delete_cals) {
+    api.run('google_calendar.delete_calendar', {calendarId: delete_cals[i]});
   }
-  
   // remove the car
   let parameters = { range: 'Cars!A1:Z50', spreadsheetId: env.get("spreadsheet_id") };
   let sheet_rows = api.run('google_sheets.get_sheet_values', parameters)[0].values;
