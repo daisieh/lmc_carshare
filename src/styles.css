@@ -109,7 +109,7 @@
 }
 
 .add-new-car {
-  background-color: #e0a800;
+  background-color: darkred;
   margin-bottom: 16px;
 }
 
@@ -120,4 +120,67 @@
 .my-car-message {
   border-bottom: 2px solid #005cbf;
   margin-bottom: 16px;
+}
+
+tr.calendar-table {
+  border: 1px solid black;
+}
+
+td.calendar-table {
+  width: 30px;
+}
+
+th.calendar-table {
+  vertical-align: bottom;
+  width: 30px;
+  max-width: 30px;
+  height: 80px;
+}
+
+.calendar-table-col-name-span {
+  width: 50px;
+  max-width: 50px;
+}
+
+.calendar-table-col-span {
+  width: 100px;
+  max-width: 100px;
+}
+
+.calendar-table-row-label {
+  text-align: right;
+}
+
+.calendar-table-start, .calendar-table-block, .calendar-table-end, .calendar-table-blip {
+  background-color: darkred;
+  color: darkred;
+  width: 10px;
+  max-width: 20px;
+  border: 2px darkred;
+  border-style: solid;
+  margin-bottom: -1px;
+  margin-top: -1px;
+  padding-left: 5px;
+  padding-right: 5px;
+}
+
+.calendar-table-start {
+  border-top-left-radius: 10px;
+  border-top-right-radius: 10px;
+}
+
+.calendar-table-end {
+  border-bottom-left-radius: 10px;
+  border-bottom-right-radius: 10px;
+}
+
+.calendar-table-blip {
+  border-radius: 10px;
+}
+
+.calendar-table-label {
+  margin-bottom: 10px;
+  padding: 0;
+  text-align: left;
+  transform: rotate(-90deg);
 }

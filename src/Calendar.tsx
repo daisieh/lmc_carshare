@@ -5,7 +5,7 @@ import {ThunkDispatch} from "@reduxjs/toolkit";
 import {connect} from "react-redux";
 import {getThreeDays} from "./redux/reducers/requestSlice";
 import moment from "moment";
-import {Spinner} from "react-bootstrap";
+import {Spinner, Container} from "react-bootstrap";
 
 interface CalendarProps {
     threeDays: CarEvents | null;
@@ -88,32 +88,32 @@ export class Calendar extends React.Component<CalendarProps, CalendarState> {
         </colgroup>
         let thead =
             <tr className={`${class_name}`}>
-                <th className={`${class_name}`} key="head">&nbsp;</th>
-                {column_names.map(x => {return (<th className={`${class_name}`} key={x}>{x}</th>)})}
+                <th className={class_name} key="head">&nbsp;</th>
+                {column_names.map(x => {return (<th className={`${class_name}`} key={x}><Container className={`${class_name}-label`}>{x}</Container></th>)})}
             </tr>;
         let trs = [] as any[];
         for (let i in row_names) {
             let tr = [(<td className={`${class_name}-row-label`} key={row_names[i]}>{row_names[i]}</td>)];
             tr.push(...row_data[i].map(x => {
                 if (x === ',') {
-                    return (<td className={`${class_name}-blank`}>&nbsp;</td>);
+                    return (<td className={class_name}>&nbsp;</td>);
                 } else if (x === '<') {
-                    return (<td className={`${class_name}-start`}>^</td>);
+                    return (<td className={class_name}><Container className={`${class_name}-start`}>^</Container></td>);
                 } else if (x === '-') {
-                    return (<td className={`${class_name}-block`}>|</td>);
+                    return (<td className={class_name}><Container className={`${class_name}-block`}>|</Container></td>);
                 } else if (x === '>') {
-                    return (<td className={`${class_name}-end`}>v</td>);
+                    return (<td className={class_name}><Container className={`${class_name}-end`}>v</Container></td>);
                 } else if (x === 'o') {
-                    return (<td className={`${class_name}-blip`}>o</td>);
+                    return (<td className={class_name}><Container className={`${class_name}-blip`}>o</Container></td>);
                 } else {
-                    return (<td className={`${class_name}-blank`}>&nbsp;</td>);
+                    return (<td className={class_name}>&nbsp;</td>);
                 }
             }));
             trs.push(tr);
         }
         let tbody = trs.map(x => {return (<tr className={class_name}>{x}</tr>)});
         return (
-            <div className={class_name}>
+            <Container className={class_name}>
                 <table className={`${class_name}-header`}>
                     {colgroups}
                     <tbody>{thead}</tbody>
@@ -121,7 +121,7 @@ export class Calendar extends React.Component<CalendarProps, CalendarState> {
                 <table className={`${class_name}-body`}>
                     {colgroups}<tbody>{tbody}</tbody>
                 </table>
-            </div>
+            </Container>
         );
     }
     makeRotatedTable (column_names :string[], row_names :string[], row_data :string[][], class_name :string) {
