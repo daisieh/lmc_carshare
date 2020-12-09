@@ -86,7 +86,7 @@ export class Calendar extends React.Component<CalendarProps, CalendarState> {
         ]
         let thead = (<thead>
             <tr className={`${class_name}`}>
-                <th className={`${class_name}-label`} key="head"></th>
+                <th className={`${class_name}`} key="head"></th>
                 {column_names.map(x => {return (<th className={`${class_name}`}><Container className={`${class_name}-label`}>{x}</Container></th>)})}
             </tr>
             <tr className={`${class_name}`}>

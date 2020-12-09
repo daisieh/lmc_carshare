@@ -203,7 +203,7 @@ export class BookCar extends React.Component<BookCarProps, BookCarState> {
                         data={this.props.features}
                         value={this.state.pendingRequest.features}
                         onChange={this.onTagPick}
-                        disabled={disabled}
+                        // disabled={disabled}
                         placeholder="any features"
                     />
                 </Container>
