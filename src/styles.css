@@ -122,40 +122,62 @@
   margin-bottom: 16px;
 }
 
-.calendar-table-body {
+table.calendar-table {
   padding: 0;
-  overflow: auto;
-  max-height: 100vh;
+  max-width: 300px;
+}
+
+.calendar-table-body {
+  width: 100%;
+  padding: 0;
+  overflow-y: auto;
+  max-height: 70vh;
+  /*outline: 1px solid black;*/
 }
 
 tr.calendar-table {
-  border: 1px solid black;
+  border-bottom: 1px solid black;
   line-height: 1em;
 }
 
 td.calendar-table {
-  width: 30px;
+  width: 25px;
+  border: 1px dotted red;
 }
 
 th.calendar-table {
+  position: sticky;
+  top: 0;
   vertical-align: bottom;
-  width: 30px;
-  max-width: 30px;
+  width: 25px;
   height: 80px;
+  background-color: white;
+  box-shadow: 0px 1px black;
 }
 
-.calendar-table-col-name-span {
-  width: 50px;
-  max-width: 50px;
+th.calendar-table-day {
+  background-color: #e0a800;
+  position: sticky;
+  top: 80px;
+  box-shadow: 0px 1px black;
+  border-right: 1px dotted red;
+  text-align: center;
 }
 
-.calendar-table-col-span {
-  width: 100px;
-  max-width: 100px;
+th.calendar-table-row-label {
+  position: sticky;
+  top: 0;
+  vertical-align: bottom;
+  width: 25px;
+  height: 80px;
+  background-color: white;
+  box-shadow: 0px 1px black;
 }
 
 .calendar-table-row-label {
   text-align: right;
+  width: 60px;
+  max-width: 60px;
 }
 
 .calendar-table-start, .calendar-table-block, .calendar-table-end, .calendar-table-blip {
@@ -168,7 +190,7 @@ th.calendar-table {
   margin-top: -1px;
   padding-left: 5px;
   padding-right: 5px;
-  text-indent: -500px;
+  text-indent: -1000px;
 }
 
 .calendar-table-start {
@@ -186,8 +208,10 @@ th.calendar-table {
 }
 
 .calendar-table-label {
-  margin-bottom: 10px;
+  margin-bottom: 30px;
+  margin-right: 0;
   padding: 0;
   text-align: left;
   transform: rotate(-90deg);
+  overflow: hidden;
 }

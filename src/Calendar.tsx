@@ -57,11 +57,8 @@ export class Calendar extends React.Component<CalendarProps, CalendarState> {
             for (let i in this.props.threeDays.busy_segments) {
                 row_data.push(this.props.threeDays.busy_segments[i].split(''));
             }
-            console.log(row_data);
             let car_labels = [] as string[];
             car_labels.push(...this.props.threeDays.cars);
-            console.log(car_labels);
-            console.log(time_labels);
             events = this.makeRotatedTable(time_labels, car_labels, row_data, "calendar-table");
             return (
                 <div className="calendar">
@@ -81,16 +78,22 @@ export class Calendar extends React.Component<CalendarProps, CalendarState> {
     }
 
     makeTable (column_names :string[], row_names :string[], row_data :string[][], class_name :string) {
-        console.log(row_names);
-        let colgroups = <colgroup className={`${class_name}`}>
-            <col span={1} className={`${class_name}-col-name-span`}/>
-            <col span={column_names.length} className={`${class_name}-col-span`}/>
-        </colgroup>
-        let thead =
+        let day_width = column_names.length / 3;
+        let days = [
+            moment(this.state.startDate).format("YYYY-MM-DD"),
+            moment(this.state.startDate).add(1,"day").format("YYYY-MM-DD"),
+            moment(this.state.startDate).add(2,"day").format("YYYY-MM-DD"),
+        ]
+        let thead = (<thead>
             <tr className={`${class_name}`}>
-                <th className={class_name} key="head">&nbsp;</th>
-                {column_names.map(x => {return (<th className={`${class_name}`} key={x}><Container className={`${class_name}-label`}>{x}</Container></th>)})}
-            </tr>;
+                <th className={`${class_name}-row-label`} key="head"></th>
+                {column_names.map(x => {return (<th className={`${class_name}`}><Container className={`${class_name}-label`}>{x}</Container></th>)})}
+            </tr>
+            <tr className={`${class_name}`}>
+                <th className={`${class_name}-day`}></th>
+                {days.map(x => {return (<th colSpan={day_width} className={`${class_name}-day`}><Container className={`${class_name}-day`}>{x}</Container></th>)})}
+            </tr>
+        </thead>);
         let trs = [] as any[];
         for (let i in row_names) {
             let tr = [(<td className={`${class_name}-row-label`} key={row_names[i]}>{row_names[i]}</td>)];
@@ -114,13 +117,10 @@ export class Calendar extends React.Component<CalendarProps, CalendarState> {
         let tbody = trs.map(x => {return (<tr className={class_name}>{x}</tr>)});
         return (
             <Container className={class_name}>
-                <table className={`${class_name}-header`}>
-                    {colgroups}
-                    <tbody>{thead}</tbody>
-                </table>
                 <Container className={`${class_name}-body`}>
                 <table className={`${class_name}-body`}>
-                    {colgroups}<tbody>{tbody}</tbody>
+                    {thead}
+                    <tbody>{tbody}</tbody>
                 </table>
                 </Container>
             </Container>
@@ -128,7 +128,7 @@ export class Calendar extends React.Component<CalendarProps, CalendarState> {
     }
     makeRotatedTable (column_names :string[], row_names :string[], row_data :string[][], class_name :string) {
         let new_row_data = [] as string[][];
-        console.log(column_names);
+        column_names.splice(0, column_names.length*2/3);
         for (let ci=0; ci<(row_data[0].length); ci++) {
             let new_row = [] as string[];
             for (let ri=0; ri<row_data.length; ri++) {
@@ -136,8 +136,19 @@ export class Calendar extends React.Component<CalendarProps, CalendarState> {
             }
             new_row_data.push(new_row);
         }
-        console.log(new_row_data);
-        return this.makeTable(row_names, column_names, new_row_data, class_name);
+        let day_array = [] as string[][];
+        for (let ci=0; ci<column_names.length; ci++) {
+            let three_day = [] as string[];
+            three_day.push(...new_row_data[ci]);
+            three_day.push(...new_row_data[ci+column_names.length]);
+            three_day.push(...new_row_data[ci+(2*column_names.length)]);
+            day_array.push(three_day);
+        }
+        let final_row_names = row_names.concat(row_names).concat(row_names);
+        // column_names.unshift("00:00");
+        let placeholder = "o".repeat(day_array[0].length).split("");
+        // day_array.unshift(placeholder);
+        return this.makeTable(final_row_names, column_names, day_array, class_name);
     }
 
     makeTimeIntervals (interval :number) {
