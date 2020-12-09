@@ -124,7 +124,7 @@
 
 table.calendar-table {
   padding: 0;
-  max-width: 300px;
+  /*max-width: 300px;*/
 }
 
 .calendar-table-body {
