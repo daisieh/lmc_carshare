@@ -145,9 +145,6 @@ export class Calendar extends React.Component<CalendarProps, CalendarState> {
             day_array.push(three_day);
         }
         let final_row_names = row_names.concat(row_names).concat(row_names);
-        // column_names.unshift("00:00");
-        let placeholder = "o".repeat(day_array[0].length).split("");
-        // day_array.unshift(placeholder);
         return this.makeTable(final_row_names, column_names, day_array, class_name);
     }
 
