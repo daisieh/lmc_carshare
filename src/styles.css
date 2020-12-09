@@ -172,6 +172,11 @@ th.calendar-table-row-label {
   box-shadow: 0px 1px black;
 }
 
+td.calendar-table-row-label {
+  position: sticky;
+  left: 0;
+}
+
 .calendar-table-row-label {
   text-align: right;
   width: 60px;
