@@ -40,7 +40,7 @@ export interface CarEvents {
 
 export const Pages = {
     "/bookings": "Book Car",
-    "/requests": "Requests",
+    "/requests": "My Bookings",
     "/cars": "All Cars",
     "/calendar": "Calendar",
     "/my_car": "My Car"
