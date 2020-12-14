@@ -47,6 +47,7 @@ export class BookCar extends React.Component<BookCarProps, BookCarState> {
         this.onReserveCar = this.onReserveCar.bind(this);
         this.resetPicker = this.resetPicker.bind(this);
         this.updateTimes = this.updateTimes.bind(this);
+        this.filterAvailable = this.filterAvailable.bind(this);
     }
 
     componentDidUpdate(prevProps) {
@@ -54,6 +55,7 @@ export class BookCar extends React.Component<BookCarProps, BookCarState> {
             this.setState({
                 available: this.props.available
             });
+            this.filterAvailable();
         }
     }
 
@@ -108,6 +110,20 @@ export class BookCar extends React.Component<BookCarProps, BookCarState> {
         this.props.dispatch(loadAvailableCars(this.state.pendingRequest));
     }
 
+    filterAvailable() {
+        let req = this.state.pendingRequest;
+        if (req.features.length > 0) {
+            let new_available = this.props.available.filter(car => {
+                return req.features.every(feature => {
+                    return car.Features.some(feat => {
+                        return feat === feature;
+                    });
+                });
+            });
+            this.setState({available: new_available});
+        }
+    }
+
     onTagPick(event) {
         console.log(`pick ${event.toString()}`);
         let req = this.state.pendingRequest;
@@ -115,16 +131,7 @@ export class BookCar extends React.Component<BookCarProps, BookCarState> {
         this.setState({pendingRequest: req});
 
         if (this.props.available && this.props.available.length > 0) {
-            if (req.features.length > 0) {
-                let new_available = this.props.available.filter(car => {
-                    return req.features.every(feature => {
-                        return car.Features.some(feat => {
-                            return feat === feature;
-                        });
-                    });
-                });
-                this.setState({available: new_available});
-            }
+            this.filterAvailable();
         }
     }
 
