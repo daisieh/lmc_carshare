@@ -114,17 +114,18 @@ export class BookCar extends React.Component<BookCarProps, BookCarState> {
         req.features = event as string[];
         this.setState({pendingRequest: req});
 
-        // if (this.props.available.length > 0) {
-        //     if (req.features.length > 0) {
-        //         state.available = state.available.filter(car => {
-        //             return action.meta.arg.features.every(feature => {
-        //                 return car.Features.some(feat => {
-        //                     return feat === feature;
-        //                 });
-        //             })
-        //         })
-        //     }
-        // }
+        if (this.props.available.length > 0) {
+            if (req.features.length > 0) {
+                let new_available = this.props.available.filter(car => {
+                    return req.features.every(feature => {
+                        return car.Features.some(feat => {
+                            return feat === feature;
+                        });
+                    });
+                });
+                this.setState({available: new_available});
+            }
+        }
     }
 
     updateTimes(startTime: string, endTime: string) :[string, string]{
@@ -225,7 +226,6 @@ export class BookCar extends React.Component<BookCarProps, BookCarState> {
                         data={this.props.features}
                         value={this.state.pendingRequest.features}
                         onChange={this.onTagPick}
-                        disabled={disabled}
                         placeholder="any features"
                     />
                 </Container>

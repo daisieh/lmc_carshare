@@ -101,15 +101,6 @@ export const carSlice = createSlice({
                 state.available = action.payload.map(x => {
                     return state.entries[licenceMap.indexOf(x)] as Car;
                 });
-                if (action.meta.arg.features.length > 0) {
-                    state.available = state.available.filter(car => {
-                        return action.meta.arg.features.every(feature => {
-                            return car.Features.some(feat => {
-                                return feat === feature;
-                            });
-                        })
-                    })
-                }
             } else {
                 console.log("must've been reset");
             }
