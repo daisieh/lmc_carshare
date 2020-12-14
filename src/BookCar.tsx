@@ -26,6 +26,7 @@ interface BookCarState {
     pendingRequest: CarRequest;
     startDate: Date;
     endDate: Date;
+    available: Car[];
 }
 
 export class BookCar extends React.Component<BookCarProps, BookCarState> {
@@ -35,6 +36,7 @@ export class BookCar extends React.Component<BookCarProps, BookCarState> {
         this.state = {
             startDate: new Date(now[0]),
             endDate: new Date(now[1]),
+            available: [] as Car[],
             pendingRequest: makeEmptyRequest(this.props.user)
         }
         this.handleStartChange = this.handleStartChange.bind(this);
@@ -45,6 +47,14 @@ export class BookCar extends React.Component<BookCarProps, BookCarState> {
         this.onReserveCar = this.onReserveCar.bind(this);
         this.resetPicker = this.resetPicker.bind(this);
         this.updateTimes = this.updateTimes.bind(this);
+    }
+
+    componentDidUpdate(prevProps) {
+        if (this.props.available && (prevProps.available === null)) {
+            this.setState({
+                available: this.props.available
+            });
+        }
     }
 
     onClickCarRadio(value) {
@@ -103,6 +113,18 @@ export class BookCar extends React.Component<BookCarProps, BookCarState> {
         let req = this.state.pendingRequest;
         req.features = event as string[];
         this.setState({pendingRequest: req});
+
+        // if (this.props.available.length > 0) {
+        //     if (req.features.length > 0) {
+        //         state.available = state.available.filter(car => {
+        //             return action.meta.arg.features.every(feature => {
+        //                 return car.Features.some(feat => {
+        //                     return feat === feature;
+        //                 });
+        //             })
+        //         })
+        //     }
+        // }
     }
 
     updateTimes(startTime: string, endTime: string) :[string, string]{
@@ -223,18 +245,18 @@ export class BookCar extends React.Component<BookCarProps, BookCarState> {
 
         let available_cars = <div className="available-form"/>;
 
-        if (this.props.available && this.props.carStatus !== "loading") {
+        if (this.state.available && this.props.carStatus !== "loading") {
             available_cars = (
                 <div className="available-form">
                     No cars available at this time
                 </div>
             );
             let chosenCar = null as Car | null;
-            if (this.props.available.length > 0) {
+            if (this.state.available.length > 0) {
                 chosenCar = this.props.cars.filter(car => {
                     return (car.Licence === this.state.pendingRequest.vehicle);
                 })[0];
-                let rows = this.props.available.map((car) => {
+                let rows = this.state.available.map((car) => {
                     let carDesc = car.Description + (car.Confirm ? " (requires approval)" : "");
                     return (
                         <Form.Check className="radio" type="radio" checked={car.Licence === this.state.pendingRequest.vehicle} onChange={this.onClickCarRadio} id={car.Licence} key={car.Licence}
