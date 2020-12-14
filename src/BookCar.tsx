@@ -50,7 +50,7 @@ export class BookCar extends React.Component<BookCarProps, BookCarState> {
     }
 
     componentDidUpdate(prevProps) {
-        if (this.props.available && (prevProps.available === null)) {
+        if (this.props.available && (this.state.available.length == 0)) {
             this.setState({
                 available: this.props.available
             });
@@ -176,7 +176,8 @@ export class BookCar extends React.Component<BookCarProps, BookCarState> {
         this.setState({
             startDate: new Date(times[0]),
             endDate: new Date(times[1]),
-            pendingRequest: makeEmptyRequest(this.props.user)
+            pendingRequest: makeEmptyRequest(this.props.user),
+            available: [] as Car[]
         });
     }
 
