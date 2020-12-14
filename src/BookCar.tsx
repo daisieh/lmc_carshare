@@ -50,7 +50,7 @@ export class BookCar extends React.Component<BookCarProps, BookCarState> {
     }
 
     componentDidUpdate(prevProps) {
-        if (this.props.available && (this.state.available.length == 0)) {
+        if (this.props.available && (prevProps.available === null)) {
             this.setState({
                 available: this.props.available
             });
@@ -114,7 +114,7 @@ export class BookCar extends React.Component<BookCarProps, BookCarState> {
         req.features = event as string[];
         this.setState({pendingRequest: req});
 
-        if (this.props.available.length > 0) {
+        if (this.props.available && this.props.available.length > 0) {
             if (req.features.length > 0) {
                 let new_available = this.props.available.filter(car => {
                     return req.features.every(feature => {
