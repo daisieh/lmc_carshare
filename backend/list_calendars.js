@@ -2,7 +2,7 @@
   let cars = api.run("this.list_cars")[0];
   let availability_calendars = [];
   for (var i in cars) {
-    if (!cars[i].AlwaysAvailable) {
+    if (!cars[i].AlwaysAvailable || !params.only_active) {
       availability_calendars.push(`${i}_available`);
     }
     availability_calendars.push(i);

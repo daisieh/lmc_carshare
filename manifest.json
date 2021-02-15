@@ -207,6 +207,13 @@
       }, {
         "id": "list_calendars",
         "function": {
+          "parameters": [{
+            "name": "only_active",
+            "default": {
+              "text": "true"
+            },
+            "type": "BOOLEAN"
+          }],
           "js": "list_calendars.js",
           "lang": "js"
         }
@@ -381,17 +388,6 @@
             "type": "BOOLEAN"
           }],
           "js": "untitled_1.js",
-          "lang": "js"
-        }
-      }, {
-        "id": "update_all_cars",
-        "function": {
-          "parameters": [{
-            "name": "context",
-            "description": "The \u0027context\u0027 parameter is often essential to operations published to Mission Control",
-            "type": "OBJECT"
-          }],
-          "js": "update_all_cars.js",
           "lang": "js"
         }
       }, {
