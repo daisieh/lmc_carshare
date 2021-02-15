@@ -154,7 +154,7 @@
             "name": "email",
             "type": "STRING"
           }],
-          "js": "is_valid_signin.js",
+          "js": "is_valid_member.js",
           "lang": "js"
         },
         "access": {
@@ -186,7 +186,7 @@
             },
             "type": "ARRAY"
           }],
-          "js": "delete_request.js",
+          "js": "delete_requests.js",
           "lang": "js"
         },
         "access": {
@@ -267,7 +267,7 @@
             "name": "BookingCalendar",
             "type": "STRING"
           }],
-          "js": "create_new_car.js",
+          "js": "create_update_car.js",
           "lang": "js"
         },
         "access": {
@@ -283,7 +283,7 @@
             },
             "type": "ARRAY"
           }],
-          "js": "car_sheet_to_object.js",
+          "js": "car_sheet_row_to_object.js",
           "lang": "js"
         }
       }, {
@@ -326,7 +326,7 @@
             },
             "type": "STRING"
           }],
-          "js": "car_day_array.js",
+          "js": "three_day_array.js",
           "lang": "js"
         },
         "access": {
@@ -376,7 +376,7 @@
             "name": "canWrite",
             "type": "BOOLEAN"
           }],
-          "js": "untitled_1.js",
+          "js": "set_calendar_access.js",
           "lang": "js"
         }
       }, {
