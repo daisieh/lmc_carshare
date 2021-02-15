@@ -28,7 +28,7 @@
     }
   }
   let results = api.run("this.delete_requests", {eventIds: to_delete});
-  console.log(`deleted ${results.toString()}`);
+  console.log(`deleted ${JSON.stringify(results)}`);
   
   // remove the calendars
   try {
